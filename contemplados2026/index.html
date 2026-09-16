@@ -1,0 +1,3038 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Super Minas · Contemplados 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0A0E14;
+    --bg-elevated: #10151D;
+    --card: #141A24;
+    --border: #212936;
+    --text: #F2F1ED;
+    --text-dim: #8B94A3;
+    --text-faint: #5A6472;
+    --azul: #3E7BD6;
+    --azul-soft: rgba(62,123,214,0.14);
+    --bordo: #D9607C;
+    --bordo-soft: rgba(217,96,124,0.14);
+    --verde: #63C58E;
+    --verde-soft: rgba(99,197,142,0.14);
+    --track: #1C232E;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', -apple-system, 'Segoe UI', Arial, sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .shell{ max-width: 860px; margin: 0 auto; padding: 28px 20px 60px; }
+
+  header.page-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    flex-wrap: wrap; gap: 6px;
+    margin-bottom: 20px;
+  }
+  header.page-head h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+  header.page-head h1 span{ color: var(--text-dim); font-weight: 500; }
+  header.page-head .tagline{ color: var(--text-faint); font-size: 12px; }
+
+  /* Month nav */
+  nav.month-nav{
+    display:flex; gap:4px; flex-wrap:wrap;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+  }
+  nav.month-nav button{
+    font-family:'IBM Plex Sans', sans-serif;
+    background: transparent;
+    color: var(--text-dim);
+    border: 1px solid transparent;
+    padding: 5px 11px;
+    border-radius: 7px;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+  nav.month-nav button:hover{ background: var(--bg-elevated); color: var(--text); }
+  nav.month-nav button.active{
+    background: var(--azul-soft);
+    color: #9EC1F0;
+    border-color: rgba(62,123,214,0.35);
+  }
+  nav.month-nav button:disabled{
+    color: var(--text-faint);
+    cursor: default;
+    opacity: .45;
+  }
+  nav.month-nav button:disabled:hover{ background: transparent; }
+
+  /* Edition nav */
+  nav.edition-nav{
+    display:flex; gap:5px; flex-wrap:wrap;
+    margin-bottom: 18px;
+  }
+  nav.edition-nav button{
+    font-family:'Space Grotesk', sans-serif;
+    background: var(--card);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 6px 13px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  nav.edition-nav button:hover{ color: var(--text); }
+  nav.edition-nav button.active{
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+  nav.edition-nav button.summary-btn{
+    border-style: dashed;
+    color: #EFA5B4;
+    border-color: rgba(217,96,124,0.4);
+  }
+  nav.edition-nav button.summary-btn.active{
+    background: var(--bordo);
+    color: #1A0C10;
+    border-color: var(--bordo);
+    border-style: solid;
+  }
+
+  /* Stat cards */
+  .stats-row{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .stat-card{
+    background: var(--card);
+    padding: 14px 16px;
+  }
+  .stat-card .label{ font-size: 11.5px; color: var(--text-dim); margin-bottom: 7px; }
+  .stat-card .value{
+    font-family:'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+  .stat-card .sub{ font-size: 11px; color: var(--text-faint); margin-top: 4px; }
+  .stat-card.leader .value{ font-size: 17px; }
+
+  /* Legend */
+  .legend{
+    display:flex; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .pill{
+    display:inline-flex; align-items:center; gap: 6px;
+    padding: 4px 10px 4px 5px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    border: 1px solid var(--border);
+    background: var(--card);
+  }
+  .pill .dot-label{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    padding: 2px 9px;
+    border-radius: 999px;
+  }
+  .pill.azul .dot-label{ background: var(--azul-soft); color: #9EC1F0; }
+  .pill.bordo .dot-label{ background: var(--bordo-soft); color: #EFA5B4; }
+  .pill.verde .dot-label{ background: var(--verde-soft); color: #A6E0C1; }
+  .pill .desc{ color: var(--text-dim); }
+
+  /* Table */
+  .table-wrap{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .table-title{
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    color: var(--text-faint);
+    padding: 12px 16px 9px;
+    border-bottom: 1px solid var(--border);
+  }
+  table{ width: 100%; border-collapse: collapse; }
+  thead th{
+    text-align: left;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-faint);
+    padding: 9px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  thead th.num, tbody td.num{ text-align: center; }
+  tbody td{
+    padding: 9px 16px;
+    font-size: 12.5px;
+    border-bottom: 1px solid var(--border);
+  }
+  tbody tr:last-child td{ border-bottom: none; }
+  tbody td.rank{ color: var(--text-faint); width: 28px; }
+  tbody td.city{ font-weight: 600; font-size: 13px; }
+  .badge-rank{
+    display:inline-flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk', sans-serif;
+    font-size: 9.5px; font-weight: 600;
+    width: 17px; height: 17px; border-radius: 999px;
+    margin-left: 6px;
+    background: var(--azul-soft); color: #9EC1F0;
+  }
+  .chip{
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width: 22px; height: 19px; padding: 0 5px;
+    border-radius: 999px;
+    font-family:'Space Grotesk', sans-serif;
+    font-size: 11px; font-weight: 600;
+  }
+  .chip.azul{ background: var(--azul-soft); color: #9EC1F0; }
+  .chip.bordo{ background: var(--bordo-soft); color: #EFA5B4; }
+  .chip.verde{ background: var(--verde-soft); color: #A6E0C1; }
+  .chip.dash{ color: var(--text-faint); background: transparent; }
+  td.total-col{ font-weight: 600; color: var(--azul); text-align: center; }
+  .participation{ display:flex; align-items:center; gap: 8px; min-width: 100px; }
+  .bar-track{ flex:1; height: 5px; background: var(--track); border-radius: 999px; overflow:hidden; }
+  .bar-fill{ height: 100%; background: linear-gradient(90deg, #3E7BD6, #6FA3E8); border-radius: 999px; }
+  .pct{ font-size: 11px; color: var(--text-dim); width: 30px; text-align:right; }
+
+  .footnote{
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--text-faint);
+  }
+
+  .empty-state{
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--text-faint);
+    font-size: 14px;
+  }
+
+  .cover-section-title{
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--text-faint);
+    margin: 0 0 10px;
+  }
+
+  /* Sales channel section */
+  .channel-row{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin: 0;
+  }
+  .channel-card{
+    background: var(--card);
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .channel-label{ font-size: 11.5px; color: var(--text-dim); margin-bottom: 6px; }
+  .channel-value{
+    font-family:'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .channel-pct{ font-size: 11px; color: var(--text-faint); margin-top: 2px; }
+  .top-revendedores{
+    padding: 4px 16px 14px;
+  }
+  .data-pending-note{
+    font-size: 11.5px;
+    color: var(--text-faint);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 16px;
+  }
+  .tr-title{
+    font-size: 11px;
+    color: var(--text-faint);
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+  .tr-row{
+    display:flex; align-items:center; gap: 8px;
+    padding: 5px 0;
+    font-size: 12.5px;
+  }
+  .tr-rank{ color: var(--text-faint); width: 20px; font-size: 11px; }
+  .tr-name{ flex:1; color: var(--text); }
+  .tr-count{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: var(--azul);
+    font-size: 12.5px;
+  }
+
+  /* Back row */
+  .year-summary-btn{
+    border-style: dashed !important;
+    color: #9EC1F0 !important;
+    border-color: rgba(62,123,214,0.4) !important;
+    margin-right: 4px;
+  }
+  .year-summary-btn.active{
+    background: var(--azul) !important;
+    color: #08111F !important;
+    border-color: var(--azul) !important;
+    border-style: solid !important;
+  }
+
+  @media (max-width: 640px){
+    .stats-row{ grid-template-columns: 1fr; }
+    thead th, tbody td{ padding: 10px 12px; font-size: 13px; }
+    .participation{ min-width: 90px; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="page-head">
+    <h1>Super Minas <span>· Contemplados 2026</span></h1>
+    <div class="tagline">Resultados por edição — atualizado até <span id="lastUpdate"></span></div>
+  </header>
+
+  <nav class="month-nav" id="monthNav"></nav>
+  <nav class="edition-nav" id="editionNav" style="display:none;"></nav>
+
+  <div id="content"></div>
+
+  <div class="footnote">Prêmios em valor líquido. "Bateu na Trave" exibido apenas nas edições em que o prêmio esteve em vigor.</div>
+
+</div>
+
+<script>
+/* ============================================================
+   DATA
+   Add new months/editions here as they're received.
+   giraMinas / prizes entries: { name, city }
+   prizes: winners array can have 1+ names (split prize)
+   ============================================================ */
+const REPORT_DATA = {
+  months: [
+    {
+      key: "2026-01",
+      label: "Janeiro",
+      editions: [
+        {
+          key: "04-01",
+          label: "04/01",
+          titlePrice: "R$ 10,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Ana L. de M.", city: "Cordislândia", vendor: "GATAO DA SORTE - VARGINHA" }] },
+            { order: "2º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Maria R. de C.", city: "Bueno Brandão", vendor: "RELOJOARIA E CHAVEIRO DO DONIZETTI" }] },
+            { order: "3º Prêmio", value: "R$ 15.000,00 (dividido)", winners: [
+              { name: "Elaine C. R.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+              { name: "Luiz R. P.", city: "Santa Rita do Sapucaí", vendor: "DULCIMARA DE OLIVEIRA" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 15.000,00 (dividido)", winners: [
+              { name: "Maura Ap. R. do C.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+              { name: "Paulo H. M.", city: "Varginha", vendor: "SUELY SERAFIM" }
+            ]},
+            { order: "5º Prêmio", value: "R$ 180.000,00", winners: [{ name: "Daniela Ap. dos S.", city: "Itajubá", vendor: "LINK PRI BAIXINHA DA SORTE - TP" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Adriana C. A.", city: "Nepomuceno", vendor: "BAR DO VANDINHO" },
+            { name: "Micheli E. G.", city: "Lavras", vendor: "VENDAS ONLINE" },
+            { name: "Joao C. G.", city: "Elói Mendes", vendor: "VENDAS ONLINE" },
+            { name: "Maria J. M.", city: "Cambuí", vendor: "CHICO DA SORTE" },
+            { name: "Lucimar Ap S C", city: "São Gonçalo do Sapucaí", vendor: "VENDAS ONLINE" },
+            { name: "Juslei S", city: "Campo Belo", vendor: "ALEXANDRE" },
+            { name: "Claudir L F", city: "Poços de Caldas", vendor: "VO SUPERMERCADO BH - POCOS DE CALDAS" },
+            { name: "Luiz C G", city: "Passa Quatro", vendor: "VENDAS ONLINE" },
+            { name: "Bruna K de O", city: "Campestre", vendor: "VENDAS ONLINE" },
+            { name: "Antonio dos A de O", city: "Alpinópolis", vendor: "EDUARDO UAI" },
+            { name: "Paula S G S", city: "São Sebastião do Paraíso", vendor: "GI DA LOTERICA DA SORTE" },
+            { name: "Marcilene S A", city: "Ilicínea", vendor: "VENDAS ONLINE" },
+            { name: "Jonas C dos S", city: "Botelhos", vendor: "MAQUININHA POS - MAGALI APARECIDA" },
+            { name: "Marcia Ap C", city: "Juruaia", vendor: "VENDAS ONLINE" },
+            { name: "Leandro L S", city: "Itamogi", vendor: "SKINA BAR DO JOAO" },
+            { name: "Mafalda M M", city: "Muzambinho", vendor: "LAERCIO SANTINI" },
+            { name: "Renato D C", city: "São Sebastião do Paraíso", vendor: "VENDAS ONLINE" },
+            { name: "Mariani L F P", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "Aparecido M S", city: "Jacutinga", vendor: "AMARILDO MOTO BOY" },
+            { name: "Joao M M", city: "Pedralva", vendor: "ELIANA LEMOS" }
+          ]
+        },
+        {
+          key: "11-01",
+          label: "11/01",
+          titlePrice: "R$ 20,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 50.000,00", winners: [{ name: "Antonio C. de O. F.", city: "Campestre", vendor: "MAQUININHA POS - PASTELARIA DO MARCO" }] },
+            { order: "2º Prêmio", value: "R$ 100.000,00 (dividido)", winners: [
+              { name: "Emylle C. A. C.", city: "Três Corações", vendor: "VENDAS ONLINE" },
+              { name: "Miguel I. S. M.", city: "Borda da Mata", vendor: "MERCADO E ACOUGUE ECONOMICO" }
+            ]},
+            { order: "3º Prêmio", value: "R$ 100.000,00 (dividido)", winners: [
+              { name: "Jorge I. E. C.", city: "São Gonçalo do Sapucaí", vendor: "DANIEL" },
+              { name: "Guilhermina M. S. T.", city: "Campo Belo", vendor: "MARCIA CARVALHO" },
+              { name: "Tales B. V. M.", city: "Poços de Caldas", vendor: "JACQUELINE ECONOMART" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 100.000,00", winners: [{ name: "Ariele B. da S.", city: "Cambuí", vendor: "BAR DA XUXA" }] },
+            { order: "5º Prêmio", value: "R$ 100.000,00", winners: [{ name: "Laerte dos S. L.", city: "Campestre", vendor: "EDNA" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Maria de F. C. L.", city: "São Sebastião do Paraíso", vendor: "GI DA LOTERICA DA SORTE - ITAMOGI" },
+            { name: "Sebastiao M. de L.", city: "São Sebastião do Paraíso", vendor: "JUSMARA BANCO ITAU" },
+            { name: "Adriano L.", city: "Três Pontas", vendor: "VENDAS ONLINE" },
+            { name: "Clever T. de M.", city: "Três Pontas", vendor: "VENDAS ONLINE" },
+            { name: "Alexandre da C. B.", city: "Monte Sião", vendor: "THIAGAO DA SORTE ORIGINAL" },
+            { name: "Reginaldo P. de A.", city: "Santa Rita do Sapucaí", vendor: "BAR E MERCEARIA LUCIANA" },
+            { name: "Jurandir P. R.", city: "Passos", vendor: "BANCA DO ROSARIO" },
+            { name: "Pedro O. de R. F.", city: "Juruaia", vendor: "VENDAS ONLINE" },
+            { name: "Rodrigo F. S.", city: "Itamogi", vendor: "PRETA ADEGA" },
+            { name: "Welber P. R.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Paulo da S.", city: "Divisa Nova", vendor: "ACOUGUE DO PAULINHO" },
+            { name: "Sonia M. R.", city: "Cambuquira", vendor: "SALAO DA VIRGINIA" },
+            { name: "Fabiana de C. L.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Isabel C. X.", city: "Paraguaçu", vendor: "GAROTO DA SORTE MATEUS" },
+            { name: "Joao D. da S.", city: "São Sebastião da Bela Vista", vendor: "ARMAZEM DA JACK" },
+            { name: "Deivid R. S.", city: "Boa Esperança", vendor: "VENDAS ONLINE" },
+            { name: "Paulo R. M. J.", city: "Poços de Caldas", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Fabricio S. E.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Maria B. dos R. M.", city: "Campo Belo", vendor: "PADARIA VENEZA" },
+            { name: "Orminda N. E.", city: "Três Pontas", vendor: "ANDREIA SAO JUDAS TADEU" }
+          ]
+        },
+        {
+          key: "18-01",
+          label: "18/01",
+          titlePrice: "R$ 10,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 2.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Maique dos R. N.", city: "Carmo da Cachoeira", vendor: "VENDAS ONLINE" }] },
+            { order: "2º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Helio dos R. O.", city: "Guaranésia", vendor: "VENDAS ONLINE" }] },
+            { order: "3º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Maria C. de A.", city: "Varginha", vendor: "ANA LUCIA" }] },
+            { order: "4º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Maressa S. da S.", city: "Três Corações", vendor: "VENDAS ONLINE" }] },
+            { order: "5º Prêmio", value: "R$ 150.000,00", winners: [{ name: "Marco D. do N.", city: "Ribeirão Vermelho", vendor: "BAR DO GUILHERME - PERDOES" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Antonio C. F.", city: "Guaxupé", vendor: "ANA LUCIA" },
+            { name: "Jones C. M.", city: "Monte Santo de Minas", vendor: "VENDAS ONLINE" },
+            { name: "Jose M. D.", city: "Muzambinho", vendor: "LAERCIO SANTINI" },
+            { name: "Claudio G. B.", city: "Lavras", vendor: "VENDAS ONLINE" },
+            { name: "Paulo E. de O. C.", city: "Congonhal", vendor: "LUIS GONZAGA JR - POUSO ALEGRE" },
+            { name: "Fabrinio J. B.", city: "Botelhos", vendor: "VENDAS ONLINE" },
+            { name: "Joao B. D.", city: "Nepomuceno", vendor: "SKINA DA SORTE - JOSE VALTER JANAINA E ALEXANDRE" },
+            { name: "Edigar C. F.", city: "São Tomás de Aquino", vendor: "MAQUININHA POS - JUSMARA BANCO ITAU" },
+            { name: "Adriano P. M.", city: "Varginha", vendor: "JAQUE - CHAMA DA SORTE" },
+            { name: "Carlos R. C.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Marco A. R.", city: "Poços de Caldas", vendor: "MAQUININHA POS - JACQUELINE AUXILIADORA" },
+            { name: "Bruno Botazini Andrade Santos", city: "Machado", vendor: "NOSSO BAR MACHADO" },
+            { name: "Carlos R. G.", city: "Soledade de Minas", vendor: "LINK PRI BAIXINHA DA SORTE - TP" },
+            { name: "Rozana M. A. S.", city: "Passos", vendor: "BANCA DO ROSARIO - ELISANGELA" },
+            { name: "Eduardo S. W.", city: "Pouso Alegre", vendor: "MAQUININHA POS - JUSMARA BANCO ITAU" },
+            { name: "Manoel M. V. dos S.", city: "Campestre", vendor: "MEU SALGADO FAVORITO" },
+            { name: "Jose D. M. da S.", city: "Alpinópolis", vendor: "EDUARDO UAI" },
+            { name: "Antonio M. de A.", city: "Pouso Alegre", vendor: "SUELLEN DANI" },
+            { name: "Francylis C. da S.", city: "Machado", vendor: "MAQUININHA POS - BETO IMPRESSAO" },
+            { name: "Derli F. de L. S.", city: "Jacuí", vendor: "BANCA DA GLORIA" },
+            { name: "Celso C. da S.", city: "Alfenas", vendor: "VENDAS ONLINE" },
+            { name: "Giácomo H. C.", city: "Santa Rita do Sapucaí", vendor: "BIANA - ESQUINA DA SORTE" },
+            { name: "Tiago H. P.", city: "Itanhandu", vendor: "LINK DROGARIA AVENIDA" },
+            { name: "Alessandra B. L. de A.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Silvia B. L.", city: "Cambuí", vendor: "SERGINHO AFIACOES" },
+            { name: "Sintia Ap. M.", city: "Três Pontas", vendor: "VENDAS ONLINE" },
+            { name: "Lucas dos R. S.", city: "Coqueiral", vendor: "LINK PRI BAIXINHA DA SORTE - PA" },
+            { name: "Elenilda Ap. S.", city: "Campos Gerais", vendor: "CLEONICE CAMPOS" },
+            { name: "Ismael dos R.", city: "Jacutinga", vendor: "MARIA E FABIO - CASAL DA SORTE" },
+            { name: "Neide B. S.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA LUZIA" }
+          ]
+        },
+        {
+          key: "25-01",
+          label: "25/01",
+          titlePrice: "R$ 10,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 3.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 7.000,00 (dividido)", winners: [
+              { name: "Ana M. P. F.", city: "Pouso Alegre", vendor: "ANGELA DO PASTEL" },
+              { name: "Antonio C. de O.", city: "Varginha", vendor: "JAQUE CHAMA DA SORTE" }
+            ]},
+            { order: "2º Prêmio", value: "R$ 8.000,00", winners: [{ name: "Leonardo R. P.", city: "Três Corações", vendor: "CHIQUINHO" }] },
+            { order: "3º Prêmio", value: "R$ 9.000,00", winners: [{ name: "Sueli C. A.", city: "Santa Rita do Sapucaí", vendor: "VENDAS ONLINE" }] },
+            { order: "4º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Joaquim de J.", city: "Conceição do Rio Verde", vendor: "ADILSON - FOTO STUDIO IMAGEM" }] },
+            { order: "5º Prêmio", value: "R$ 160.000,00", winners: [{ name: "Leandro F. B.", city: "Varginha", vendor: "VIVIANE" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Marcos R. F.", city: "Monte Sião", vendor: "THIAGAO DA SORTE ORIGINAL" },
+            { name: "Alex V. G.", city: "Carmo da Cachoeira", vendor: "VENDAS ONLINE" },
+            { name: "Luan A. J. G.", city: "Pouso Alegre", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Francisca das C. P.", city: "Cambuí", vendor: "CHICO DA SORTE" },
+            { name: "Doralice R. S.", city: "Campo Belo", vendor: "MERCADO RS" },
+            { name: "Gilson T. M.", city: "Passa Quatro", vendor: "SALAO DO GETULIO" },
+            { name: "Rodrigo D. T.", city: "Poços de Caldas", vendor: "MAQUININHA POS - VERINHA" },
+            { name: "Reginaldo C. C.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Marcia M. de O.", city: "Elói Mendes", vendor: "DONA ANDREIA" },
+            { name: "Francisca N. de N.", city: "Campos Gerais", vendor: "PADARIA PADRE VITOR" },
+            { name: "Robson L. D. M. C.", city: "Alfenas", vendor: "VENDAS ONLINE" },
+            { name: "Monique T. P. A.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" },
+            { name: "Cristiane V. P. da S.", city: "Alfenas", vendor: "LOJA DA JANE E MARLENE - TP" },
+            { name: "Paulo D. C.", city: "Lavras", vendor: "MAURICIO FERNET" },
+            { name: "Welliton V. da S.", city: "Varginha", vendor: "LINK LOJA DA JANE E MARLENE - TP" },
+            { name: "Frede M. V.", city: "São Sebastião do Paraíso", vendor: "VENDAS ONLINE" },
+            { name: "Rodrigo C. da S.", city: "Três Pontas", vendor: "LOJA DA JANE E MARLENE" },
+            { name: "Marcelo R.", city: "Campo Belo", vendor: "VENDAS ONLINE" },
+            { name: "Alisson F. da S.", city: "Pouso Alegre", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Manoel F. de A.", city: "Espírito Santo do Dourado", vendor: "BAR DO SALU" },
+            { name: "Sidnei F.", city: "Extrema", vendor: "VENDAS ONLINE" },
+            { name: "Conceicao O. A.", city: "Carmo da Cachoeira", vendor: "VENDAS ONLINE" }
+          ]
+        }
+      ]
+    },
+    {
+      key: "2026-02",
+      label: "Fevereiro",
+      editions: [
+        {
+          key: "01-02",
+          label: "01/02",
+          titlePrice: "R$ 10,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Claudinei L. dos R.", city: "Itamogi", vendor: "BAR DO CARLAO" }] },
+            { order: "2º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Wagner L. C.", city: "Lavras", vendor: "MAQUININHA POS - EDSON PE QUENTE" }] },
+            { order: "3º Prêmio", value: "R$ 10.000,00 (dividido)", winners: [
+              { name: "Tiago de A. S.", city: "Passos", vendor: "MERCEARIA IPE" },
+              { name: "Marlene de L. P. G.", city: "Passa Quatro", vendor: "MAQUININHA POS - MERCADINHO DO LOURENCINHO" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Jacinta L. J.", city: "Santa Rita do Sapucaí", vendor: "HART" }] },
+            { order: "5º Prêmio", value: "R$ 170.000,00", winners: [{ name: "Ana R. I.", city: "São Gonçalo do Sapucaí", vendor: "WEVERSON REX" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Antonio M. da S. J.", city: "Borda da Mata", vendor: "VENDAS ONLINE" },
+            { name: "Estefania Ap. R. da S.", city: "Itajubá", vendor: "MERCADINHO MORAES" },
+            { name: "Marcio da S. S.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Pamilla L. M. M.", city: "Campestre", vendor: "QUEILA ATACADAO DOS DOCES - POCOS DE CALDAS" },
+            { name: "Janete F.", city: "Poços de Caldas", vendor: "BANCA DA LEANDRA 2" },
+            { name: "Irani G. G.", city: "Cabo Verde", vendor: "QUINTINO AGROPECUARIA" },
+            { name: "Benedita P. de S. S.", city: "Cambuí", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Ramon de C.", city: "Campos Gerais", vendor: "LUCAS - ALFENAS" },
+            { name: "Maria A. da C.", city: "Jacutinga", vendor: "MARIA E FABIO - CASAL DA SORTE" },
+            { name: "Nezio da S.", city: "Estiva", vendor: "JC ESTIVA" },
+            { name: "Taynara F.", city: "São Gonçalo do Sapucaí", vendor: "AGATHA" },
+            { name: "Jose F. F.", city: "São Sebastião do Paraíso", vendor: "JUSMARA BANCO ITAU" },
+            { name: "Flavia Ap. M.", city: "Pedralva", vendor: "BAR E MERCEARIA DA GLORINHA" },
+            { name: "Donizeti R.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Luis G. M. L.", city: "Pouso Alegre", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Celia R. P. S.", city: "Botelhos", vendor: "MAGALI PALMEIRAL" },
+            { name: "Marcella S. A. M.", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "Rosangela de S. A.", city: "Guaxupé", vendor: "IVAIR MATHEUS OS MENINOS DA SORTE" },
+            { name: "Maria L. da S.", city: "Poços de Caldas", vendor: "BANCA PERNAMBUCO" },
+            { name: "Fabiana Ap. de R.", city: "Juruaia", vendor: "WELLINGTON GORDINHO DA SORTE - GUAXUPE" },
+            { name: "Viviane C. da S.", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "Aparecido S. da C.", city: "Poços de Caldas", vendor: "QUIOSQUE DO JAO - POCOS DE CALDAS" },
+            { name: "Evaldo F. de F.", city: "Varginha", vendor: "MILTON BLACK" },
+            { name: "Maria R. da S.", city: "Guaxupé", vendor: "IONE" },
+            { name: "Rezimar R.", city: "Cássia", vendor: "CANTINHO DO SABOR - PASSOS" },
+            { name: "Maria H. L. L.", city: "Monte Sião", vendor: "PALMEIRENSE" },
+            { name: "Karoline T. L.", city: "Três Pontas", vendor: "KATIA FREITAS" },
+            { name: "Emanoel O. H. do N.", city: "São Lourenço", vendor: "LINK PRI BAIXINHA DA SORTE - TP" },
+            { name: "Donizetti do R.", city: "Elói Mendes", vendor: "GERALDO CRUZ" },
+            { name: "Carina R. da S. J.", city: "São Tomás de Aquino", vendor: "VENDAS ONLINE" },
+            { name: "Kelly Ap. P. A. S.", city: "Lavras", vendor: "ZE" },
+            { name: "Luciano M. dos S.", city: "Itamogi", vendor: "VENDAS ONLINE" },
+            { name: "Geovania Ap. A.", city: "Pouso Alegre", vendor: "CANTOR DA SORTE" },
+            { name: "Juliano B. F.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Juliano A. E.", city: "Três Pontas", vendor: "SUPERMERCADO DO WILL" },
+            { name: "Sheila Ap. P.", city: "Lavras", vendor: "VENDAS ONLINE" },
+            { name: "Maria G. F. M. R.", city: "Campo Belo", vendor: "JOEL PE QUENTE - BOA ESPERANCA" },
+            { name: "Luiz C. da S.", city: "Pouso Alegre", vendor: "NALDO UAI - PIRANGUINHO" },
+            { name: "Antonio C. de O.", city: "Varginha", vendor: "Não informado" },
+            { name: "Ezequiel", city: "Varginha", vendor: "MARIA JOSE" }
+          ]
+        },
+        {
+          key: "08-02",
+          label: "08/02",
+          titlePrice: "R$ 20,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 5.000,00 (Gira Minas Especial)",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Elci F. do N.", city: "Santana do Jacaré", vendor: "FARMA MINAS" }] },
+            { order: "2º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Cecilia A. P.", city: "Varginha", vendor: "SEBASTIAO" }] },
+            { order: "3º Prêmio", value: "R$ 15.000,00", winners: [{ name: "Miguel I. D. da S.", city: "São Sebastião do Paraíso", vendor: "DORA AVENTUREIRA - BOI BRANCO" }] },
+            { order: "4º Prêmio", value: "R$ 15.000,00 (dividido)", winners: [
+              { name: "Ana C. B. M.", city: "Cristina", vendor: "LOJA DA JANE E MARLENE - TP" },
+              { name: "Walter P.", city: "Machado", vendor: "MAQUININHA POS - ROSANA SORRISO CIDA" }
+            ]},
+            { order: "5º Prêmio", value: "R$ 300.000,00", winners: [{ name: "Agenor M.", city: "São Sebastião do Paraíso", vendor: "MERCADO E PANIFICADORA ROCHA" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Maria B. L. de F. R.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Jose L. F.", city: "Passos", vendor: "MERCEARIA DO ALEXSANDRO" },
+            { name: "Patricia P. da S.", city: "Extrema", vendor: "VENDAS ONLINE" },
+            { name: "Walter L. da S.", city: "São Sebastião do Paraíso", vendor: "PAPELARIA AVENIDA" },
+            { name: "Moacir E. de A.", city: "Guaxupé", vendor: "TOCA DO LOBINHO" },
+            { name: "Santos D. de S.", city: "Campestre", vendor: "EDNA" },
+            { name: "Igo P. de S.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Romildo L.", city: "Varginha", vendor: "GUIDAO - SUP MAIOLINI RJ" },
+            { name: "Maria C. das C. M.", city: "Cabo Verde", vendor: "LOJA ALTO ASTRAL" },
+            { name: "Pedro H. P. R.", city: "Itamonte", vendor: "DROGARIA SAO JOSE FARMACIA DO RENAN" },
+            { name: "Aguinaldo Ap. R.", city: "Conceição da Aparecida", vendor: "VENDAS ONLINE" },
+            { name: "Maurilio R.", city: "Andradas", vendor: "SM HAMILTON MENDES" },
+            { name: "Wellington E. da S.", city: "Itajubá", vendor: "JOSE REIS" },
+            { name: "Marlene M.", city: "Pouso Alegre", vendor: "ANGELA DO PASTEL" },
+            { name: "Angelo C. R.", city: "Boa Esperança", vendor: "VENDAS ONLINE" },
+            { name: "Marcelo dos R. F.", city: "Campo Belo", vendor: "VENDAS ONLINE" },
+            { name: "Jailson S. F.", city: "Natércia", vendor: "MERCADINHO LUCIANO" },
+            { name: "Jose A. M.", city: "Piranguinho", vendor: "NALDO UAI" },
+            { name: "Donizeti J. de M.", city: "Andradas", vendor: "BANCA DO KLEBER" },
+            { name: "Francielen das G. M.", city: "Campo Belo", vendor: "VENDAS ONLINE" }
+          ]
+        },
+        {
+          key: "15-02",
+          label: "15/02",
+          titlePrice: "R$ 10,00",
+          hasBateuTrave: false,
+          giraMinasValue: "Edição Escada — R$500 a R$2.500 (5 faixas)",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Rayssa C. de O.", city: "Alfenas", vendor: "EMPORIO DO PAO" }] },
+            { order: "2º Prêmio", value: "R$ 6.000,00", winners: [{ name: "Janio F. R.", city: "Varginha", vendor: "MERCEARIA SILVA" }] },
+            { order: "3º Prêmio", value: "R$ 7.000,00", winners: [{ name: "Marinilson P. C.", city: "Pouso Alegre", vendor: "MAQUININHA POS - ZE DO CAVALO" }] },
+            { order: "4º Prêmio", value: "R$ 8.000,00", winners: [{ name: "Jane Ap. C.", city: "Pouso Alegre", vendor: "1001 UTILIDADES JORGE SORTE GRANDE" }] },
+            { order: "5º Prêmio", value: "R$ 150.000,00 (dividido)", winners: [
+              { name: "Aparecida das D. R.", city: "Nova Resende", vendor: "PAPELARIA CENTRAL" },
+              { name: "Felipe B. M.", city: "Elói Mendes", vendor: "FAE DO BAR" }
+            ]}
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Heloisa C. da S. F.", city: "Conceição da Aparecida", value: "R$500", vendor: "CRISTINA E FABIO CIGANO" },
+            { name: "Marly de C. C.", city: "Poços de Caldas", value: "R$500", vendor: "FIOTE HORT FRUTI" },
+            { name: "Altamiranda F. de S.", city: "Juruaia", value: "R$500", vendor: "WELINGTON GORDINHO DA SORTE" },
+            { name: "Venancio do P.", city: "Congonhal", value: "R$500", vendor: "MAQUININHA POS - EQUIPE DA SORTE - PA" },
+            { name: "Luzielen Ap. S. R.", city: "Elói Mendes", value: "R$500", vendor: "VENDAS ONLINE" },
+            { name: "Eliane de O.", city: "Cabo Verde", value: "R$500", vendor: "MAQUININHA POS - LOJA ALTO ASTRAL" },
+            { name: "Geni R. dos S.", city: "Poços de Caldas", value: "R$500", vendor: "MAQUININHA POS - QUEILA DE OLIVEIRA PAIVA" },
+            { name: "Pedro A. B.", city: "Nepomuceno", value: "R$500", vendor: "SKINA DA SORTE - JOSE VALTER JANAINA E ALEXANDRE" },
+            { name: "Benedito P. de S.", city: "Congonhal", value: "R$500", vendor: "DOUGLAS CONGONHAL - PA" },
+            { name: "Santos J. da R.", city: "Machado", value: "R$500", vendor: "CLARISIA ALMEIDA CAMPOS - BAR DA GATA" },
+            { name: "Ravel N. B.", city: "São Sebastião do Paraíso", value: "R$1.000", vendor: "VENDAS ONLINE" },
+            { name: "Carlos R. D. J.", city: "Paraguaçu", value: "R$1.000", vendor: "VALDINEIA MINAS CAP" },
+            { name: "Junior T. T.", city: "Pedralva", value: "R$1.000", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Ingrid R. F.", city: "Varginha", value: "R$1.000", vendor: "JAQUE CHAMA DA SORTE" },
+            { name: "Gonçalo F. J.", city: "Paraguaçu", value: "R$1.000", vendor: "MORENO DA SORTE" },
+            { name: "Altair L. D.", city: "Coqueiral", value: "R$1.000", vendor: "LT RACOES" },
+            { name: "Luiz C. R.", city: "Lambari", value: "R$1.000", vendor: "DROGARIA DO LUIZINHO" },
+            { name: "Wanderlei P.", city: "Três Pontas", value: "R$1.000", vendor: "VENDAS ONLINE" },
+            { name: "Teresa de S. G.", city: "Poços de Caldas", value: "R$1.000", vendor: "VENDAS ONLINE" },
+            { name: "Edilene de S. B. M.", city: "Varginha", value: "R$1.000", vendor: "MERCADINHO CIDADE NOVA" },
+            { name: "Mariane P. B.", city: "Alfenas", value: "R$1.500", vendor: "PEDRINHO CAMBISTA - O PE QUENTE" },
+            { name: "Danieli Ap. S.", city: "Campos Gerais", value: "R$1.500", vendor: "VENDAS ONLINE" },
+            { name: "Luzia E. G.", city: "Campos Gerais", value: "R$1.500", vendor: "ANA CLAUDIA" },
+            { name: "Pedro M. F.", city: "Cabo Verde", value: "R$1.500", vendor: "MAQUININHA POS - LOJA ALTO ASTRAL" },
+            { name: "Paulo E. de A.", city: "Três Corações", value: "R$1.500", vendor: "MAQUININHA POS - EQUIPE DA SORTE - PA" },
+            { name: "Manoel N. F.", city: "Extrema", value: "R$1.500", vendor: "LINK PRI BAIXINHA DA SORTE - TP" },
+            { name: "Josiane das G. B. R.", city: "Lavras", value: "R$1.500", vendor: "PADARIA LAVRAS 2" },
+            { name: "Fabriciano C. E. S.", city: "Jacutinga", value: "R$1.500", vendor: "LINK MARIA JOSE L" },
+            { name: "Luciana de F. P.", city: "Pouso Alegre", value: "R$1.500", vendor: "LINK PRI BAIXINHA DA SORTE - TP" },
+            { name: "Mariely Ap. de F. F.", city: "Boa Esperança", value: "R$1.500", vendor: "VENDAS ONLINE" },
+            { name: "Elysangela S. D.", city: "Paraguaçu", value: "R$2.000", vendor: "MAQUININHA POS - GAROTO DA SORTE MATEUS" },
+            { name: "Tatiana S. R.", city: "Córrego do Bom Jesus", value: "R$2.000", vendor: "MAQUININHA POS - LANCHONETE DONA VANI" },
+            { name: "Luiz G. de O.", city: "Varginha", value: "R$2.000", vendor: "CELEBRIDADES SUPER MINAS - JEFERSON" },
+            { name: "Ionice C. P. T.", city: "Carmo do Rio Claro", value: "R$2.000", vendor: "VENDAS ONLINE" },
+            { name: "Joao C. G.", city: "Lambari", value: "R$2.000", vendor: "TADEU PAPELAO" },
+            { name: "Antonio G. S.", city: "Três Pontas", value: "R$2.000", vendor: "LOJA DA JANE E MARLENE" },
+            { name: "Allyson R. R.", city: "Pouso Alegre", value: "R$2.000", vendor: "MAQUININHA POS - EQUIPE DA SORTE - PA" },
+            { name: "Kennedy B. D. L.", city: "Santa Rita do Sapucaí", value: "R$2.000", vendor: "BIANA ESQUINA DA SORTE" },
+            { name: "Marcilene Ap. T. S.", city: "São Sebastião do Paraíso", value: "R$2.000", vendor: "LINK PRI BAIXINHA DA SORTE - TP" },
+            { name: "Keller M. C. B.", city: "Jacutinga", value: "R$2.000", vendor: "MARIA E FABIO CASAL DA SORTE" },
+            { name: "Enivaldo J. P.", city: "Alfenas", value: "R$2.500", vendor: "VENDAS ONLINE" },
+            { name: "Jose D. de O.", city: "Conceição da Aparecida", value: "R$2.500", vendor: "BAR DO TIAO ROCHA" },
+            { name: "Luciana M. S.", city: "Três Corações", value: "R$2.500", vendor: "VENDAS ONLINE" },
+            { name: "Gilmara G. de O.", city: "Varginha", value: "R$2.500", vendor: "VENDAS ONLINE" },
+            { name: "Maria J. P.", city: "Alfenas", value: "R$2.500", vendor: "VENDAS ONLINE" },
+            { name: "Elza M. B. G.", city: "Pouso Alegre", value: "R$2.500", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Paulo F.", city: "Poços de Caldas", value: "R$2.500", vendor: "BORRACHARIA FRANCO" },
+            { name: "Ricardo F. A.", city: "Passos", value: "R$2.500", vendor: "BANCA DO ROSARIO" },
+            { name: "Nilton F.", city: "Três Corações", value: "R$2.500", vendor: "PET BRASIL" },
+            { name: "Rosangela Ap. V. da S.", city: "Extrema", value: "R$2.500", vendor: "VENDAS ONLINE" }
+          ]
+        },
+        {
+          key: "22-02",
+          label: "22/02",
+          titlePrice: "R$ 10,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 5.000,00 (dividido em 4)", winners: [
+              { name: "Amanda da S. M.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+              { name: "Benedita do C. de O. P.", city: "Poços de Caldas", vendor: "ISA CRED FACIL" },
+              { name: "Ana M. L. N.", city: "Três Pontas", vendor: "LOJA DA JANE E MARLENE" },
+              { name: "Alexsander da S. B. de A.", city: "Poços de Caldas", vendor: "MAQUININHA POS - CAMILA VIEIRA" }
+            ]},
+            { order: "2º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Edivaldo M.", city: "Campo Belo", vendor: "MAQUININHA POS - BARBEARIA DO FABIO" }] },
+            { order: "3º Prêmio", value: "R$ 5.000,00 (dividido)", winners: [
+              { name: "Deusdedete V. de P.", city: "São Gonçalo do Sapucaí", vendor: "ARIADNE" },
+              { name: "Isabel de S. S.", city: "Elói Mendes", vendor: "GERALDO CRUZ" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Silvania R. da S.", city: "Poços de Caldas", vendor: "DAVID BELL LOJA 03" }] },
+            { order: "5º Prêmio", value: "R$ 140.000,00", winners: [{ name: "Rafaella F. V. S.", city: "Varginha", vendor: "VENDAS ONLINE" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Terezinha M. de J.", city: "Cristina", vendor: "TROPICANA MOVEIS E DECORACOES" },
+            { name: "Marcos A. R. L.", city: "Alpinópolis", vendor: "EDUARDO UAI" },
+            { name: "Altair L. da S.", city: "Nova Resende", vendor: "AGROPET" },
+            { name: "Maria H. C. dos S.", city: "Guaxupé", vendor: "VENDAS ONLINE" },
+            { name: "Flavia de C. F. S.", city: "Campestre", vendor: "DROGARIA NOVA VIDA" },
+            { name: "Patrick dos S. C.", city: "Machado", vendor: "ROSELI SERAFINI" },
+            { name: "Jose F. de O.", city: "Pouso Alegre", vendor: "PADARIA STA RITA DE CASSIA" },
+            { name: "Donizete V. M.", city: "São Lourenço", vendor: "MAQUININHA POS - TOBIAS DE ALMEIDA" },
+            { name: "Luciana M.", city: "Campestre", vendor: "EDNA" },
+            { name: "Antonio M. C. da S.", city: "Carmo da Cachoeira", vendor: "ERIVAS CELL" },
+            { name: "Luiz A. R.", city: "Varginha", vendor: "MARGARIDA SILVA" },
+            { name: "Cristina Ap. de S.", city: "Boa Esperança", vendor: "BAR DA AMIZADE" },
+            { name: "Antonio L. da C.", city: "São Sebastião do Paraíso", vendor: "FABIANO" },
+            { name: "Jose A. D.", city: "Cabo Verde", vendor: "MAQUININHA POS - LOJA ALTO ASTRAL" },
+            { name: "Meire Ap. B.", city: "Poços de Caldas", vendor: "PADARIA TRIGO BOM" },
+            { name: "Fabiola Ap. S.", city: "Três Corações", vendor: "GARCIA" },
+            { name: "Wellington C. de S.", city: "Lavras", vendor: "ZE" },
+            { name: "Vanessa C. dos S.", city: "Cambuquira", vendor: "VENDAS ONLINE" },
+            { name: "Eunice S. H. S.", city: "Monte Santo de Minas", vendor: "CENTER TUDO" },
+            { name: "Salim H. N.", city: "Lavras", vendor: "VENDAS ONLINE" }
+          ]
+        }
+      ]
+    },
+    {
+      key: "2026-03",
+      label: "Março",
+      editions: [
+        {
+          key: "01-03",
+          label: "01/03",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Eva L. F.", city: "Campos Gerais", vendor: "CLAUDIA OURO - SANTANA DA VARGEM" }] },
+            { order: "2º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Jose H. M.", city: "Carmo da Cachoeira", vendor: "KOMBINHO HEAVY" }] },
+            { order: "3º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Rogerio L. da S. J.", city: "São Lourenço", vendor: "VENDAS ONLINE" }] },
+            { order: "4º Prêmio", value: "R$ 10.000,00 (dividido)", winners: [
+              { name: "Valdinei X.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+              { name: "Danilo B. C.", city: "Santa Rita do Sapucaí", vendor: "ROBERTO SANTOS" }
+            ]},
+            { order: "5º Prêmio", value: "R$ 250.000,00 (dividido)", winners: [
+              { name: "Edna P. L.", city: "São Sebastião do Paraíso", vendor: "MERCADINHO DO MESSIAS LTDA" },
+              { name: "Amelio F. M.", city: "Guaxupé", vendor: "BAR DO ANISIO" }
+            ]}
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Leandro R.", city: "Campo Belo", vendor: "VENDAS ONLINE" },
+            { name: "Marcio R. F.", city: "Campanha", vendor: "GENESIO SILVA" },
+            { name: "Eugenio M. P. F.", city: "Campos Gerais", vendor: "VENDAS ONLINE" },
+            { name: "Joao V. C. G.", city: "São Gonçalo do Sapucaí", vendor: "AGATHA" },
+            { name: "Maura R. R.", city: "Poços de Caldas", vendor: "PADARIA DA ANDREIA" },
+            { name: "Francisca A. dos S.", city: "Campestre", vendor: "EDNA" },
+            { name: "Teresa de F. O. M.", city: "Varginha", vendor: "SEBASTIAO - DAMASCO" },
+            { name: "Daniel M. de S.", city: "Pouso Alegre", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Alisson A. V.", city: "Nepomuceno", vendor: "VENDAS ONLINE" },
+            { name: "Iolanda G. M. M. S.", city: "Machado", vendor: "MAQUININHA POS - ROSANA SORRISO" },
+            { name: "Lourdes G. de C.", city: "Conceição dos Ouros", vendor: "APARECIDO - PARAISOPOLIS" },
+            { name: "Floriza dos S. S.", city: "Monte Sião", vendor: "THIAGAO DA SORTE" },
+            { name: "Landim D. P.", city: "Passos", vendor: "BANCA DO ROSARIO" },
+            { name: "Ana P. L.", city: "Poços de Caldas", vendor: "MAQUININHA POS - RAFAEL AP. DE SOUZA" },
+            { name: "Maria A. da S.", city: "Poços de Caldas", vendor: "LUCIANE LUTTI" },
+            { name: "Leonardo D. P.", city: "Pouso Alegre", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Arisnaldo Dimas Rosa", city: "Dom Viçoso", vendor: "ABELARDO" },
+            { name: "Valdirene M. de A. F.", city: "Estiva", vendor: "JAQUE CHAMA DA SORTE - VARGINHA" },
+            { name: "Luiz G. R. da S.", city: "Cristina", vendor: "VENDAS ONLINE" },
+            { name: "Sonia M. D. S.", city: "São Sebastião do Paraíso", vendor: "JUSMARA BANCO ITAU" }
+          ]
+        },
+        {
+          key: "08-03",
+          label: "08/03",
+          titlePrice: "R$ 20,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 1.500,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Ana J. M. L.", city: "Santa Rita do Sapucaí", vendor: "ACOUGUE MCM|SAO JOSE DO ALEGRE" }] },
+            { order: "2º Prêmio", value: "R$ 10.000,00 (dividido)", winners: [
+              { name: "Luzia P. F.", city: "São Sebastião do Paraíso", vendor: "VENDAS ONLINE" },
+              { name: "Eder R. G.", city: "Alfenas", vendor: "VENDAS ONLINE" }
+            ]},
+            { order: "3º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Lindsey Y. S. N.", city: "Pouso Alegre", vendor: "PRI BAIXINHA DA SORTE - TP" }] },
+            { order: "4º Prêmio", value: "R$ 10.000,00 (dividido)", winners: [
+              { name: "Messias B.", city: "Nepomuceno", vendor: "SKINA DA SORTE - JOSE VALTER JANAINA E ALEXANDRE" },
+              { name: "Thiago F. do N.", city: "Monte Sião", vendor: "THIAGAO DA SORTE - ORIGINAL" }
+            ]},
+            { order: "5º Prêmio", value: "R$ 400.000,00", winners: [{ name: "Ana P. S.", city: "Itajubá", vendor: "JOSE REIS DELFINO" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Joao Paulo Souza Lino", city: "Pouso Alegre", vendor: "LUIZ GONZAGA JR" },
+            { name: "Carlos A. de S. M.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Deocrecio C.", city: "São Gonçalo do Sapucaí", vendor: "VENDAS ONLINE" },
+            { name: "Tiago B. da S.", city: "Pouso Alegre", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Edson M.", city: "Monte Sião", vendor: "THIAGAO DA SORTE - ORIGINAL" },
+            { name: "Benedito G. da S.", city: "Conceição dos Ouros", vendor: "LUIZ GONZAGA JR - POUSO ALEGRE" },
+            { name: "Rogério R. da S.", city: "Ipuiúna", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Fabio P. R.", city: "Santa Rita do Sapucaí", vendor: "HART" },
+            { name: "Adilson S. de S.", city: "Perdões", vendor: "MERCEARIA DA EUVIRA" },
+            { name: "Daiane de F. R. A.", city: "Poços de Caldas", vendor: "MAQUININHA POS - JACQUELINE AUXILIADORA" },
+            { name: "Eder de C. P.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Antonio A. da S.", city: "São Sebastião do Paraíso", vendor: "IRMAS DA SORTE - ROSANA E MARILDA" },
+            { name: "Renata C. L.", city: "Pouso Alegre", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Hellen C. S. T.", city: "Guaxupé", vendor: "ESCRITORIO TOP BRASIL" },
+            { name: "Fernanda A. da S.", city: "Andradas", vendor: "VENDAS ONLINE" },
+            { name: "Maria L. de A.", city: "Poços de Caldas", vendor: "LOJA DA JANE E MARLENE - TRES PONTAS" },
+            { name: "Cleudia M. F.", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "Silvania A. A.", city: "Campo Belo", vendor: "WILSON" },
+            { name: "Alex S. L. da S.", city: "Santa Rita do Sapucaí", vendor: "BIANA ESQUINA DA SORTE" },
+            { name: "Joao A. de P.", city: "Poço Fundo", vendor: "CID MOREIRA - MACHADO" }
+          ]
+        },
+        {
+          key: "15-03",
+          label: "15/03",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 2.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00 (dividido em 4)", winners: [
+              { name: "Celio O. da S.", city: "Cambuquira", vendor: "MERCEARIA BOM PRECO - CAMBUQUIRA" },
+              { name: "Nayara da S.", city: "Carmo do Rio Claro", vendor: "VENDAS ONLINE" },
+              { name: "Ivani M. V. A.", city: "Alfenas", vendor: "SM PINHEIROS ANTONIO SANTOS" },
+              { name: "Alaor J. P.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" }
+            ]},
+            { order: "2º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Carlos R. P.", city: "Jacutinga", vendor: "MARIA E FABIO CASAL DA SORTE" }] },
+            { order: "3º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Tais F. de S. R.", city: "Itajubá", vendor: "LINK EQUIPE DA SORTE - PA" }] },
+            { order: "4º Prêmio", value: "R$ 10.000,00 (dividido)", winners: [
+              { name: "Ideleuza S. de S.", city: "Três Corações", vendor: "FA CONVENIENCIA" },
+              { name: "Allyson Roberto Romao", city: "Pouso Alegre", vendor: "MAQUININHA POS - EQUIPE DA SORTE PA" }
+            ]},
+            { order: "5º Prêmio", value: "R$ 200.000,00 (dividido em 5)", winners: [
+              { name: "Itamar B. da S. V.", city: "Passa Quatro", vendor: "VENDAS ONLINE" },
+              { name: "Robert J. F. C.", city: "Campo Belo", vendor: "VENDAS ONLINE" },
+              { name: "Valquiria P. P.", city: "Perdões", vendor: "MERCEARIA DA ELAINE" },
+              { name: "Anderson G. da S.", city: "Botelhos", vendor: "MAQUININHA POS - MAGALI APARECIDA" },
+              { name: "Marcus D. de S. R.", city: "Lavras", vendor: "MAURICIO FERNET" }
+            ]}
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Deydson C.", city: "Varginha", vendor: "SUELY SERAFIM" },
+            { name: "Ailton L. de O.", city: "Passos", vendor: "KANTINHO GOIAS" },
+            { name: "Mateus H. P.", city: "Paraguaçu", vendor: "GAROTO DA SORTE MATEUS" },
+            { name: "Antonio dos S. B.", city: "São Sebastião do Paraíso", vendor: "IRMAS DA SORTE - ROSANA E MARILDA" },
+            { name: "Paulo C. G.", city: "Três Pontas", vendor: "MAQUININHA POS - LOJA DA JANE E MARLENE" },
+            { name: "Felipe B. dos R.", city: "Varginha", vendor: "O SAPATEIRO" },
+            { name: "Robson T. C.", city: "Varginha", vendor: "ANDREIA AP" },
+            { name: "Roberto C.", city: "Varginha", vendor: "MAQUININHA POS - EUGENIO CAETANO" },
+            { name: "Joao B. A.", city: "Varginha", vendor: "FATIMA" },
+            { name: "Maria das G. C.", city: "Lavras", vendor: "VENDAS ONLINE" },
+            { name: "Joao L. da S.", city: "São Sebastião do Paraíso", vendor: "DORA AVENTUREIRA BOI BRANCO" },
+            { name: "Willian P. de O.", city: "Varginha", vendor: "PEDRO MESSIAS" },
+            { name: "Milton D. C.", city: "Carvalhópolis", vendor: "BAR DO CIDAO" },
+            { name: "Rosaria de L. A.", city: "Campo Belo", vendor: "LOIRA DA SORTE" },
+            { name: "Rauli R. dos R.", city: "Lavras", vendor: "VENDAS ONLINE" },
+            { name: "Andison G. da S.", city: "Extrema", vendor: "BORRACHARIA SANTA RITA" },
+            { name: "Solange D. F.", city: "Pouso Alegre", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Misael R. C.", city: "Nepomuceno", vendor: "PENHA" },
+            { name: "Jose V. M.", city: "Heliodora", vendor: "ANDRE MATHEUS" },
+            { name: "Graziela da S.", city: "Poços de Caldas", vendor: "BAR DO DAVID" },
+            { name: "Joice M. de S.", city: "São Sebastião do Paraíso", vendor: "VENDAS ONLINE" },
+            { name: "Benedito dos S. S.", city: "Extrema", vendor: "EXTREMA WORD" },
+            { name: "Pedro da M. R.", city: "Alfenas", vendor: "JOSE REIS DA SILVA" },
+            { name: "Jose A. C. M.", city: "Guaxupé", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Douglas R. dos R.", city: "Três Corações", vendor: "JOSE ANTONIO MENINO DA SORTE" },
+            { name: "Rafael B. de O.", city: "Itaú de Minas", vendor: "BAR DO RAFAEL" },
+            { name: "Aline B. H. R.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Ronaldo O. de M.", city: "Itajubá", vendor: "JOSE REIS DELFINO DO PRADO" },
+            { name: "Sandro M. C.", city: "Três Corações", vendor: "MERCEARIA BOM PRECO - CAMBUQUIRA" },
+            { name: "Gladys V. R.", city: "Três Corações", vendor: "MICHEL CORREIA" }
+          ]
+        },
+        {
+          key: "22-03",
+          label: "22/03",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 5.000,00 (dividido)", winners: [
+              { name: "Sueli Ap. do S.", city: "Varginha", vendor: "MIMIL" },
+              { name: "Nicoli B. C.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" }
+            ]},
+            { order: "2º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Luci R. de S.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" }] },
+            { order: "3º Prêmio", value: "R$ 15.000,00 (dividido)", winners: [
+              { name: "Fernanda P. V.", city: "Muzambinho", vendor: "LAERCIO SANTINI" },
+              { name: "Amanda T. da S.", city: "Poços de Caldas", vendor: "HORTENCIA SUPERMERCADO" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 50.000,00 (dividido em 3)", winners: [
+              { name: "Franklin N. J.", city: "Poços de Caldas", vendor: "LINK FABIANO M." },
+              { name: "Rosely M. de A.", city: "Monte Sião", vendor: "THIAGAO DA SORTE - MONTE SIAO" },
+              { name: "Jorge F. D.", city: "Três Corações", vendor: "SANDRA" }
+            ]},
+            { order: "5º Prêmio", value: "R$ 200.000,00", winners: [{ name: "Bento P.", city: "Pouso Alegre", vendor: "BAZAR DO XUXU" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Luiz R. B.", city: "Poços de Caldas", vendor: "DRACULA" },
+            { name: "Agnaldo R. M.", city: "Campos Gerais", vendor: "SKINA DA SORTE JOSE VALTER JANAINA E ALEXANDRE - NEPOMUCENO" },
+            { name: "Gislene A. de M.", city: "Congonhal", vendor: "LUIZ GONZAGA JR - POUSO ALEGRE" },
+            { name: "Ana L. L.", city: "Santa Rita do Sapucaí", vendor: "VENDAS ONLINE" },
+            { name: "Rodrigo F. B.", city: "Monte Sião", vendor: "THIAGAO DA SORTE - ORIGINAL" },
+            { name: "Waldeci R.", city: "Varginha", vendor: "TIBICA" },
+            { name: "Claudia L. de O.", city: "Varginha", vendor: "GUIDAO - SUP MAIOLINI RJ" },
+            { name: "Joana D. de O.", city: "Varginha", vendor: "FERNANDA" },
+            { name: "Paulo D. M.", city: "Poços de Caldas", vendor: "JACQUELINE ECONOMART" },
+            { name: "Maria J. P.", city: "Lavras", vendor: "MAQUININHA POS - EDSON PE QUENTE" },
+            { name: "Pedro P. M.", city: "Alpinópolis", vendor: "MAQUININHA POS - ALAOR JOSE" },
+            { name: "Natalia C. G.", city: "Poços de Caldas", vendor: "EDAS SUPERMERCADO" },
+            { name: "Helio U. D.", city: "Poços de Caldas", vendor: "MAQUININHA POS - JACQUELINE AUXILIADORA VI" },
+            { name: "Lucia I. R. de P.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" },
+            { name: "Terezinha da P. C. S.", city: "Cachoeira de Minas", vendor: "PADARIA ARMAZEM DO TRIGO" },
+            { name: "Jose G. M. N.", city: "Nepomuceno", vendor: "MAQUININHA POS - LOJA DA JANE E MARLENE" },
+            { name: "Sebastiao B.", city: "Três Pontas", vendor: "VITORIA ESTACIONAMENTO" },
+            { name: "Fernanda A. D. M.", city: "Santa Rita do Sapucaí", vendor: "BIANA ESQUINA DA SORTE" },
+            { name: "Antonio C. da S.", city: "Três Pontas", vendor: "LOJA DA JANE E MARLENE" },
+            { name: "Paulo S. C.", city: "Pouso Alegre", vendor: "PADARIA DA CIDA" }
+          ]
+        },
+        {
+          key: "29-03",
+          label: "29/03",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 15.000,00", winners: [{ name: "Joaquim C. T.", city: "São Sebastião do Paraíso", vendor: "DORA AVENTUREIRA - BOI BRANCO" }] },
+            { order: "2º Prêmio", value: "R$ 15.000,00", winners: [{ name: "Benedito A. de S.", city: "Itajubá", vendor: "BANCA PRACA DO SOLDADO - ADEMIR" }] },
+            { order: "3º Prêmio", value: "R$ 15.000,00 (dividido)", winners: [
+              { name: "Luciano R. de S.", city: "Monte Sião", vendor: "THIAGAO DA SORTE ORIGINAL - INCONFIDENTES" },
+              { name: "Eliane V. A.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 15.000,00 (dividido)", winners: [
+              { name: "Eraldo E. da S.", city: "Cristina", vendor: "MUZAMBA" },
+              { name: "Matheus Henrique Resende Miranda", city: "Campo Belo", vendor: "VENDAS ONLINE" }
+            ]},
+            { order: "5º Prêmio", value: "R$ 220.000,00", winners: [{ name: "Jose R. de P.", city: "Cambuquira", vendor: "HENRIQUE" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Maria da P. R. da C.", city: "Areado", vendor: "PADARIA QUITANDA" },
+            { name: "Marisa R. A.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Marcia E. P. de S.", city: "Três Pontas", vendor: "KATIA FREITAS" },
+            { name: "Jose M. de B.", city: "Campos Gerais", vendor: "CLEONICE CAMPOS" },
+            { name: "Luciene C. B.", city: "Pouso Alegre", vendor: "MAQUININHA POS - ZE DO CAVALO" },
+            { name: "Wagner A. M.", city: "Conceição da Aparecida", vendor: "CRISTINA E FABIO CIGANO" },
+            { name: "Leandro J. B.", city: "Campanha", vendor: "ALESSA JHULIA - SAO GONCALO DO SAPUCAI" },
+            { name: "Athalyene G. de O.", city: "Cabo Verde", vendor: "MAQUININHA POS - RODRIMAQ" },
+            { name: "Fernando S. dos S.", city: "Não identificada", vendor: "MAQUININHA POS - TABACARIA ROYAL" },
+            { name: "Nilza O.", city: "Varginha", vendor: "FERNANDA" },
+            { name: "Elaine C. A.", city: "Itajubá", vendor: "VENDAS ONLINE" },
+            { name: "Ovidia de J. O.", city: "Paraguaçu", vendor: "GAROTO DA SORTE MATEUS" },
+            { name: "Dalis D. A. L. G.", city: "Cássia", vendor: "ELI PE QUENTE" },
+            { name: "Jorge R. de S.", city: "Pouso Alegre", vendor: "ANGELA DO PASTEL" },
+            { name: "Nathalia de Lima Freire", city: "Monte Sião", vendor: "THIAGAO DA SORTE ORIGINAL" },
+            { name: "Andreia Ap. C.", city: "Itajubá", vendor: "VENDAS ONLINE" },
+            { name: "Edina Ap. A. F.", city: "Campo Belo", vendor: "WILSON" },
+            { name: "Clovis I.", city: "Três Pontas", vendor: "VITORIA ESTACIONAMENTO" },
+            { name: "Jose E. M.", city: "Pouso Alegre", vendor: "ROBINHO DO AEROPORTO" },
+            { name: "Elaine C. C.", city: "Nepomuceno", vendor: "VENDAS ONLINE" }
+          ]
+        }
+      ]
+    },
+    {
+      key: "2026-04",
+      label: "Abril",
+      editions: [
+        {
+          key: "12-04",
+          label: "12/04",
+          titlePrice: "R$ 20,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 2.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Joao T. D.", city: "Guaxupé", vendor: "TOCA DO LOBINHO" }] },
+            { order: "2º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Maria O. dos R. T.", city: "Pouso Alegre", vendor: "ANGELA DO PASTEL - EDILAINE" }] },
+            { order: "3º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Silvana R. B.", city: "Pouso Alegre", vendor: "PAULINHO VILA NOVA" }] },
+            { order: "4º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Edilson R. R.", city: "Pouso Alegre", vendor: "LINK EQUIPE DA SORTE - PA" }] },
+            { order: "5º Prêmio", value: "R$ 420.000,00", winners: [{ name: "Sebastiana de J. F. J.", city: "Nepomuceno", vendor: "MERCEARIA DOS COQUEIROS" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Orlando F. da S.", city: "Nova Resende", vendor: "BAR DO ELIAS" },
+            { name: "Julio C. G.", city: "Monte Sião", vendor: "THIAGAO DA SORTE ORIGINAL" },
+            { name: "Mario da S. M.", city: "Elói Mendes", vendor: "PADARIA ALGO MAIS" },
+            { name: "Thais P. de O.", city: "Machado", vendor: "VENDAS ONLINE" },
+            { name: "Paulo H. M.", city: "Varginha", vendor: "CERVEJARIA CARVALHOS" },
+            { name: "Helder V. T.", city: "Três Pontas", vendor: "BENITES ALEX" },
+            { name: "Neuza de C. F.", city: "Monte Sião", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Lisete M. J. D.", city: "Pouso Alegre", vendor: "1001 UTILIDADES JORGE" },
+            { name: "Francisca N. de A.", city: "Campos Gerais", vendor: "MERCADO JB ARAUJO" },
+            { name: "Jessica Ap. dos R.", city: "Campestre", vendor: "VENDAS ONLINE" },
+            { name: "Ivone de M.", city: "Campo Belo", vendor: "MARIA" },
+            { name: "Claudia R. D.", city: "Três Pontas", vendor: "LOJA DA JANE E MARLENE" },
+            { name: "Joao P. M.", city: "Campo do Meio", vendor: "VENDAS ONLINE" },
+            { name: "Caique A. L.", city: "Varginha", vendor: "ANDREIA APARECIDA" },
+            { name: "Francisco de A. M.", city: "Silvianópolis", vendor: "LOJA DA WALDENE" },
+            { name: "Ariadne T. G. da S.", city: "Três Corações", vendor: "TADEU PAPELAO - LAMBARI" },
+            { name: "Cicero C. da S.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Daiane A. S. S.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Carlos S. P.", city: "Alfenas", vendor: "VERA LUCIA" },
+            { name: "Jane S. B.", city: "Guaxupé", vendor: "PAMONHARIA BOM DEMAIS - NOVA RESENDE" }
+          ]
+        },
+        {
+          key: "19-04",
+          label: "19/04",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 2.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Gildesio de A. G.", city: "Itajubá", vendor: "LINK PRI BAIXINHA DA SORTE - TP" }] },
+            { order: "2º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Jose B. C. X.", city: "Elói Mendes", vendor: "VENDAS ONLINE" }] },
+            { order: "3º Prêmio", value: "R$ 10.000,00 (dividido em 4)", winners: [
+              { name: "Lucas E. da S.", city: "Varginha", vendor: "ROBERTINHO DA SORTE - POSTO REAL" },
+              { name: "Vitor R. M.", city: "Nepomuceno", vendor: "SKINA DA SORTE JOSE VALTER JANAINA E ALEXANDRE" },
+              { name: "Jose E. N.", city: "Pouso Alegre", vendor: "BAR DO TEIXEIRA" },
+              { name: "Maria Ap. L. de O.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 10.000,00 (dividido)", winners: [
+              { name: "Raimundo do V. B.", city: "Guaranésia", vendor: "VENDAS ONLINE" },
+              { name: "Julio C. F.", city: "Poços de Caldas", vendor: "RODRIGO NAVARRO" }
+            ]},
+            { order: "5º Prêmio", value: "R$ 220.000,00", winners: [{ name: "Anderson J. B.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Almir L. de F.", city: "Heliodora", vendor: "VENDAS ONLINE" },
+            { name: "Vicente A. F.", city: "Elói Mendes", vendor: "PADARIA ALGO MAIS" },
+            { name: "Joaquim M. de O.", city: "Três Pontas", vendor: "VITORIA ESTACIONAMENTO" },
+            { name: "Edson W. de P.", city: "Congonhal", vendor: "DOUGLAS LOCUTOR - PA" },
+            { name: "Jair de S. M.", city: "São Sebastião do Paraíso", vendor: "MEU CANTINHO - CASSIA" },
+            { name: "Michel U. F. T.", city: "Campanha", vendor: "VENDAS ONLINE" },
+            { name: "Mario E. S.", city: "Juruaia", vendor: "VENDAS ONLINE" },
+            { name: "William R. C. de O.", city: "Alfenas", vendor: "VENDAS ONLINE" },
+            { name: "Regiane F.", city: "Três Pontas", vendor: "VENDAS ONLINE" },
+            { name: "Luzia de F. B. R.", city: "São Sebastião do Paraíso", vendor: "DORA AVENTUREIRA - ITAMOGI" },
+            { name: "Marcia A. R. P.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Luiz Expedito de Faria Costa", city: "Cachoeira de Minas", vendor: "HORTFRUT CACHOEIRA" },
+            { name: "Jurandir D. A.", city: "Campestre", vendor: "TODA LINDA CALCADOS" },
+            { name: "Rodrigo F.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Juliana A. A. B.", city: "Monte Sião", vendor: "THIAGAO DA SORTE ORIGINAL" },
+            { name: "Alexandre J. dos S.", city: "Conceição dos Ouros", vendor: "BAR DO NEGUINHO" },
+            { name: "Carlos R. do N.", city: "Juruaia", vendor: "BAR DO CARLOS" },
+            { name: "Rodrigo A. de C.", city: "Jacutinga", vendor: "VENDAS ONLINE" },
+            { name: "Joao Paulo S. de S.", city: "Alfenas", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Fernando A. de S.", city: "Poços de Caldas", vendor: "BAR DO RONILSON FEIJAO" }
+          ]
+        },
+        {
+          key: "26-04",
+          label: "26/04",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 1.500,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00 (dividido)", winners: [
+              { name: "Helio L. de S.", city: "Santa Rita do Sapucaí", vendor: "JOSE LEITE" },
+              { name: "Luis A. de S.", city: "Poços de Caldas", vendor: "MAGALI - BOTELHOS" }
+            ]},
+            { order: "2º Prêmio", value: "R$ 15.000,00", winners: [{ name: "Ruy R. F.", city: "Machado", vendor: "ROSELI SERAFINI" }] },
+            { order: "3º Prêmio", value: "R$ 20.000,00 (dividido em 3)", winners: [
+              { name: "Luiz V. da S.", city: "Estiva", vendor: "BENEDITO" },
+              { name: "Angela M. da S.", city: "Três Corações", vendor: "HORTIFRUTI MOREIRA" },
+              { name: "Sandra M. D. J.", city: "Andradas", vendor: "BAR DA SANDRA" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 25.000,00 (dividido)", winners: [
+              { name: "Marcia H. de C.", city: "Poço Fundo", vendor: "CID MOREIRA - MACHADO" },
+              { name: "Robson P. P.", city: "Três Pontas", vendor: "TIAGO" }
+            ]},
+            { order: "5º Prêmio", value: "R$ 200.000,00", winners: [{ name: "Carlos R. S.", city: "Estiva", vendor: "BENEDITO" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Maria N. M. S.", city: "Três Corações", vendor: "LILIA NOEL" },
+            { name: "Marcos A. de O.", city: "Poços de Caldas", vendor: "MASTER SORTE" },
+            { name: "Alessandro dos S. M.", city: "Conceição dos Ouros", vendor: "MAQUININHA POS - MARIA JOSE" },
+            { name: "Marcelo T. F.", city: "Monte Sião", vendor: "THIAGAO DA SORTE - ORIGINAL" },
+            { name: "Maria O. da S.", city: "Campanha", vendor: "GENESIO SILVA" },
+            { name: "Tereza C. de S.", city: "Alfenas", vendor: "JOSE REIS DA SILVA" },
+            { name: "Everaldo C. da S.", city: "Cássia", vendor: "PRI BAIXINHA DA SORTE - TP" },
+            { name: "Maria E. de O.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Emerson T. R.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Natalia de F. R.", city: "Pouso Alegre", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Valdirene M. de A. F.", city: "Estiva", vendor: "MAQUININHA POS - MARIA JOSE" },
+            { name: "Anete M. das D. de S.", city: "Cambuquira", vendor: "HENRIQUE" },
+            { name: "Jeferson F. R.", city: "Lavras", vendor: "MAURICIO FERNET" },
+            { name: "Lucas E. O.", city: "Três Pontas", vendor: "LOJA DA JANE E MARLENE" },
+            { name: "Jose E. A.", city: "São Lourenço", vendor: "ROYAL TABACARIA 2" },
+            { name: "Silvano de O.", city: "Varginha", vendor: "VIVIANE RAPUNZEL" },
+            { name: "Marcio dos S.", city: "Três Corações", vendor: "BAR DO TIO MARCIO" },
+            { name: "Silvano Ap. do N.", city: "Pouso Alegre", vendor: "VAREJAO DAS FRUTAS" },
+            { name: "Elker O. de S.", city: "Machado", vendor: "MAQUININHA POS - ROSANA SORRISO DA SORTE" },
+            { name: "Luiz C. M.", city: "Poços de Caldas", vendor: "PAPELARIA F SILVA - PA" }
+          ]
+        }
+      ]
+    },
+    {
+      key: "2026-05",
+      label: "Maio",
+      editions: [
+        {
+          key: "03-05",
+          label: "03/05",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Maria N. P. A.", city: "Varginha", vendor: "PASTELARIA 3 IRMAOS - ELOI MENDES" }] },
+            { order: "2º Prêmio", value: "R$ 5.000,00 (dividido)", winners: [
+              { name: "Nilsa B. R. P.", city: "São Pedro da União", vendor: "COMERCIAL VITORIA" },
+              { name: "Adilio V. de L.", city: "Varginha", vendor: "PASTELARIA TROLEZI" }
+            ]},
+            { order: "3º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Renata R. B.", city: "Pouso Alegre", vendor: "SUELLEN E DANI" }] },
+            { order: "4º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Aluisio P. da S.", city: "Elói Mendes", vendor: "FAE DO BAR" }] },
+            { order: "5º Prêmio", value: "R$ 180.000,00 (dividido em 4)", winners: [
+              { name: "Diolina M. D.", city: "Campo Belo", vendor: "VENDAS ONLINE" },
+              { name: "Miguel F. S.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+              { name: "Jean C. L.", city: "Pouso Alegre", vendor: "1001 UTILIDADES JORGE" },
+              { name: "Antonio C. T.", city: "Guaranésia", vendor: "SUPERMERCADO NAVARRO LTDA" }
+            ]}
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Regina N. F.", city: "Santa Rita do Sapucaí", vendor: "VENDAS ONLINE" },
+            { name: "Juscelino A. M.", city: "Monte Belo", vendor: "JEAN CARLOS" },
+            { name: "Renata T.", city: "Jacutinga", vendor: "VENDAS ONLINE" },
+            { name: "Maria T. F.", city: "Varginha", vendor: "PADARIA ELDORADO" },
+            { name: "Janaina dos S. F.", city: "Itamogi", vendor: "LINK EQ DA SORTE - PA" },
+            { name: "Carlos A. P.", city: "Elói Mendes", vendor: "PADARIA AVENIDA" },
+            { name: "Guilherme P. O.", city: "Pouso Alegre", vendor: "LINK PRI BAIXINHA DA SORTE - TP" },
+            { name: "Sueli de F. da S.", city: "Guaxupé", vendor: "ELAINE" },
+            { name: "Aguinaldo D. da S.", city: "Muzambinho", vendor: "MINI MERCADO SILVA" },
+            { name: "Maria L. R.", city: "Varginha", vendor: "JAQUE CHAMA DA SORTE" },
+            { name: "Leonan J. C.", city: "Campo Belo", vendor: "VENDAS ONLINE" },
+            { name: "Rodrigo Ap. dos S.", city: "Alfenas", vendor: "VERA LUCIA" },
+            { name: "Christian G. B.", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "Jose P. R.", city: "Nepomuceno", vendor: "PENHA DA SORTE" },
+            { name: "Emerson J. da S.", city: "Conceição da Aparecida", vendor: "MAQUININHA POS - NATANAEL ELIAS" },
+            { name: "Marcos A. M.", city: "Nepomuceno", vendor: "LINK PRI BAIXINHA DA SORTE - TP" },
+            { name: "Evaldo C. B.", city: "Alpinópolis", vendor: "ALAOR" },
+            { name: "Filipe D. P. L.", city: "Lambari", vendor: "MAQUININHA POS - TADEU DO PAPELAO" },
+            { name: "Fausto de P. R.", city: "Alfenas", vendor: "CLAUDINEI PROF DA SORTE" },
+            { name: "Jose R. de O.", city: "Paraguaçu", vendor: "GAROTO DA SORTE - MATEUS" },
+            { name: "Edgar F. de S.", city: "Cambuquira", vendor: "EMPORIO DA ESTACAO" },
+            { name: "Estephanie A. N.", city: "Varginha", vendor: "VIVIANE RAPUNZEL" },
+            { name: "Neide B. dos S.", city: "Campos Gerais", vendor: "CLEONICE CAMPOS" },
+            { name: "Sislei M. de S. S.", city: "Passos", vendor: "VENDAS ONLINE" },
+            { name: "Marcelo G.", city: "Paraguaçu", vendor: "GAROTO DA SORTE - MATEUS" },
+            { name: "Cesar R. R.", city: "Poços de Caldas", vendor: "LINK PRI BAIXINHA DA SORTE - TP" },
+            { name: "Ari de S. dos S.", city: "Pouso Alegre", vendor: "EQ DA SORTE - DOM PASTEL - PA" },
+            { name: "Jair S. da S.", city: "Machado", vendor: "ROSANA SORRISO - CIDA" },
+            { name: "Lincoln M. M. de S.", city: "Elói Mendes", vendor: "VENDAS ONLINE" },
+            { name: "Paulino G.", city: "Lavras", vendor: "BANCA DO SOL" },
+            { name: "Alexon T. G.", city: "Três Corações", vendor: "BAR SANTO GOLE" },
+            { name: "Wellington G. A.", city: "Guaxupé", vendor: "WELLINGTON GORDINHO DA SORTE" },
+            { name: "Ana P. B.", city: "Varginha", vendor: "VITA CELL" },
+            { name: "Davi G. E. S.", city: "Cruzília", vendor: "VENDAS ONLINE" },
+            { name: "Marcelo D. de O.", city: "Três Pontas", vendor: "MERCEARIA DO MAURY" },
+            { name: "Gilberto de J. M.", city: "Varginha", vendor: "BRECHO E ARTESANATO DA MARIA" },
+            { name: "Aline M. de A. S.", city: "Três Corações", vendor: "LINK PRI BAIXINHA DA SORTE - TP" },
+            { name: "Silvio M.", city: "Guaxupé", vendor: "ANA LUCIA" },
+            { name: "Paulo H. de O.", city: "Extrema", vendor: "LINK BOMBONIERE P" },
+            { name: "Sueli Ap. S.", city: "Poços de Caldas", vendor: "PONTO DA MODA" },
+            { name: "Jose D. dos S.", city: "Dom Viçoso", vendor: "ABELARDO" },
+            { name: "Valdeir G. P.", city: "Monte Sião", vendor: "THIAGAO DA SORTE ORIGINAL" },
+            { name: "Carlos A.", city: "Pouso Alegre", vendor: "MAQUININHA POS - DARLENE ALVES DA MOTTA" },
+            { name: "Genesio A. F.", city: "Alfenas", vendor: "PAPELARIA ALFA" },
+            { name: "Sueli A. M. C.", city: "Poços de Caldas", vendor: "MAQUININHA POS - JOAO CARDOSO FILHO" },
+            { name: "Roberto C. P.", city: "Campestre", vendor: "BAR DA KALINE" },
+            { name: "Antonia J. V.", city: "São Sebastião do Paraíso", vendor: "JUSMARA BANCO ITAU" },
+            { name: "Alysson da S. A.", city: "Machado", vendor: "MAQUININHA POS - ROSANA SORRISO DA SORTE" },
+            { name: "Paulo M.", city: "Pouso Alegre", vendor: "ANGELA DO PASTEL - SANDRA" },
+            { name: "Luiz A. de P.", city: "Três Pontas", vendor: "LOJA DA JANE E MARLENE" },
+            { name: "Jair F. da S.", city: "Boa Esperança", vendor: "BAR DOS ARTISTAS" },
+            { name: "Alex V. R. de C.", city: "Santa Rita do Sapucaí", vendor: "PADARIA SANTA CLARA" },
+            { name: "Celio D. dos S.", city: "Lambari", vendor: "MERCEARIA JOSE E MARIA" },
+            { name: "Silvania M. da S. M.", city: "Santana da Vargem", vendor: "MERCEARIA PAIS E FILHOS" },
+            { name: "Marcio P. da S.", city: "Alpinópolis", vendor: "EDUARDO UAI" },
+            { name: "Matheus D. D.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" },
+            { name: "Ana Carolina de C. A.", city: "Pouso Alegre", vendor: "SKINA DA SORTE - JOSE VALTER JANAINA E ALEXANDRE" },
+            { name: "Joao B. dos S.", city: "São Sebastião do Paraíso", vendor: "VENDAS ONLINE" },
+            { name: "Guido J. do N.", city: "Candeias", vendor: "DOUGLAS ASSISTENCIA" },
+            { name: "Claudilaine C. da S.", city: "São Sebastião do Paraíso", vendor: "VENDAS ONLINE" },
+            { name: "Gabrielle A. da S.", city: "Passa Quatro", vendor: "VENDAS ONLINE" },
+            { name: "Lucileia M. da S.", city: "Machado", vendor: "VENDAS ONLINE" },
+            { name: "Kedinei L. do N. L.", city: "Três Corações", vendor: "VENDAS ONLINE" },
+            { name: "Luiz A. do C.", city: "Três Pontas", vendor: "GAROTO DA SORTE TIAGO" },
+            { name: "Edilson J. M.", city: "Poços de Caldas", vendor: "VO - SUPERMERCADOS BH" },
+            { name: "Valdir L.", city: "Ouro Fino", vendor: "MARIA E DABIO - CASAL DA SORTE" },
+            { name: "Maria de J. B. V.", city: "Varginha", vendor: "PONTO DA EMPADA" },
+            { name: "Alex M. dos S.", city: "Guaranésia", vendor: "BENEDITA PE QUENTE" },
+            { name: "Juliana M. P. dos S.", city: "Pouso Alegre", vendor: "MAQUININHA POS - EQUIPE DA SORTE - PA" },
+            { name: "Elidiane A. da S.", city: "Paraguaçu", vendor: "GAROTO DA SORTE MATEUS" },
+            { name: "Walace V. C. da S.", city: "Três Pontas", vendor: "VENDAS ONLINE" },
+            { name: "Lucio M. de J.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Anderson A. R. O. e S.", city: "Poços de Caldas", vendor: "SOM MAGA PROPAGANDAS" },
+            { name: "Juliana P. D.", city: "Guaxupé", vendor: "VENDAS ONLINE" },
+            { name: "Joana do S. A.", city: "São Sebastião do Paraíso", vendor: "MERCADO SAO JUDAS" },
+            { name: "Junio C.", city: "Campo Belo", vendor: "ALESSANDRO ANASTACIO VENDEDOR" },
+            { name: "Jose V. R.", city: "Três Pontas", vendor: "VENDAS ONLINE" },
+            { name: "Paulo S. M.", city: "Andradas", vendor: "GRUPO KLEBER TABACARIA DON TABACO" },
+            { name: "Deybiane G. F.", city: "São João Batista do Glória", vendor: "VENDAS ONLINE" },
+            { name: "Denise A. F. S.", city: "Campo Belo", vendor: "LOIRA DA SORTE" },
+            { name: "Sidnea C. S. B.", city: "Varginha", vendor: "FERNANDA PARAVISO" },
+            { name: "Djalma L. A. R.", city: "Pouso Alegre", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "João B. F.", city: "Alfenas", vendor: "MARIA REGINA DE CARVALHO" },
+            { name: "Felipe L. T.", city: "Guapé", vendor: "MAQUININHA POS - JAIR GOMES ALVES" },
+            { name: "Carlos A. F. M.", city: "Cabo Verde", vendor: "AQUARELA LOJA" },
+            { name: "Carlos J. da S.", city: "Camanducaia", vendor: "VENDAS ONLINE" },
+            { name: "Antonio M. M.", city: "Poços de Caldas", vendor: "BARAO CONVENIENCIA" },
+            { name: "Anderson F. B. G.", city: "Paraguaçu", vendor: "GAROTO DA SORTE MATEUS" },
+            { name: "Sebastiao F. M.", city: "Varginha", vendor: "ANDREIA APARECIDA" },
+            { name: "Antonio C. T.", city: "Cristina", vendor: "TROPICANA MOVEIS E DECORACOES" },
+            { name: "Flavia C. T.", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "Eliana de F. S.", city: "Alfenas", vendor: "SEBASTIAO A.G." },
+            { name: "Robson G. de B.", city: "Cabo Verde", vendor: "VENDAS ONLINE" },
+            { name: "Debora K. D. P.", city: "São Sebastião do Paraíso", vendor: "VENDAS ONLINE" },
+            { name: "Maria A. R. do P.", city: "Botelhos", vendor: "MAGALI PALMEIRAL" },
+            { name: "Reny de L. A.", city: "Alfenas", vendor: "TANIA ABREU BOA SORTE" },
+            { name: "Gleibson F. dos S.", city: "Três Pontas", vendor: "LOJA DA JANE E MARLENE" },
+            { name: "Jose M. M.", city: "Três Pontas", vendor: "SACOLAO N. SENHORA DAJUDA" },
+            { name: "Vitor R. O.", city: "Três Pontas", vendor: "LOJA DA JANE E MARLENE" },
+            { name: "Silmar H.", city: "Campo Belo", vendor: "WILSON LARA" }
+          ]
+        },
+        {
+          key: "10-05",
+          label: "10/05 (Mães)",
+          titlePrice: "R$ 20,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 5.000,00 (Gira Minas Especial)",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00 (dividido em 3)", winners: [
+              { name: "Divino H. de M.", city: "Lavras", vendor: "NUTRI PET" },
+              { name: "Angelino N. da S.", city: "Espírito Santo do Dourado", vendor: "BAR DA FLAVIA" },
+              { name: "Marcela P. S.", city: "Machado", vendor: "VENDAS ONLINE" }
+            ]},
+            { order: "2º Prêmio", value: "R$ 20.000,00 (dividido)", winners: [
+              { name: "Wilma M. M.", city: "Três Pontas", vendor: "HELOISA MORENA - TRES CORACOES" },
+              { name: "Karina P. dos S.", city: "Guaxupé", vendor: "VENDAS ONLINE" }
+            ]},
+            { order: "3º Prêmio", value: "R$ 30.000,00 (dividido)", winners: [
+              { name: "Francisco de P. V. M.", city: "Três Pontas", vendor: "MAQUININHA DA SORTE - LOJA DA JANE E MARLENE" },
+              { name: "Matheus H. de M.", city: "Itajubá", vendor: "VENDAS ONLINE" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 40.000,00", winners: [{ name: "Antonio R. A. R.", city: "Passos", vendor: "EDUARDO UAI" }] },
+            { order: "5º Prêmio", value: "R$ 600.000,00", winners: [{ name: "Benedito R. de C.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Nilton da S.", city: "Paraguaçu", vendor: "LOJA DA JANE E MARLENE - TRES PONTAS" },
+            { name: "Marcelo J. da S.", city: "Conceição da Aparecida", vendor: "VENDAS ONLINE" },
+            { name: "Allysson R. R.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" },
+            { name: "Maria G. de A. B.", city: "Santa Rita do Sapucaí", vendor: "HART" },
+            { name: "Silvia V. M.", city: "Três Corações", vendor: "MEGA BYTE INFORMATICA" },
+            { name: "Daniel R. da S.", city: "Elói Mendes", vendor: "PADARIA ALGO MAIS" },
+            { name: "Anderson D. de L.", city: "Monte Sião", vendor: "VENDAS ONLINE" },
+            { name: "Pedro L. de F.", city: "Pouso Alegre", vendor: "BAR DO RENATO" },
+            { name: "Paulo E. G.", city: "São Sebastião do Paraíso", vendor: "VENDAS ONLINE" },
+            { name: "Josiane de P. M.", city: "Botelhos", vendor: "CASTRO TABACARIA E PRESENTES - PC" },
+            { name: "Aliane Ap. A.", city: "São Pedro da União", vendor: "LOJA DA LUZIA - BOM JESUS DA PENHA" },
+            { name: "George H. G.", city: "Paraguaçu", vendor: "MAQUININHA DA SORTE - GAROTO DA SORTE" },
+            { name: "Maria H. do C.", city: "Santa Rita de Caldas", vendor: "PARADA DO REAL - POCOS DE CALDAS" },
+            { name: "Givanildo da S. C.", city: "Campo Belo", vendor: "VENDAS ONLINE" },
+            { name: "Paulo M. R.", city: "Itajubá", vendor: "BANCA PRACA DO SOLDADO - ADEMIR" },
+            { name: "Rosilene F. F.", city: "Varginha", vendor: "FERNANDA" },
+            { name: "Decio B. da S.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Marcondes D. S.", city: "Camanducaia", vendor: "VENDAS ONLINE" },
+            { name: "Osvaldo de O.", city: "Monte Sião", vendor: "THIAGAO DA SORTE - ORIGINAL" },
+            { name: "Jose A. F. G.", city: "Santana da Vargem", vendor: "REALCE PERFUMARIA" }
+          ]
+        },
+        {
+          key: "17-05",
+          label: "17/05",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Jaime C.", city: "Coqueiral", vendor: "LT RACOES" }] },
+            { order: "2º Prêmio", value: "R$ 6.000,00", winners: [{ name: "Fabio L. M.", city: "Lavras", vendor: "VENDAS ONLINE" }] },
+            { order: "3º Prêmio", value: "R$ 7.000,00", winners: [{ name: "Mauro G. de R.", city: "Poços de Caldas", vendor: "QUEILA - ATACADAO DOS DOCES" }] },
+            { order: "4º Prêmio", value: "R$ 8.000,00", winners: [{ name: "Maria A. V. A.", city: "Muzambinho", vendor: "LAERCIO SANTINI" }] },
+            { order: "5º Prêmio", value: "R$ 250.000,00", winners: [{ name: "Wendi G. R. de L.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Thais de O. L.", city: "Cambuí", vendor: "VENDAS ONLINE" },
+            { name: "Joao V. T.", city: "Camanducaia", vendor: "AGROLAZER" },
+            { name: "Murilo F.", city: "Heliodora", vendor: "LU DA SORTE" },
+            { name: "Joao W. P.", city: "Cachoeira de Minas", vendor: "EQ DA SORTE - LUZIA - PA" },
+            { name: "Jose Ap. O. da C.", city: "Muzambinho", vendor: "PADARIA PADOKA" },
+            { name: "Eliana R. V. D.", city: "Campo Belo", vendor: "CRJ RACOES E PESCA" },
+            { name: "Joao B. G.", city: "São Sebastião do Paraíso", vendor: "TADEU" },
+            { name: "Cicero B. da S.", city: "Lavras", vendor: "VENDAS ONLINE" },
+            { name: "Rone T. da S.", city: "Alfenas", vendor: "LEITEIRO" },
+            { name: "Manoelina F. C.", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "Mauro da S.", city: "Três Corações", vendor: "MARIA LUIZA" },
+            { name: "Vanessa S. de F. S.", city: "Pouso Alegre", vendor: "EQ DA SORTE - PA" },
+            { name: "Elizeu F.", city: "Paraguaçu", vendor: "PAULINHO DA SORTE" },
+            { name: "Atairson V. B.", city: "Três Pontas", vendor: "VENDAS ONLINE" },
+            { name: "Delane M.", city: "Campo Belo", vendor: "ARNALDO" },
+            { name: "Denise C. T.", city: "Passos", vendor: "BANCA DO ROSARIO - ELISANGELA" },
+            { name: "Celso R. I.", city: "Itajubá", vendor: "BAR DO NEGO" },
+            { name: "Francisca I. B. R.", city: "Pouso Alegre", vendor: "MICHEL" },
+            { name: "Sebastião da S. M.", city: "Machado", vendor: "BAR DO TIAO" },
+            { name: "Arildo J. dos S.", city: "Paraguaçu", vendor: "VALDINEIA MINAS CAP" },
+            { name: "Leandro B. da S.", city: "Jacutinga", vendor: "MV" },
+            { name: "Joao B. N.", city: "Itajubá", vendor: "BIROSCA DO D BLACK" },
+            { name: "Helio M. P.", city: "Poços de Caldas", vendor: "ROTA MERCEARIA" },
+            { name: "Jose F. dos S.", city: "Andradas", vendor: "ALEXANDRINA" }
+          ]
+        },
+        {
+          key: "24-05",
+          label: "24/05",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00 (dividido)", winners: [
+              { name: "Jose C. C.", city: "Paraguaçu", vendor: "JD MODAS" },
+              { name: "Maria H. L. de J.", city: "Três Corações", vendor: "JOAO MACUMBA" }
+            ]},
+            { order: "2º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Jose C. I.", city: "Itajubá", vendor: "LICOR DA SORTE FE" }] },
+            { order: "3º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Silvio R. da S. J.", city: "Guaxupé", vendor: "VENDAS ONLINE" }] },
+            { order: "4º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Michelle N. L. de O. S.", city: "Pouso Alegre", vendor: "EQ DA SORTE - PA" }] },
+            { order: "5º Prêmio", value: "R$ 200.000,00", winners: [{ name: "Daniela C. P.", city: "Varginha", vendor: "VENDAS ONLINE" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Kelly F. V.", city: "Itutinga", vendor: "BRANCO" },
+            { name: "Roberto B.", city: "Varginha", vendor: "ANA LUCIA" },
+            { name: "Carlos A. L. da C.", city: "Conceição da Aparecida", vendor: "MAQUININHA DA SORTE - CRIS E FABIO CIGANO" },
+            { name: "Antonio D.", city: "Conceição da Aparecida", vendor: "MERCADO SAO PAULO" },
+            { name: "Elaine C. da S. S.", city: "Muzambinho", vendor: "VENDAS ONLINE" },
+            { name: "Brasil C. C.", city: "Muzambinho", vendor: "MERCADO DIAS" },
+            { name: "Wagner de O. M.", city: "Poços de Caldas", vendor: "MAQUININHA DA SORTE - JACQUELINE AUXILIADORA" },
+            { name: "Antônio G. de M.", city: "Três Pontas", vendor: "LOJA DA JANE E MARLENE" },
+            { name: "Givanildo da S. C.", city: "Campo Belo", vendor: "VENDAS ONLINE" },
+            { name: "Roseli dos S.", city: "Monte Belo", vendor: "PANIFICADORA SAO CAMILO" },
+            { name: "Paulo F. L. T.", city: "Ilicínea", vendor: "VENDAS ONLINE" },
+            { name: "Ronaldo da C.", city: "Carmo de Minas", vendor: "PADARIA DO FELIPE" },
+            { name: "Andreia A. M. R.", city: "Três Pontas", vendor: "MAQUININHA DA SORTE - LOJA DA JANE E MARLENE" },
+            { name: "Maria A. S. S.", city: "Guaxupé", vendor: "VENDAS ONLINE" },
+            { name: "Aloisio de P.", city: "Varginha", vendor: "PAPELARIA ATLAS" },
+            { name: "Maria V. C.", city: "Poços de Caldas", vendor: "RITA - PONTO DA MODA" },
+            { name: "Roberto R. R.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Jose L. da S.", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "Manoel P. M. I.", city: "Varginha", vendor: "TIBICA" },
+            { name: "Adriana de J. C. C.", city: "Elói Mendes", vendor: "MAQUININHA DA SORTE - PADARIA ALGO MAIS" },
+            { name: "Giovane A. F.", city: "Camanducaia", vendor: "DROGARIA DROGA NOVA" },
+            { name: "Jeverson D. da S.", city: "Alpinópolis", vendor: "VENDAS ONLINE" },
+            { name: "Selma de A.", city: "Alfenas", vendor: "JULIO" },
+            { name: "Nataly S. L.", city: "Nova Resende", vendor: "PAPELARIA CENTRAL" },
+            { name: "Maria P. J.", city: "Cássia", vendor: "ELI PE QUENTE" },
+            { name: "Jose L. de S.", city: "Poços de Caldas", vendor: "BAR E MERCEARIA TRES CORACOES" },
+            { name: "Silvestre de O. S.", city: "Congonhal", vendor: "CHICAO DA LARANJA - PA" },
+            { name: "Maria C. H.", city: "Andradas", vendor: "ALEXANDRINA" },
+            { name: "Jhony C. R.", city: "Machado", vendor: "VENDAS ONLINE" },
+            { name: "Maria B. de S.", city: "Três Pontas", vendor: "MAQUININHA DA SORTE - LOJA DA JANE E MARLENE" },
+            { name: "Jose B. da F.", city: "Poços de Caldas", vendor: "HORTIFRUTI MF" },
+            { name: "Gelso C.", city: "São Sebastião do Paraíso", vendor: "DORA AVENTUREIRA BOI BRANCO" },
+            { name: "Marizi C. L. F.", city: "Campo Belo", vendor: "ALESSANDRO ANASTACIO VENDEDOR" },
+            { name: "Benedito da S.", city: "Heliodora", vendor: "LANCHONETE DOCE SABOR - CAREACU" },
+            { name: "Ester A. M.", city: "Pouso Alegre", vendor: "EQ DA SORTE - PA" },
+            { name: "Sonia M. F. de L.", city: "Andradas", vendor: "BANCA DO KLEBER - HELEN" },
+            { name: "Dair dos R.", city: "Monsenhor Paulo", vendor: "JOSE" },
+            { name: "Loide R.", city: "Cássia", vendor: "MERCEARIA BELA VISTA" },
+            { name: "Edileuse C. C. C.", city: "Campo Belo", vendor: "ALESSANDRO ANASTACIO VENDEDOR" },
+            { name: "Luciana F. V.", city: "Andradas", vendor: "BANCA DO KLEBER - HELEN" },
+            { name: "Deuzoni R. da S.", city: "Coqueiral", vendor: "LT RACOES" },
+            { name: "Renato de L.", city: "Alterosa", vendor: "ERASMO PEREIRA" },
+            { name: "Jose J. de O.", city: "Itajubá", vendor: "MAQUININHA DA SORTE - EQ DA SORTE - PA" },
+            { name: "Josemar M. das F.", city: "Elói Mendes", vendor: "PADARIA ALGO MAIS" },
+            { name: "Daniel Ap. F.", city: "São Sebastião do Paraíso", vendor: "ALINE SILVA" },
+            { name: "Vicente G. P.", city: "Pouso Alegre", vendor: "LINK EQ DA SORTE - PA" },
+            { name: "Mateus E. da S.", city: "Monte Belo", vendor: "VENDAS ONLINE" },
+            { name: "Eduardo M. S.", city: "Passos", vendor: "MAQUININHA DA SORTE - JUSMARA BANCO ITAU" },
+            { name: "Silveley S. O.", city: "Poços de Caldas", vendor: "KARUDOS BAR" },
+            { name: "Diovana V. G. Z.", city: "Santa Rita do Sapucaí", vendor: "BIANA ESQUINA DA SORTE" },
+            { name: "Reginaldo F. R.", city: "Itanhandu", vendor: "VENDAS ONLINE" },
+            { name: "Giovani A. P.", city: "Alfenas", vendor: "JUNINHO" },
+            { name: "Jose G. da S.", city: "Cruzília", vendor: "BAR DO TI GORDO" },
+            { name: "Jose O. F. J.", city: "Conceição dos Ouros", vendor: "VENDAS ONLINE" },
+            { name: "Donizete Ap. Z.", city: "São Sebastião do Paraíso", vendor: "JUSMARA BANCO ITAU" },
+            { name: "Luceni C. de S.", city: "São Sebastião do Paraíso", vendor: "TIAOZINHO PRESENTES" },
+            { name: "Jose R. dos S.", city: "Estiva", vendor: "MAQUININHA DA SORTE - BENEDITO BARBOSA DA SILVA" },
+            { name: "Reinaldo de M. C.", city: "Camanducaia", vendor: "VENDAS ONLINE" },
+            { name: "Angelica V. B. da S.", city: "Pouso Alegre", vendor: "LINK EQ DA SORTE - PA" },
+            { name: "Thamiris de F. P.", city: "Cachoeira de Minas", vendor: "LINK EQ DA SORTE - PA" }
+          ]
+        },
+        {
+          key: "31-05",
+          label: "31/05",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 2.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Darwin J. da S.", city: "Nepomuceno", vendor: "SKINA DA SORTE JOSE VALTER JANAINA E ALEXANDRE" }] },
+            { order: "2º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Regis E. dos S.", city: "Andradas", vendor: "VENDAS ONLINE" }] },
+            { order: "3º Prêmio", value: "R$ 10.000,00 (dividido)", winners: [
+              { name: "Andre Ap. P.", city: "Cambuí", vendor: "VENDAS ONLINE" },
+              { name: "Felipe de O. S.", city: "Itanhandu", vendor: "DROGARIA AVENIDA - ITANHANDU" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Nilva Ap. de M.", city: "Poços de Caldas", vendor: "JACQUELINE ECONOMARTE" }] },
+            { order: "5º Prêmio", value: "R$ 210.000,00", winners: [{ name: "Rafael C. de S.", city: "Varginha", vendor: "VENDAS ONLINE" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Graziela M. da S.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Mario G. da C.", city: "São Pedro da União", vendor: "COMERCIAL VITORIA" },
+            { name: "Dulcimara de O. L.", city: "Santa Rita do Sapucaí", vendor: "DULCIMARA DE OLIVEIRA" },
+            { name: "Maria M. F. de M.", city: "Campestre", vendor: "EDNA" },
+            { name: "Jose G. da S.", city: "Monsenhor Paulo", vendor: "JOSE VENDEDOR" },
+            { name: "Geni M. de O.", city: "Conceição da Aparecida", vendor: "VENDAS ONLINE" },
+            { name: "Sebastiao de O.", city: "Poços de Caldas", vendor: "RITA DE CASSIA - PONTO DA MODA" },
+            { name: "Zilda M. M.", city: "Bom Repouso", vendor: "TEC NETY ISABEL" },
+            { name: "Marcos A. da C.", city: "Muzambinho", vendor: "MERCADO DIAS" },
+            { name: "Rhaiam B. A.", city: "Três Pontas", vendor: "GAROTO DA SORTE - TIAGO" },
+            { name: "Lucas F. de M.", city: "São Sebastião do Paraíso", vendor: "QUITANDAS BELA VISTA" },
+            { name: "Josino N. da S.", city: "Borda da Mata", vendor: "AMENDOIM - PE QUENTE" },
+            { name: "Cristiano R. de O. S.", city: "Ibitiúra de Minas", vendor: "PADARIA CARAMUJO E CIA - CALDAS" },
+            { name: "Alyce S. O.", city: "Três Pontas", vendor: "LOJA DA JANE E MARLENE" },
+            { name: "Caroline de O.", city: "Pouso Alegre", vendor: "ANGELA DO PASTEL - TOCA DO TIGRAO" },
+            { name: "Jair R. B.", city: "Pouso Alegre", vendor: "MAQUININHA DA SORTE - LUIZ GONZAGA SOARES" },
+            { name: "Humberto V. S.", city: "São Thomé das Letras", vendor: "VENDAS ONLINE" },
+            { name: "Benedito I. L.", city: "Poços de Caldas", vendor: "RITA DE CASSIA - PONTO DA MODA" },
+            { name: "Adao D. da S.", city: "Alpinópolis", vendor: "EDUARDO UAI" },
+            { name: "Francisco S. P.", city: "Gonçalves", vendor: "VENDAS ONLINE" },
+            { name: "Izabel dos S. L.", city: "São José da Barra", vendor: "DOTCOM INFORMATICA" },
+            { name: "Andre L. F.", city: "Campanha", vendor: "GENESIO SILVA" },
+            { name: "Theyllon J. S. S.", city: "Itaú de Minas", vendor: "MAQUININHA DA SORTE - JUSMARA BANCO ITAU" },
+            { name: "Diego A. de O.", city: "Pouso Alegre", vendor: "LUIZ GONZAGA JR" },
+            { name: "Tatiane A. A.", city: "Itamogi", vendor: "LOJA ABIGAIL" },
+            { name: "Walace P.", city: "Três Pontas", vendor: "CARLOS CBF - VARGINHA" },
+            { name: "Julio E. A. B.", city: "Varginha", vendor: "SEBASTIAO BF" },
+            { name: "Joao P. S. A.", city: "Três Pontas", vendor: "GAROTO DA SORTE - TIAGO" },
+            { name: "Aroldo B. F.", city: "Santana do Jacaré", vendor: "FARMA MINAS" },
+            { name: "Francisco de A. da S.", city: "São Sebastião do Paraíso", vendor: "JUSMARA BANCO ITAU" }
+          ]
+        }
+      ]
+    },
+    {
+      key: "2026-06",
+      label: "Junho",
+      editions: [
+        {
+          key: "07-06",
+          label: "07/06",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 5.000,00 (dividido)", winners: [
+              { name: "Tiago T. C.", city: "Paraguaçu", vendor: "GAROTO DA SORTE MATEUS" },
+              { name: "Antonio D. A.", city: "Alpinópolis", vendor: "BAR DO ARNALDO" }
+            ]},
+            { order: "2º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Lenir B.", city: "Campo Belo", vendor: "DENILSOM VERDUREIRO" }] },
+            { order: "3º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Maria H. A. P.", city: "Nepomuceno", vendor: "ZE WALTER" }] },
+            { order: "4º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Marcia M. F.", city: "Itajubá", vendor: "J L MERCEARIA" }] },
+            { order: "5º Prêmio", value: "R$ 240.000,00", winners: [{ name: "Heloiza L. B. C.", city: "Nova Resende", vendor: "VENDAS ON LINE" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Amanda C. M. B.", city: "Pouso Alegre", vendor: "ANGELA DO PASTEL" },
+            { name: "Thiago H. M.", city: "Poços de Caldas", vendor: "BAR DA FLAVIANA" },
+            { name: "Carlos A. F.", city: "Três Corações", vendor: "SANDRA" },
+            { name: "Leonardo O. G.", city: "Pedralva", vendor: "VENDAS ON LINE" },
+            { name: "Valdir S. de O.", city: "Cambuquira", vendor: "BETO" },
+            { name: "Lourinaldo M. B.", city: "Machado", vendor: "VENDAS ON LINE" },
+            { name: "Valeria C. T.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - POUSO ALEGRE" },
+            { name: "Alexandre F. N.", city: "Boa Esperança", vendor: "VENDAS ON LINE" },
+            { name: "Geraldo F. da S.", city: "Varginha", vendor: "MERCEARIA DO CEARA PV" },
+            { name: "Isabel de F. A. F.", city: "Paraguaçu", vendor: "BEL MODAS" },
+            { name: "Maria I. J. dos S.", city: "Monte Santo de Minas", vendor: "CENTER TUDO" },
+            { name: "Sebastiao F. da S.", city: "Poços de Caldas", vendor: "SUPERMERCADO BH LESTE - ANTONIO ABENCOADO" },
+            { name: "Luiz H. P. F.", city: "Varginha", vendor: "SIRLEY SILVA" },
+            { name: "Sebastiao P. de C. J.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - POUSO ALEGRE" },
+            { name: "Maria N. T.", city: "Passos", vendor: "VENDAS ON LINE" },
+            { name: "Darlene de S.", city: "Conceição da Aparecida", vendor: "MARISLEY VILELA DA SILVA - MAQUININHA POS" },
+            { name: "Nilson D. C.", city: "Paraguaçu", vendor: "GAROTO DA SORTE - MATEUS" },
+            { name: "Wellington G. A.", city: "Guaxupé", vendor: "WELINGTON GORDINHO DA SORTE" },
+            { name: "Maria R. de C.", city: "Bueno Brandão", vendor: "RELOJOARIA DO DONIZETE" },
+            { name: "Natalia S. F.", city: "Itajubá", vendor: "BANCA PRACA DO SOLDADO - ADEMIR" },
+            { name: "Camila de P. F.", city: "Três Pontas", vendor: "TIAGO - GAROTO DA SORTE" },
+            { name: "Suelena E. C. B.", city: "Varginha", vendor: "MARIA JOSE - CENTENARIO" },
+            { name: "Gabriel C. F.", city: "Campestre", vendor: "EDNA CAMPESTRE" },
+            { name: "Joao P. S. B.", city: "Elói Mendes", vendor: "VENDAS ON LINE" },
+            { name: "Marcelo da S. C.", city: "Cambuí", vendor: "VENDAS ON LINE" },
+            { name: "Lucas T. C.", city: "Machado", vendor: "VENDAS ON LINE" },
+            { name: "Sebastiao M. da S.", city: "São Sebastião do Paraíso", vendor: "BAR DO JULIO" },
+            { name: "Sebastião F. F.", city: "Varginha", vendor: "MARIA LUCIA - LOTERICA DO FATIMA" },
+            { name: "Delfranio J. de O.", city: "Monte Belo", vendor: "TANIA ABREU" },
+            { name: "Julia S. de O.", city: "Três Pontas", vendor: "LOJA DA JANE E MARLENE" },
+            { name: "Sirlane R. dos S.", city: "Santa Rita do Sapucaí", vendor: "ZE ROQUEIRO" },
+            { name: "Cosme S. B.", city: "Olímpio Noronha", vendor: "CANTINHO MINEIRO" },
+            { name: "Celso P. G.", city: "Pouso Alegre", vendor: "VENDAS ON LINE" },
+            { name: "João C. de F.", city: "Elói Mendes", vendor: "JACK - MENINA DA SORTE" },
+            { name: "Priscila C. de L.", city: "Andradas", vendor: "BANCA DA RODOVIARIA" },
+            { name: "Wellington B. de S.", city: "Santana do Jacaré", vendor: "LINK EQ. DA SORTE - POUSO ALEGRE" },
+            { name: "Joedison da S. A.", city: "Muzambinho", vendor: "LAERCIO SANTINI" },
+            { name: "Maria E. D.", city: "Santana da Vargem", vendor: "CONVENIENCIA SANTANA" },
+            { name: "Ordalia B. de L. V.", city: "Córrego do Bom Jesus", vendor: "LANCHONETE EL SHANAH" },
+            { name: "Edvin L. E.", city: "Campo Belo", vendor: "VENDAS ON LINE" }
+          ]
+        },
+        {
+          key: "14-06",
+          label: "14/06 (Namorados)",
+          titlePrice: "R$ 20,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$ 2.500,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Fabio dos R.", city: "Andradas", vendor: "TODA LINDA ACESSORIOS - CAMPESTRE" }] },
+            { order: "2º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Rubens C. D.", city: "Três Corações", vendor: "JOAO MACUMBA" }] },
+            { order: "3º Prêmio", value: "R$ 15.000,00", winners: [{ name: "Elielton F. dos S.", city: "São Bento Abade", vendor: "PADARIA E LANCHONETE DELICIAS DO TRIGO" }] },
+            { order: "4º Prêmio", value: "R$ 15.000,00", winners: [{ name: "Kathia F. P. D.", city: "Poços de Caldas", vendor: "LINK KATHIA FRANC" }] },
+            { order: "5º Prêmio", value: "R$ 400.000,00", winners: [{ name: "Jose L. C.", city: "Monte Sião", vendor: "THIAGAO DA SORTE - INCONFIDENTES" }] }
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Ozeias S. G.", city: "Carmo do Rio Claro", vendor: "VENDAS ONLINE" },
+            { name: "Jose R. A.", city: "Cristais", vendor: "JOSE A." },
+            { name: "Carlos E. de R.", city: "Fortaleza de Minas", vendor: "VENDAS ONLINE" },
+            { name: "Antonio D. B.", city: "Campanha", vendor: "GENESIO SILVA" },
+            { name: "Antonio B. L.", city: "Poços de Caldas", vendor: "PAULO VILA NOVA" },
+            { name: "Silvana S. S.", city: "Paraguaçu", vendor: "VALDINEIA MINAS CAP" },
+            { name: "Maria A. dos S. de S.", city: "Muzambinho", vendor: "RITINHA" },
+            { name: "Julio A. M.", city: "Congonhal", vendor: "MINI MERCADO PRIMAVERA" },
+            { name: "Antonio P. F.", city: "Campos Gerais", vendor: "VENDAS ONLINE" },
+            { name: "Francisco L. da S.", city: "Três Pontas", vendor: "GAROTO DA SORTE - TIAGO" },
+            { name: "Jose R. de O.", city: "Pouso Alegre", vendor: "LINK LUIZ GONZAGA" },
+            { name: "Marlene F. D.", city: "Guaxupé", vendor: "MERCEARIA SAO JOSE" },
+            { name: "Fabricio A. dos S.", city: "Camanducaia", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Maria A. G.", city: "Campanha", vendor: "GENESIO SILVA" },
+            { name: "Marilia de L. A. S.", city: "Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Silvana A. de O. P.", city: "Bueno Brandão", vendor: "METROPOLE - POUSO ALEGRE" },
+            { name: "Marlene de F. F. E.", city: "Três Pontas", vendor: "LOJA DA JANE E MARLENE" },
+            { name: "Carlos C. de O.", city: "Delfim Moreira", vendor: "LINK PRI BAIXINHA DA SORTE - TP" },
+            { name: "Marcia C. V.", city: "Alfenas", vendor: "MARISA MEGDA" },
+            { name: "Lourival J. de M.", city: "Guaxupé", vendor: "LOURIVAL" }
+          ]
+        },
+        {
+          key: "21-06",
+          label: "21/06",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: false,
+          giraMinasValue: "Edição Escada — R$1.000 a R$3.000 (3 faixas)",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Maicon M. F.", city: "Cambuí", vendor: "LINK PRI BAIXINHA DA SORTE - TP" }] },
+            { order: "2º Prêmio", value: "R$ 10.000,00 (dividido)", winners: [
+              { name: "Jose L. D.", city: "Campestre", vendor: "MAQUININHA DA SORTE - EDNA MARIA AMBROSIM" },
+              { name: "Antonio M. L.", city: "Douradinho", vendor: "PADARIA ALGO MAIS" }
+            ]},
+            { order: "3º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Ana M. G.", city: "Campos Gerais", vendor: "CLEONICE CAMPOS" }] },
+            { order: "4º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Joaquim B. J.", city: "Nova Resende", vendor: "PADARIA JOAO OSORIO" }] },
+            { order: "5º Prêmio", value: "R$ 200.000,00 (dividido)", winners: [
+              { name: "Danilo A. S.", city: "Guaxupé", vendor: "EDILAINE ERP" },
+              { name: "Antonio P. B. N.", city: "Alfenas", vendor: "DISK BEBIDAS - ALFENAS" }
+            ]}
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Maria R. de O. A.", city: "Nova Resende", value: "R$1.000", vendor: "PAPELARIA CENTRAL" },
+            { name: "Ana C. de A.", city: "Monte Santo de Minas", value: "R$1.000", vendor: "VENDAS ONLINE" },
+            { name: "Milton G. da S.", city: "Muzambinho", value: "R$1.000", vendor: "LAERCIO SANTINI" },
+            { name: "Maycon H. M. P.", city: "Virgínia", value: "R$1.000", vendor: "LINK PRI BAIXINHA DA SORTE - TP" },
+            { name: "Ronaldo da S. B.", city: "Guaxupé", value: "R$1.000", vendor: "IVAIR MATEUS OS MENINOS DA SORTE" },
+            { name: "Bruna M. B. M. dos S.", city: "Varginha", value: "R$1.000", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Luana S. M.", city: "Campo Belo", value: "R$1.000", vendor: "VENDAS ONLINE" },
+            { name: "Regis D. R.", city: "Três Corações", value: "R$1.000", vendor: "LUCIANO" },
+            { name: "Benedito C. da S.", city: "Santa Rita do Sapucaí", value: "R$1.000", vendor: "BAR DOS AMIGOS" },
+            { name: "Luiz B. B.", city: "Ouro Fino", value: "R$1.000", vendor: "VENDAS ONLINE" },
+            { name: "Ana Ap. S.", city: "Cana Verde", value: "R$2.000", vendor: "PAPELARIA LU DE LU" },
+            { name: "Valdene S. D.", city: "Congonhal", value: "R$2.000", vendor: "CHICAO DA LARANJA - POUSO ALEGRE" },
+            { name: "Luiz C. da S.", city: "Guaxupé", value: "R$2.000", vendor: "ELAINE PAFUME" },
+            { name: "Daniel B. de S.", city: "Cambuí", value: "R$2.000", vendor: "VENDAS ONLINE" },
+            { name: "Talisson E. M.", city: "Três Corações", value: "R$2.000", vendor: "VENDAS ONLINE" },
+            { name: "Dailza C. de A. B.", city: "Estiva", value: "R$2.000", vendor: "CHICO DA SORTE - CAMBUI" },
+            { name: "Edson P. da S.", city: "Poços de Caldas", value: "R$2.000", vendor: "JOAO PORTUGUES DA COHAB" },
+            { name: "Wagner R. F. N.", city: "Pouso Alegre", value: "R$2.000", vendor: "VENDAS ONLINE" },
+            { name: "Paulo S. M.", city: "Bueno Brandão", value: "R$2.000", vendor: "BARRACO DO PASTEL" },
+            { name: "Maria Ap. C.", city: "São Sebastião do Paraíso", value: "R$2.000", vendor: "DUARTE PE QUENTE" },
+            { name: "Angelo R. M.", city: "Congonhal", value: "R$3.000", vendor: "THIAGAO DA SORTE ORIGINAL - MONTE SIAO" },
+            { name: "Geovana I. L.", city: "Campestre", value: "R$3.000", vendor: "TODA LINDA ACESSORIOS" },
+            { name: "Roosevelt W. A. de O.", city: "Alpinópolis", value: "R$3.000", vendor: "CIDA E BOB" },
+            { name: "Camilo R. da S.", city: "Conceição dos Ouros", value: "R$3.000", vendor: "CRISTININHA - CACHOEIRA DE MINAS" },
+            { name: "Aresio G. F.", city: "Três Pontas", value: "R$3.000", vendor: "RONALDO MIGUEL" },
+            { name: "Gislane dos S. C.", city: "Muzambinho", value: "R$3.000", vendor: "LINK MATEUS HENRIQUE" },
+            { name: "Rosely M. de A.", city: "Serra Negra", value: "R$3.000", vendor: "THIAGAO DA SORTE ORIGINAL - MONTE SIAO" },
+            { name: "Adilson V. V.", city: "Guaxupé", value: "R$3.000", vendor: "EDILAINE ERP" },
+            { name: "Fabio de S. P.", city: "Muzambinho", value: "R$3.000", vendor: "VENDAS ONLINE" },
+            { name: "Jose D. A.", city: "São Sebastião do Paraíso", value: "R$3.000", vendor: "BAZAR DA CIDA" }
+          ]
+        },
+        {
+          key: "28-06",
+          label: "28/06",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: false,
+          giraMinasValue: "R$1.000 (comum) / R$2.000 (Especial)",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Jorge de J. Q.", city: "Camanducaia", vendor: "HUGUINHO BRINQUEDOS" }] },
+            { order: "2º Prêmio", value: "R$ 10.000,00 (dividido)", winners: [
+              { name: "Maria H. de S. G.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" },
+              { name: "Leonardo S. P.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" }
+            ]},
+            { order: "3º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Vanilda de L. F.", city: "Ouro Fino", vendor: "LINK EQUIPE DA SORTE - PA" }] },
+            { order: "4º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Adriele G. N.", city: "Três Corações", vendor: "VENDAS ONLINE" }] },
+            { order: "5º Prêmio", value: "R$ 230.000,00 (dividido em 4)", winners: [
+              { name: "Izis R. de Q.", city: "Monte Sião", vendor: "CARLITOS BAR" },
+              { name: "Viviane S. T.", city: "Pouso Alegre", vendor: "BAR DO TEIXEIRA" },
+              { name: "Maria Ap. dos S.", city: "Campestre", vendor: "EDNA" },
+              { name: "Joao C. de S.", city: "Pouso Alegre", vendor: "ANGELA DO PASTEL - TOCA DO TIGRAO" }
+            ]}
+          ],
+          bateuNaTrave: [],
+          giraMinas: [
+            { name: "Marlene Ap. S.", city: "Passos", value: "R$1.000", vendor: "MERCEARIA YPE" },
+            { name: "Marcelo C. P.", city: "Monsenhor Paulo", value: "R$1.000", vendor: "VENDAS ONLINE" },
+            { name: "Priscila S. B.", city: "Campo Belo", value: "R$1.000", vendor: "LINK BOMBONIERE P." },
+            { name: "Juliana S. G.", city: "Alfenas", value: "R$1.000", vendor: "VENDAS ONLINE" },
+            { name: "Joaquim M. D. F.", city: "Monte Sião", value: "R$1.000", vendor: "BAR DO BRANCO" },
+            { name: "Antonio H. de M.", city: "Pouso Alegre", value: "R$1.000", vendor: "ANGELA DO PASTEL - TOCA DO TIGRAO" },
+            { name: "Maria das G. S. P.", city: "São Gonçalo do Sapucaí", value: "R$1.000", vendor: "MERCEARIA DA GRACA" },
+            { name: "Maria H. A.", city: "Alpinópolis", value: "R$1.000", vendor: "VENDAS ONLINE" },
+            { name: "Liana V.", city: "Estiva", value: "R$1.000", vendor: "ESTHER REAL ESTIVA" },
+            { name: "Ana M. de P. N.", city: "Poços de Caldas", value: "R$1.000", vendor: "VENDAS ONLINE" },
+            { name: "Nelson A. F.", city: "Jesuânia", value: "R$2.000 (Especial)", vendor: "LOJA DO EDGAR" },
+            { name: "Fernando M. dos S.", city: "Turvolândia", value: "R$2.000 (Especial)", vendor: "MAQUININHA DA SORTE - LOJA COISA MAIS LINDA" },
+            { name: "Maria A. F. L.", city: "Campo Belo", value: "R$2.000 (Especial)", vendor: "LOIRA DA SORTE" },
+            { name: "Mariza G. G. S.", city: "Juruaia", value: "R$2.000 (Especial)", vendor: "VENDAS ONLINE" },
+            { name: "Weder F. R.", city: "São Sebastião do Paraíso", value: "R$2.000 (Especial)", vendor: "IRMAS DA SORTE - ROSANA E MARILDA" },
+            { name: "Adriano da S. B.", city: "Lavras", value: "R$2.000 (Especial)", vendor: "JOAO ROBERTO" },
+            { name: "Jose S. de C.", city: "Botelhos", value: "R$2.000 (Especial)", vendor: "MAQUININHA DA SORTE - MAGALI" },
+            { name: "Junio de C. S.", city: "Elói Mendes", value: "R$2.000 (Especial)", vendor: "GAROTO DA SORTE TIAGO - TP" },
+            { name: "Marcos T. P. R.", city: "Varginha", value: "R$2.000 (Especial)", vendor: "SEBASTIAO BF" },
+            { name: "Roberto B. dos S.", city: "São Sebastião do Paraíso", value: "R$2.000 (Especial)", vendor: "VENDAS ONLINE" }
+          ]
+        }
+      ]
+    },
+    {
+      key: "2026-07",
+      label: "Julho",
+      editions: [
+        {
+          key: "05-07",
+          label: "05/07",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: true,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Seiji R. K.", city: "Santa Rita do Sapucaí", vendor: "HART" }] },
+            { order: "2º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Claudio M. de S.", city: "Cristina", vendor: "SUPERMERCADO DO DUDU" }] },
+            { order: "3º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Antonio S. de L.", city: "Muzambinho", vendor: "MERCADO DIAS" }] },
+            { order: "4º Prêmio", value: "R$ 5.000,00 (dividido)", winners: [
+              { name: "Maria B. dos S.", city: "Brazópolis", vendor: "CACAU CAFE" },
+              { name: "Renato da S.", city: "Nepomuceno", vendor: "SKINA DA SORTE JOSE VALTER JANAINA E ALEXANDRE" }
+            ]},
+            { order: "5º Prêmio", value: "R$ 200.000,00", winners: [{ name: "Wesley T. de A.", city: "Santo Antônio do Amparo", vendor: "VENDAS ONLINE" }] }
+          ],
+          bateuNaTrave: [
+            { name: "Evandro S. de J.", city: "Camanducaia" },
+            { name: "Enitevaldo L. C.", city: "Maria da Fé" },
+            { name: "Daniela Ap. S.", city: "Campo Belo" },
+            { name: "Paulo H. R.", city: "Alfenas" },
+            { name: "Gilmar C. de G.", city: "Monte Sião" },
+            { name: "Abel B. da S.", city: "Pouso Alegre" },
+            { name: "Francilda G. P. M.", city: "Varginha" },
+            { name: "Joao G. B. P.", city: "Pouso Alegre" },
+            { name: "Fabio L. C.", city: "Munhoz" },
+            { name: "Aleia M. P. M.", city: "Poços de Caldas" },
+            { name: "Daniel R.", city: "Guaxupé" },
+            { name: "Solange V. R.", city: "Varginha" },
+            { name: "Mauriceia F. de R.", city: "Cambuí" },
+            { name: "Luiz M. da S.", city: "Poços de Caldas" },
+            { name: "Antonio R.", city: "Perdões" },
+            { name: "Luiz R. T.", city: "Alpinópolis" },
+            { name: "Gidean N. de L.", city: "Passos" },
+            { name: "Pablo F. M. V.", city: "São Lourenço" },
+            { name: "Francisco A. de S.", city: "Inconfidentes" },
+            { name: "Vera L. da S. P.", city: "Extrema" },
+            { name: "Maria J. de O.", city: "Alfenas" },
+            { name: "Joyce S. de M.", city: "Campo Belo" },
+            { name: "Lucelia de C.", city: "Varginha" },
+            { name: "Francini do P. D.", city: "Poços de Caldas" },
+            { name: "Rosaria P. R.", city: "Monte Sião" },
+            { name: "Claudinei R. P.", city: "Cruzília" },
+            { name: "Mario da S.", city: "Passos" },
+            { name: "Raphael A. M. L.", city: "Campo Belo" },
+            { name: "Mateus B. M.", city: "Elói Mendes" },
+            { name: "Renato C. de M.", city: "Guapé" },
+            { name: "Francisca L. da S. C.", city: "Santa Rita do Sapucaí" },
+            { name: "Benicio A. P.", city: "Fama" },
+            { name: "Valmir P. da S.", city: "Cambuí" },
+            { name: "Tarley J. de O.", city: "São Sebastião do Paraíso" },
+            { name: "Maria A. M.", city: "Camanducaia" },
+            { name: "Brendha R. G. F.", city: "Três Corações" },
+            { name: "Rita R. L. da S.", city: "Pouso Alegre" },
+            { name: "Antonio M. V.", city: "Varginha" },
+            { name: "Juvenil N. da S.", city: "Três Corações" },
+            { name: "Jose E. de L.", city: "Cristina" },
+            { name: "Pedro D. da S.", city: "Guaxupé" },
+            { name: "Wellington de O. C.", city: "Poços de Caldas" },
+            { name: "Geraldo G. de P.", city: "Varginha" },
+            { name: "Joao A. P.", city: "Sapucaí-Mirim" },
+            { name: "Carlos H. M.", city: "Estiva" },
+            { name: "Marli das D. C.", city: "Campos Gerais" },
+            { name: "Enio P. da S.", city: "Lavras" },
+            { name: "Jorge P. da S.", city: "Botelhos" },
+            { name: "Maria J. S. M.", city: "Lambari" },
+            { name: "Marina R. M.", city: "São Sebastião do Paraíso" },
+            { name: "Jorge M.", city: "Poços de Caldas" },
+            { name: "Antonio S. C.", city: "Cássia" },
+            { name: "Polyana A. A.", city: "Cristais" },
+            { name: "Diovane P. B.", city: "Pouso Alegre" },
+            { name: "Ana C. D. A.", city: "Três Corações" },
+            { name: "Luis C. P.", city: "Bom Jesus da Penha" },
+            { name: "Rosimar C.", city: "Cristina" },
+            { name: "Celso D. G.", city: "Poços de Caldas" },
+            { name: "Maria L. C. D.", city: "Poços de Caldas" },
+            { name: "Cristiane S. S.", city: "Boa Esperança" },
+            { name: "Marlene Ap. da S. B.", city: "Coqueiral" },
+            { name: "Ricardo S. de A.", city: "Santa Rita do Sapucaí" },
+            { name: "Jose C. G.", city: "Lavras" },
+            { name: "Marcio Ap. de O.", city: "Três Corações" },
+            { name: "Sebastiao R. de A.", city: "Alpinópolis" }
+          ],
+          giraMinas: [
+            { name: "Allyson R. R.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" },
+            { name: "Noel A.", city: "Elói Mendes", vendor: "PADARIA ALGO MAIS" },
+            { name: "Selma G. da S.", city: "São Sebastião do Paraíso", vendor: "MAQUININHA DA SORTE - JUSMARA BANCO ITAU" },
+            { name: "Ana D. F. M.", city: "Andradas", vendor: "MAQUININHA DA SORTE - RITA DE CASSIA FERREIRA" },
+            { name: "Marina do C. C. M.", city: "Borda da Mata", vendor: "CONTI CONTI DA SORTE" },
+            { name: "Edvaldo de S.", city: "Candeias", vendor: "FOTO HANAZONO - CAMPO BELO" },
+            { name: "Margarida E. R. O. e S.", city: "Poços de Caldas", vendor: "SOM MAGA PROPAGANDAS" },
+            { name: "Isabel C. da S.", city: "Elói Mendes", vendor: "JAQUE DA SORTE - VARGINHA" },
+            { name: "Gilson H. da S.", city: "Varginha", vendor: "MARGARIDA SILVA" },
+            { name: "Marcos G. S.", city: "Alfenas", vendor: "VENDAS ONLINE" },
+            { name: "Livia C. L. de O.", city: "Itajubá", vendor: "MAQUININHA DA SORTE - EQUIPE DA SORTE - PA" },
+            { name: "Luiz A. da S.", city: "Carmo do Rio Claro", vendor: "PANIFICADORA N S APARECIDA" },
+            { name: "Wilson D. B.", city: "Varginha", vendor: "GUIDAO" },
+            { name: "Jose R. C.", city: "Pedralva", vendor: "MERCADINHO DO CHEIRINHO" },
+            { name: "Rita H. Z.", city: "Santa Rita do Sapucaí", vendor: "BIANA - ESQUINA DA SORTE" },
+            { name: "Luciano C. N.", city: "Pouso Alegre", vendor: "CASA DE CARNES" },
+            { name: "Lais A. S.", city: "Maria da Fé", vendor: "VENDAS ONLINE" },
+            { name: "Maria da G. M. R.", city: "Muzambinho", vendor: "RITINHA" },
+            { name: "Rodrigo C. dos P.", city: "Andradas", vendor: "MATHEUS BORGES SERRA AZUL" },
+            { name: "Rosilene de F. dos S. B.", city: "Nepomuceno", vendor: "MERCEARIA DO PAULINHO" },
+            { name: "Marta C. C.", city: "Pouso Alegre", vendor: "ANGELA DO PASTEL" },
+            { name: "Nair A. da S.", city: "Monte Sião", vendor: "THIAGAO DA SORTE" },
+            { name: "Pedro R. de S.", city: "São Sebastião do Paraíso", vendor: "DORA AVENTUREIRA" },
+            { name: "Luis P. de P.", city: "Lavras", vendor: "MAQUININHA DA SORTE - EQ. DA SORTE POUSO ALEGRE" },
+            { name: "Betonico F. da S.", city: "Conceição da Aparecida", vendor: "PANIFICADORA JL" },
+            { name: "Angela dos S.", city: "Monte Sião", vendor: "THIAGAO DA SORTE" },
+            { name: "Maria C. C.", city: "Passos", vendor: "KANTINHO GOIAS" },
+            { name: "Brenda C. D. C.", city: "Pouso Alegre", vendor: "LINK VIRTUAL - EQUIPE DA SORTE POUSO ALEGRE" },
+            { name: "Margarida Ap. R. de O.", city: "Lavras", vendor: "MERCEARIA SAO JORGE" },
+            { name: "Donizetti G.", city: "Campo Belo", vendor: "LOIRA DA SORTE" },
+            { name: "Joao F. D.", city: "Wenceslau Braz", vendor: "JOSE REIS" },
+            { name: "Marilda dos R. A.", city: "Pouso Alegre", vendor: "BAR DO ADILSON" },
+            { name: "Larissa R. de P.", city: "Pouso Alegre", vendor: "THIAGAO DA SORTE" },
+            { name: "Sueli G. da S.", city: "Três Corações", vendor: "PERSONARE PILATES" },
+            { name: "Silvio C. C.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Mateus H. P.", city: "Paraguaçu", vendor: "GAROTO DA SORTE MATEUS" },
+            { name: "Antonio D. P.", city: "Paraisópolis", vendor: "ARILDO" },
+            { name: "Claudemir de T.", city: "Santa Rita do Sapucaí", vendor: "ZE ROQUEIRO" },
+            { name: "Maria das D. B. B.", city: "Varginha", vendor: "ROBERTINHO DA SORTE" },
+            { name: "Douglas V. B. V.", city: "Serrania", vendor: "M G M SUPERMERCADO" },
+            { name: "Valdete G. de S.", city: "Guaxupé", vendor: "BENEDITA PE QUENTE" },
+            { name: "Marcos P. S.", city: "Santa Rita do Sapucaí", vendor: "LUSABORES" },
+            { name: "Selma de L. R.", city: "Campo Belo", vendor: "VENDAS ONLINE" },
+            { name: "Joao L. F. M.", city: "São Gonçalo do Sapucaí", vendor: "VENDAS ONLINE" },
+            { name: "Diego J. L. N.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Fernando M. dos S.", city: "Turvolândia", vendor: "MAQUININHA DA SORTE - LOJA COISA MAIS LINDA" },
+            { name: "Carlos R. da S.", city: "São Sebastião do Paraíso", vendor: "RENILDA" },
+            { name: "Brenda Ap. F.", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "Joaquim S. P.", city: "Bueno Brandão", vendor: "LUZIA - EQUIPA DA SORTE POUSO ALEGRE" },
+            { name: "Monica de C. M.", city: "São Lourenço", vendor: "LANCHE DA RAFAELA" }
+          ]
+        },
+        {
+          key: "12-07",
+          label: "12/07",
+          titlePrice: "R$ 20,00",
+          hasBateuTrave: true,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Priscila Ap. de M. S.", city: "Lavras", vendor: "VENDAS ONLINE" }] },
+            { order: "2º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Rose M. P. B.", city: "Varginha", vendor: "MARMITARIA MAIS SABOR" }] },
+            { order: "3º Prêmio", value: "R$ 10.000,00 (dividido)", winners: [
+              { name: "Solange M. S. dos S.", city: "Três Corações", vendor: "SANDRA TC" },
+              { name: "Adilson R. da S.", city: "Pouso Alegre", vendor: "LINK TOCA DO LOBINHO" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Lourdes M. B. de F.", city: "Caldas", vendor: "SUPERMERCADO AVENIDA" }] },
+            { order: "5º Prêmio", value: "R$ 380.000,00 (dividido)", winners: [
+              { name: "Gustavo de O. Z. de S.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" },
+              { name: "Luciene R. P.", city: "Três Corações", vendor: "MAQUININHA DA SORTE - EDENILSON ALMEIDA RIBEIRO" }
+            ]}
+          ],
+          bateuNaTrave: [
+            { name: "Rafaela R. S.", city: "Campo Belo" },
+            { name: "Marilda de F. C.", city: "Monte Sião" },
+            { name: "Cicera Ap. de C.", city: "Varginha" },
+            { name: "Rubens V. B.", city: "Guaranésia" },
+            { name: "Djalma S. de A.", city: "Perdões" },
+            { name: "Ana P. H. F.", city: "Santa Rita do Sapucaí" },
+            { name: "Richard de A. R. S.", city: "Borda da Mata" },
+            { name: "Jose M. M.", city: "Três Pontas" },
+            { name: "Gabriely C. M. S.", city: "Três Pontas" },
+            { name: "Ana C. T. de C.", city: "Itamonte" },
+            { name: "Arildo C. M.", city: "Itanhandu" },
+            { name: "Antonio B.", city: "Pouso Alegre" },
+            { name: "Joao M. C. J.", city: "Alfenas" },
+            { name: "Luiz H. E. P.", city: "Cambuí" },
+            { name: "James Goncalves de Carvalho", city: "Lavras" },
+            { name: "Miria B. A.", city: "Pouso Alegre" },
+            { name: "Claudio C. M.", city: "Borda da Mata" },
+            { name: "Bruna R. B. C.", city: "Campos Gerais" },
+            { name: "Roberto E. M.", city: "Carvalhópolis" },
+            { name: "Moacir M. P.", city: "Muzambinho" },
+            { name: "Danilton D. A.", city: "Guaxupé" },
+            { name: "Mayara A. dos S. S.", city: "Piranguinho" },
+            { name: "Maria A. P.", city: "Santo Antônio do Amparo" },
+            { name: "Reginaldo X.", city: "Elói Mendes" },
+            { name: "Antonio de P. da M.", city: "Pouso Alto" },
+            { name: "Gilberto L. M.", city: "Pouso Alegre" },
+            { name: "Eduardo de O.", city: "Monte Belo" },
+            { name: "Robson da S.", city: "Não identificada" },
+            { name: "Evaildo J. P.", city: "Muzambinho" },
+            { name: "Joao M. de A.", city: "Ouro Fino" },
+            { name: "Eduardo G. da S.", city: "Campestre" }
+          ],
+          giraMinas: [
+            { name: "Jose D. da S.", city: "Boa Esperança", vendor: "JOEL PE QUENTE" },
+            { name: "Jair F.", city: "Guaxupé", vendor: "ROGERIO E JU CASAL DA SORTE" },
+            { name: "Joaquim B. F.", city: "São Sebastião do Paraíso", vendor: "VENDAS ONLINE" },
+            { name: "Lazaro L. M. J.", city: "Pouso Alegre", vendor: "ANGELA DO PASTEL" },
+            { name: "Oscar F. R.", city: "Juruaia", vendor: "PAPELARIA CENTRAL" },
+            { name: "Marcos R. de F.", city: "Ouro Fino", vendor: "VENDAS ONLINE" },
+            { name: "Sebastiao G. de C.", city: "Varginha", vendor: "GUIDAO" },
+            { name: "Sirlei R. de A.", city: "São Sebastião do Paraíso", vendor: "JUSMARA BANCO ITAU" },
+            { name: "Francisco C.", city: "Paraguaçu", vendor: "TIBICA - VARGINHA" },
+            { name: "Anderson W. do P.", city: "Pouso Alegre", vendor: "SYLVIO" },
+            { name: "Sebastiao dos R. C.", city: "Pouso Alegre", vendor: "TADEU PAPELAO" },
+            { name: "Brendel D. de O.", city: "Areado", vendor: "TOCA DO ACAI" },
+            { name: "Alana C. C.", city: "Pouso Alegre", vendor: "LINK VIRTUAL EQUIPE DA SORTE - PA" },
+            { name: "Armando J. da R.", city: "Guaxupé", vendor: "CASA DE AVES" },
+            { name: "Antonio L. G.", city: "Poços de Caldas", vendor: "PAULINHO VILA NOVA" },
+            { name: "Rozaura V. G. da S.", city: "Alfenas", vendor: "LINK VIRTUAL EQUIPE DA SORTE - PA" },
+            { name: "Maikon dos R. D.", city: "Pouso Alegre", vendor: "MARIA DONIZETE" },
+            { name: "Elias N. V.", city: "Boa Esperança", vendor: "TARCISIO FIRMINO" },
+            { name: "Ana F. A. M.", city: "Cambuquira", vendor: "VENDAS ONLINE" },
+            { name: "Alexandre A. de O. F. B.", city: "Extrema", vendor: "CLAUDIO BARBEIRO" },
+            { name: "Jose L. D.", city: "Campestre", vendor: "TODA LINDA ACESSORIOS" },
+            { name: "Carlos H. D.", city: "Três Corações", vendor: "BAR DO PRETO" },
+            { name: "Carlos E. de C. S.", city: "Poços de Caldas", vendor: "TCHE FERRAMENTAS - THALITA ALMEIDA" },
+            { name: "Marcia C. M. M.", city: "Pouso Alto", vendor: "VENDAS ONLINE" },
+            { name: "Luiz C. V.", city: "Guaxupé", vendor: "NEY BAIANO MATERIAIS PARA CONSTRUCAO" },
+            { name: "Vitor R. C. de P.", city: "Varginha", vendor: "LINK PRI BAIXINHA DA SORTE - TP" },
+            { name: "Juliano H. S.", city: "Boa Esperança", vendor: "ASSISTENCIA SAO MIGUEL" },
+            { name: "Ellen O.", city: "Jacutinga", vendor: "MAQUININHA DA SORTE - MARIA JOSE LOPES DE SALES" },
+            { name: "Antonio M. B.", city: "Nepomuceno", vendor: "SKINA DA SORTE - ZE WALTER JANAINA E ALEXANDRE" },
+            { name: "Gasparina de M. P.", city: "Botelhos", vendor: "MAGALI PALMEIRAL" }
+          ]
+        },
+        {
+          key: "19-07",
+          label: "19/07",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: true,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 5.000,00 (dividido em 5)", winners: [
+              { name: "Antonio do C. A.", city: "Campo Belo", vendor: "VENDAS ONLINE" },
+              { name: "Luiz C. de L.", city: "Itajubá", vendor: "NALDO UAI - PIRANGUINHO" },
+              { name: "Jair F.", city: "Guaxupé", vendor: "ANA LUCIA" },
+              { name: "Wagner R. de S.", city: "Cambuquira", vendor: "LANCHONETE DA LAURA" },
+              { name: "Maria A. da S. B.", city: "Estiva", vendor: "1001 UTILIDADES JORGE - PA" }
+            ]},
+            { order: "2º Prêmio", value: "R$ 6.000,00 (dividido)", winners: [
+              { name: "Sebastiao dos S.", city: "Campo Belo", vendor: "MARCIA CARVALHO" },
+              { name: "Thomas de M. F.", city: "Espírito Santo do Dourado", vendor: "LUIZ GONZAGA JR - PA" }
+            ]},
+            { order: "3º Prêmio", value: "R$ 7.000,00 (dividido em 4)", winners: [
+              { name: "Joao B. C.", city: "Heliodora", vendor: "LINK EQUIPE DA SORTE - PA" },
+              { name: "Stefany T. V.", city: "São Sebastião do Paraíso", vendor: "SOLANGE" },
+              { name: "Jose L. C. N.", city: "Pouso Alegre", vendor: "DOUGLAS DA SORTE" },
+              { name: "Alexsander R. G.", city: "Três Pontas", vendor: "VENDAS ONLINE" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 8.000,00", winners: [{ name: "Adrian M. M. S.", city: "Três Corações", vendor: "KAREN" }] },
+            { order: "5º Prêmio", value: "R$ 220.000,00 (dividido)", winners: [
+              { name: "Israel A. de C.", city: "Bueno Brandão", vendor: "NICINHA RAMOS" },
+              { name: "Wagner C. A. P.", city: "Silvianópolis", vendor: "VENDAS ONLINE" }
+            ]}
+          ],
+          bateuNaTrave: [
+            { name: "Alesio A. S.", city: "Cambuquira" },
+            { name: "Jose A. de P. L.", city: "Pouso Alegre" },
+            { name: "Tassiana A. M.", city: "Paraguaçu" },
+            { name: "Benedito B. da S.", city: "Brazópolis" },
+            { name: "Eliany M. C.", city: "Pouso Alegre" },
+            { name: "Alan J. O.", city: "Campo Belo" },
+            { name: "Francisco de G. M.", city: "Guaxupé" },
+            { name: "Luiz F. M.", city: "Itajubá" },
+            { name: "Laira R. R. das C. C.", city: "São Gonçalo do Sapucaí" },
+            { name: "Tatiana D.", city: "Guaxupé" },
+            { name: "Renan C. de M.", city: "Elói Mendes" },
+            { name: "Eliandro V. M.", city: "Boa Esperança" },
+            { name: "Dalis D. A. L. G.", city: "Cássia" },
+            { name: "Rogerio P.", city: "São Sebastião do Paraíso" },
+            { name: "Lidiane C. da C.", city: "Fortaleza de Minas" },
+            { name: "Valdeli de S. C.", city: "Senador Amaral" },
+            { name: "Antonio P. M. da S.", city: "Andradas" },
+            { name: "Francieli A. G. T. R.", city: "Monte Sião" },
+            { name: "Wellington R. de S. M.", city: "Cachoeira de Minas" },
+            { name: "Walter L. R.", city: "Machado" },
+            { name: "Carlos A. de A.", city: "Passos" },
+            { name: "Renata V. G.", city: "Pouso Alegre" },
+            { name: "Ronaldo B. de A.", city: "Itamogi" },
+            { name: "Donizetti F. G.", city: "Três Pontas" },
+            { name: "Regina de A. S.", city: "Poços de Caldas" }
+          ],
+          giraMinas: [
+            { name: "Hermonio L. da S.", city: "Lavras", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Luciano E.", city: "Conceição da Aparecida", vendor: "CRISTINA E FABIO CIGANO" },
+            { name: "Elisa M. N.", city: "Itanhandu", vendor: "INES MARIA DOS SANTOS" },
+            { name: "Jose A. de L. S.", city: "Alpinópolis", vendor: "EDUARDO UAI" },
+            { name: "Ronaldo A. L.", city: "Alfenas", vendor: "LINK EQ DA SORTE - PA" },
+            { name: "Flavio C. P.", city: "Pouso Alegre", vendor: "SUELLEN E DANI" },
+            { name: "Marcos S. de P.", city: "Três Pontas", vendor: "VITORIA ESTACIONAMENTO" },
+            { name: "Luiz A. de C.", city: "Jacutinga", vendor: "LANCHONETE DO ZEZINHO" },
+            { name: "Pedro C. de S.", city: "Muzambinho", vendor: "RITINHA" },
+            { name: "Valter Ap. de A.", city: "Poços de Caldas", vendor: "DRACULA" },
+            { name: "Renata N. A.", city: "Cambuquira", vendor: "VENDAS ONLINE" },
+            { name: "Juraci I. M.", city: "Jacutinga", vendor: "PADARIA MASSAFERA" },
+            { name: "Israel C. A.", city: "Lavras", vendor: "MAQUININHA DA SORTE - GABRIEL PAPAI NOEL" },
+            { name: "Jerri A. F. S.", city: "Varginha", vendor: "SIRLEY" },
+            { name: "Leticia Ap. L. E.", city: "São Sebastião do Paraíso", vendor: "ELI PE QUENTE - SAO SEBASTIAO DO PARAISO" },
+            { name: "Paulo D. J.", city: "Guaxupé", vendor: "ROGERIO E JU CASAL DA SORTE" },
+            { name: "Marcos G. A.", city: "Alfenas", vendor: "VENDAS ONLINE" },
+            { name: "Gregory R. D. de O.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Claudio F. M.", city: "São Sebastião do Paraíso", vendor: "FABIANO" },
+            { name: "Edineia de S.", city: "São Sebastião do Paraíso", vendor: "VENDAS ONLINE" },
+            { name: "Maria N. O.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" },
+            { name: "Leandro da S. P.", city: "Monte Sião", vendor: "THIAGAO DA SORTE ORIGINAL" },
+            { name: "Viviane Ap. A.", city: "Pouso Alegre", vendor: "ANGELA DO PASTEL" },
+            { name: "Priscila M. S. P.", city: "Campanha", vendor: "PRI" }
+          ]
+        },
+        {
+          key: "26-07",
+          label: "26/07",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: true,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Vicente P. da C.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" }] },
+            { order: "2º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Antonio P. de S.", city: "Boa Esperança", vendor: "JOEL PE QUENTE" }] },
+            { order: "3º Prêmio", value: "R$ 15.000,00 (dividido em 3)", winners: [
+              { name: "Valzeir A. S.", city: "Cordislândia", vendor: "VENDAS ONLINE" },
+              { name: "Maria R. dos S.", city: "Santa Rita do Sapucaí", vendor: "ZE ROQUEIRO" },
+              { name: "Patricia R. da R.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 20.000,00", winners: [{ name: "Paulo H. O. S.", city: "Itajubá", vendor: "VENDAS ONLINE" }] },
+            { order: "5º Prêmio", value: "R$ 200.000,00", winners: [{ name: "Mateus H. P.", city: "Paraguaçu", vendor: "GAROTO DA SORTE MATEUS" }] }
+          ],
+          bateuNaTrave: [
+            { name: "Valdirene R.", city: "Lavras" },
+            { name: "Marcelo D.", city: "Paraguaçu" },
+            { name: "Joao M. B.", city: "Jacuí" },
+            { name: "Jose A. de L. S.", city: "Varginha" },
+            { name: "Luiz A. P.", city: "Machado" },
+            { name: "Francisco de A. A.", city: "Poços de Caldas" },
+            { name: "Lucia M. C. J.", city: "Carmo da Cachoeira" },
+            { name: "Adriana A. F.", city: "Campo Belo" },
+            { name: "Jose L. de M.", city: "Três Corações" },
+            { name: "Reginaldo de P. S.", city: "Guaxupé" },
+            { name: "Andre R. da C.", city: "Ouro Fino" },
+            { name: "Vital S. da S.", city: "São Gonçalo de Botelhos" },
+            { name: "Roseli R.", city: "Botelhos" },
+            { name: "Luciana A. R. M.", city: "Alpinópolis" },
+            { name: "Jose A. de P.", city: "Elói Mendes" },
+            { name: "Carine R. da C. C. V.", city: "Santa Rita do Sapucaí" },
+            { name: "Fabiana B. da S.", city: "Santa Rita do Sapucaí" },
+            { name: "Leonardo A.", city: "Campo Belo" },
+            { name: "Susy M. dos S. R.", city: "Cambuí" },
+            { name: "Arnaldo A. dos S.", city: "Monte Sião" },
+            { name: "Sirlei dos S. M.", city: "Perdões" },
+            { name: "Flavio P. M.", city: "Varginha" },
+            { name: "Joao J. M.", city: "Serrania" },
+            { name: "Agmar M.", city: "Itamogi" },
+            { name: "Joaquim M. da S. N.", city: "Monte Sião" },
+            { name: "Dafni D. A. S.", city: "Campo Belo" },
+            { name: "Morvan de J. J.", city: "Três Pontas" },
+            { name: "Sebastiao do C. F.", city: "Campestre" },
+            { name: "Alberto N. de O. J.", city: "Delfinópolis" },
+            { name: "Naryane M. de S. M.", city: "Itanhandu" },
+            { name: "Jose H. da S. J.", city: "Itajubá" },
+            { name: "Antonio X. da S.", city: "Monsenhor Paulo" },
+            { name: "Ronaldo M.", city: "Lavras" },
+            { name: "Andre L. R.", city: "Itajubá" },
+            { name: "Claudete B. R. M.", city: "Estiva" },
+            { name: "Jackson C. de S.", city: "Juruaia" },
+            { name: "Leidiane Ap. B.", city: "Pouso Alegre" },
+            { name: "Clelia C. da C. G.", city: "Divisa Nova" },
+            { name: "Edmilson A. V.", city: "Paraguaçu" },
+            { name: "Vanessa Ap. dos S.", city: "Itaú de Minas" },
+            { name: "Regina de F. F. S.", city: "Paraguaçu" },
+            { name: "Pedro H. C. A.", city: "Guaxupé" },
+            { name: "Rubens B. B.", city: "Cambuquira" },
+            { name: "Alex X. dos S.", city: "Andradas" },
+            { name: "Vania de S. S.", city: "Boa Esperança" },
+            { name: "Rinaldo M. da S.", city: "Boa Esperança" },
+            { name: "Juliano R. P.", city: "Pouso Alegre" },
+            { name: "Rodrigo T. A.", city: "Pouso Alegre" },
+            { name: "Luciana B. R.", city: "Varginha" },
+            { name: "Cesar de P. V. C.", city: "Varginha" },
+            { name: "Hilda de F. de C.", city: "Muzambinho" },
+            { name: "Sueli de J. da S.", city: "Carmo da Cachoeira" },
+            { name: "Emerson C. da C.", city: "Pouso Alegre" },
+            { name: "Marisa do C. E.", city: "Campanha" },
+            { name: "Antonio D. F.", city: "São Sebastião do Paraíso" },
+            { name: "Angelina J. da S.", city: "Campinas" },
+            { name: "Alanderson H. S.", city: "Campo Belo" },
+            { name: "Elielson O. P.", city: "Campo Belo" },
+            { name: "Hilario C. V.", city: "Monte Santo de Minas" },
+            { name: "Marcos A. de S.", city: "Varginha" },
+            { name: "Maria I. dos S. D.", city: "Poços de Caldas" },
+            { name: "Regina C. V. S. P.", city: "Elói Mendes" },
+            { name: "Marcos R. da S.", city: "Cambuquira" },
+            { name: "Daniel G. B.", city: "Três Pontas" },
+            { name: "Rose H. I. de L.", city: "São Sebastião da Bela Vista" },
+            { name: "Expedito M. da S.", city: "Poços de Caldas" },
+            { name: "Donizetti V. de A.", city: "Nepomuceno" },
+            { name: "Claudia E. B. C.", city: "Varginha" },
+            { name: "Osmar T. B.", city: "São Tomás de Aquino" },
+            { name: "Maria V. de J. M. P.", city: "Pouso Alegre" },
+            { name: "Ricardo G.", city: "Guaxupé" },
+            { name: "Saturno M. de O.", city: "Três Corações" },
+            { name: "Luiz C. da C.", city: "Três Corações" },
+            { name: "Joelise C. L.", city: "Três Corações" },
+            { name: "Mario H. B.", city: "Carmo do Rio Claro" },
+            { name: "Gabriel F. M. V.", city: "Delfim Moreira" }
+          ],
+          giraMinas: [
+            { name: "Joao F. de O.", city: "Alfenas", vendor: "SM PINHEIROS" },
+            { name: "Antonio M. P.", city: "Campestre", vendor: "TODA LINDA ACESSORIOS" },
+            { name: "Dener S. M.", city: "Passos", vendor: "VENDAS ONLINE" },
+            { name: "Luis H. P.", city: "Três Pontas", vendor: "CONVENIENCIA OLIVEIRA" },
+            { name: "Vera L. da F.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Joao L. F.", city: "Varginha", vendor: "SEBASTIAO DAMASCO" },
+            { name: "Jose P. R.", city: "Muzambinho", vendor: "RITINHA" },
+            { name: "Yuri P. G.", city: "Paraguaçu", vendor: "VENDAS ONLINE" },
+            { name: "Rodrigo R. F.", city: "Varginha", vendor: "CASA DA PAMONHA" },
+            { name: "Julio M. R. da C.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Luiz A. do C.", city: "Três Pontas", vendor: "TIAGO GAROTO DA SORTE" },
+            { name: "Jose A. B.", city: "Borda da Mata", vendor: "AMENDOIM" },
+            { name: "Antonio P. da S. F.", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "Mirian da S.", city: "Monte Sião", vendor: "THIAGAO DA SORTE" },
+            { name: "Leandro M. G.", city: "Juruaia", vendor: "ROYAL BAR" },
+            { name: "Mateus H. da L. A.", city: "Maria da Fé", vendor: "VENDAS ONLINE" },
+            { name: "Ederaldo I. de B. B.", city: "Guaxupé", vendor: "VENDAS ONLINE" },
+            { name: "Narciso M. da S.", city: "Bom Repouso", vendor: "A F INFORMATICA" },
+            { name: "Joana D. A. P.", city: "Pouso Alegre", vendor: "JC ESTIVA" },
+            { name: "Jose A. da S.", city: "Jacutinga", vendor: "MARIA E FABIO - CASAL DA SORTE" }
+          ]
+        }
+      ]
+    },
+    {
+      key: "2026-08",
+      label: "Agosto",
+      editions: [
+        {
+          key: "02-08",
+          label: "02/08",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: true,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Sergio S.", city: "Bandeira do Sul", vendor: "MAGALI - BOTELHOS" }] },
+            { order: "2º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Airton A. S.", city: "Três Pontas", vendor: "MARCIO PESSI TP SUCESSO" }] },
+            { order: "3º Prêmio", value: "R$ 10.000,00 (dividido)", winners: [
+              { name: "Juliana de L. E.", city: "Alfenas", vendor: "MAQUININHA DA SORTE - CLAUDINEI PROFESSOR DA SORTE" },
+              { name: "Maikon W. P. M.", city: "Monsenhor Paulo", vendor: "BAR DA JERUZA" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Nelson L. da R.", city: "Bueno Brandão", vendor: "RELOJOARIA E CHAVEIRO DO DONIZETTI" }] },
+            { order: "5º Prêmio", value: "R$ 210.000,00", winners: [{ name: "Wagner T.", city: "Três Corações", vendor: "VENDAS ONLINE" }] }
+          ],
+          bateuNaTrave: [
+            { name: "Vanilton R. C.", city: "Três Pontas" },
+            { name: "Charles R. dos S.", city: "Santa Rita do Sapucaí" },
+            { name: "Paulo R. dos S.", city: "Campanha" },
+            { name: "Allyson R. R.", city: "Pouso Alegre" },
+            { name: "Adão G. da S.", city: "Cambuí" },
+            { name: "Antonio do C. A.", city: "Andradas" },
+            { name: "Alysson H. da S. S.", city: "Lavras" },
+            { name: "Joao B. M. N.", city: "Campos Gerais" },
+            { name: "Edson M. da S.", city: "Santa Rita do Sapucaí" },
+            { name: "Wallans E. H.", city: "Pouso Alegre" },
+            { name: "Gilson M. B.", city: "Poços de Caldas" },
+            { name: "Francisco S. T. da S.", city: "Alfenas" },
+            { name: "Penha Ap. de A.", city: "Poços de Caldas" },
+            { name: "Roberto M. S. Z.", city: "Pouso Alegre" },
+            { name: "Jose R. de O.", city: "Poços de Caldas" }
+          ],
+          giraMinas: [
+            { name: "Maria D. B. de M.", city: "Bom Jesus da Penha", vendor: "ALTO ASTRAL - ALPINOPOLIS" },
+            { name: "Claudeir do C. A.", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "Romeu N. S.", city: "Andradas", vendor: "ADEMIR ARTESANATOS" },
+            { name: "Adriano C. G.", city: "Campo Belo", vendor: "BAR DO PURGUINHA" },
+            { name: "Estefania P. R. A.", city: "São Gonçalo do Sapucaí", vendor: "VENDAS ONLINE" },
+            { name: "Allyson R. R.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" },
+            { name: "Emerson B. dos R.", city: "Passos", vendor: "MERCEARIA DO RICARDO" },
+            { name: "Niraldo J. P. da S.", city: "Nova Resende", vendor: "MAQUININHA DA SORTE - PAPELARIA CENTRAL" },
+            { name: "Adao do P. S.", city: "Cruzília", vendor: "PADARIA DO RONILDO" },
+            { name: "Celio R. de C.", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "David A. M.", city: "Lavras", vendor: "VENDAS ONLINE" },
+            { name: "Tereza de F. V. R.", city: "Cachoeira de Minas", vendor: "DROGAREY - ZONA RURAL" },
+            { name: "Sebastiao D. F.", city: "Carmo de Minas", vendor: "VENDAS ONLINE" },
+            { name: "Maria C. da S. L.", city: "Três Pontas", vendor: "GAROTO DA SORTE - TIAGO" },
+            { name: "Maria L. P.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Rosangela A. M. S.", city: "Pouso Alegre", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Natalia Ap. O.", city: "Botelhos", vendor: "MAGALI PALMEIRAL" },
+            { name: "Pedro B. S.", city: "Paraguaçu", vendor: "CASA DA VERDURA MARIA DE FATIMA" },
+            { name: "Benedito S.", city: "Itajubá", vendor: "JOSE MARIO AMORIM" },
+            { name: "Elisangela dos S. N.", city: "Campos Gerais", vendor: "MEX DA SORTE" },
+            { name: "Joao B. A.", city: "Ribeirão Vermelho", vendor: "MAURICIO FERNET - LAVRAS" },
+            { name: "Jose H. de O.", city: "Três Pontas", vendor: "MINI BOX OURO VERDE" },
+            { name: "Marilia S. A. de S.", city: "Monte Sião", vendor: "THIAGAO DA SORTE ORIGINAL" },
+            { name: "Claudinei dos S. da S.", city: "Piranguinho", vendor: "NALDO UAI" },
+            { name: "Jeferson de A. G.", city: "Nepomuceno", vendor: "BAR DO TIMELINHO" },
+            { name: "Jose A. G.", city: "Conceição das Pedras", vendor: "MAQUININHA DA SORTE - DROGARIA SANTO ANTONIO" },
+            { name: "Sebastiao F. da S.", city: "Poços de Caldas", vendor: "RITA DE CASSIA PONTO DA MODA" },
+            { name: "Valdielio B. de A.", city: "Alpinópolis", vendor: "EDUARDO UAI" },
+            { name: "Jose de A. S.", city: "Wenceslau Braz", vendor: "PADARIA SANTO HONORIO" },
+            { name: "Gilberto de O.", city: "Careaçu", vendor: "MAQUININHA DA SORTE - MERCEARIA DA MATA" }
+          ]
+        },
+        {
+          key: "09-08",
+          label: "09/08 (Pais)",
+          titlePrice: "R$ 20,00",
+          hasBateuTrave: true,
+          giraMinasValue: "R$ 1.500,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Luiz H. L. E.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" }] },
+            { order: "2º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Jose L. P.", city: "Varginha", vendor: "BAR DO ORLANDO" }] },
+            { order: "3º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Valdinei D. da S.", city: "Bueno Brandão", vendor: "VENDAS ONLINE" }] },
+            { order: "4º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Estefania R. R.", city: "Três Pontas", vendor: "LOJA DA JANE E MARLENE" }] },
+            { order: "5º Prêmio", value: "R$ 700.000,00", winners: [{ name: "Kleber D. dos S.", city: "Andradas", vendor: "BANCA DO KLEBER" }] }
+          ],
+          bateuNaTrave: [
+            { name: "Ney H. O. P.", city: "Pouso Alegre" },
+            { name: "Geverson R. R.", city: "Coqueiral" },
+            { name: "Matheus D. C.", city: "Varginha" },
+            { name: "Luis M. P.", city: "Alfenas" },
+            { name: "Marco A. M. M.", city: "Três Corações" },
+            { name: "Joao B. de S.", city: "Alfenas" },
+            { name: "Antonio F. B.", city: "Três Pontas" },
+            { name: "Silvia M. da S.", city: "Córrego do Bom Jesus" },
+            { name: "Lucas I. dos S.", city: "Campo Belo" },
+            { name: "Nelson B. da S.", city: "Pouso Alegre" },
+            { name: "Wesley F. dos S.", city: "Córrego do Bom Jesus" },
+            { name: "Alexandre A. N.", city: "Pouso Alegre" },
+            { name: "Antonio J. F.", city: "Santa Rita do Sapucaí" },
+            { name: "Gabriel G. C.", city: "Pouso Alegre" },
+            { name: "Lilia Ap. P.", city: "Nepomuceno" },
+            { name: "Risoney D. da S.", city: "Guaxupé" },
+            { name: "Luzia M. dos S.", city: "Varginha" },
+            { name: "Antonio M. F.", city: "Elói Mendes" },
+            { name: "Ricardo G. de S.", city: "São Sebastião do Paraíso" },
+            { name: "Jose R. de O.", city: "Poços de Caldas" },
+            { name: "Luis R. da S.", city: "Pouso Alegre" },
+            { name: "Marly S. de J.", city: "Monte Sião" },
+            { name: "Barbara M. de O.", city: "Congonhal" },
+            { name: "Antonio C. da S.", city: "Alpinópolis" },
+            { name: "Jose F. P.", city: "Conceição da Aparecida" },
+            { name: "Marcos A. F.", city: "Botelhos" },
+            { name: "Vilson C. da S.", city: "São Sebastião do Paraíso" },
+            { name: "Virginio E. S. O.", city: "Piranguinho" },
+            { name: "Adriana E. M.", city: "Três Pontas" },
+            { name: "Antonio C. G.", city: "Nepomuceno" },
+            { name: "Maria de F. S.", city: "Poços de Caldas" },
+            { name: "Lidiane M. de C. P.", city: "Varginha" },
+            { name: "Ronaldo M.", city: "Palmeiral" },
+            { name: "Gustavo de O. Z. de S.", city: "Pouso Alegre" },
+            { name: "Andre L. de B. J.", city: "Sumaré" },
+            { name: "Patricia M. dos S.", city: "Pouso Alegre" },
+            { name: "Rogerio G. V.", city: "Poços de Caldas" },
+            { name: "Alcione de F. G.", city: "Botelhos" }
+          ],
+          giraMinas: [
+            { name: "Dimas B.", city: "Varginha", vendor: "JAQUE CHAMA DA SORTE" },
+            { name: "Sergio A. S.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" },
+            { name: "Luiz A. P.", city: "São Sebastião do Paraíso", vendor: "PERNINHA - NELZINHA CASAL DA SORTE - S. S. DO PARAISO" },
+            { name: "Vania L. da S. S.", city: "Itajubá", vendor: "JOSE REIS" },
+            { name: "Pamela C. da S. G.", city: "Congonhal", vendor: "ACOUGUE DO PARDAL" },
+            { name: "Flaviana C. da S.", city: "Três Pontas", vendor: "GAROTO DA SORTE TIAGO" },
+            { name: "Gustavo de O. Z. de S.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" },
+            { name: "David M.", city: "Jesuânia", vendor: "LOJA DO EDGARD" },
+            { name: "Edson A. da C.", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "Rivaldo R. F.", city: "Itanhandu", vendor: "VENDAS ONLINE" },
+            { name: "Claudemir de P.", city: "Pouso Alegre", vendor: "ANGELA DO PASTEL - TOCA DO TIGRAO" },
+            { name: "Luciano A. R.", city: "Monsenhor Paulo", vendor: "MERCADINHO CASCALHO" },
+            { name: "Breno C. M.", city: "São Vicente de Minas", vendor: "MAGNO FRANCISCO" },
+            { name: "Jose V. D.", city: "Três Pontas", vendor: "LOJA DA JANE E MARLENE" },
+            { name: "Guilherme N. dos S.", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "Guilherme P. P.", city: "Pouso Alegre", vendor: "BANCA ALTERNATIVA" },
+            { name: "Hebron V. T.", city: "Botelhos", vendor: "MAGALI PALMEIRAL" },
+            { name: "Jose A. de O.", city: "Cachoeira de Minas", vendor: "BAR DO TANTO" },
+            { name: "Aladir A. de P.", city: "Jesuânia", vendor: "ACOUGUE E CIA DO VALE" },
+            { name: "Carlos H. A. B.", city: "Santo Antônio do Amparo", vendor: "VENDAS ONLINE" }
+          ]
+        },
+        {
+          key: "16-08",
+          label: "16/08",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: true,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 5.000,00 (dividido)", winners: [
+              { name: "Denis de C. N.", city: "Passa Quatro", vendor: "ELISIANE" },
+              { name: "Aguinaldo do C. M.", city: "Extrema", vendor: "LINK PRI BAIXINHA DA SORTE - TP" }
+            ]},
+            { order: "2º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Denis G. da S.", city: "Campo Belo", vendor: "WILSON" }] },
+            { order: "3º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Luiz A. de L.", city: "Poços de Caldas", vendor: "BANCA PERNAMBUCO" }] },
+            { order: "4º Prêmio", value: "R$ 10.000,00 (dividido)", winners: [
+              { name: "Valdinei A. S.", city: "Monte Sião", vendor: "VENDAS ONLINE" },
+              { name: "Danaylla V. C. da S.", city: "Três Corações", vendor: "LINK EQUIPE DA SORTE - PA" }
+            ]},
+            { order: "5º Prêmio", value: "R$ 220.000,00", winners: [{ name: "Marcelena C. B.", city: "Muzambinho", vendor: "LAERCIO SANTINI" }] }
+          ],
+          bateuNaTrave: [
+            { name: "Sonia M. de O.", city: "Pouso Alegre" },
+            { name: "Wilson P. da S.", city: "Lavras" }
+          ],
+          giraMinas: [
+            { name: "Nilcea C. P.", city: "Botelhos", vendor: "MAGALI PALMEIRAL" },
+            { name: "Sonia M. Q.", city: "Três Corações", vendor: "PET BRASIL" },
+            { name: "Pedro L. R. L.", city: "Juruaia", vendor: "WELINGTON GORDINHO DA SORTE" },
+            { name: "Donizetti de F. R.", city: "Três Pontas", vendor: "LOJA DA JANE E MARLENE" },
+            { name: "Juraci S. M.", city: "Campo Belo", vendor: "PAPELARIA DA MIRINHA" },
+            { name: "Wendel V. de S.", city: "Campo Belo", vendor: "VENDAS ONLINE" },
+            { name: "Anislei M. A.", city: "Três Corações", vendor: "HELOISA MORENA" },
+            { name: "Amanda L. P.", city: "Guaxupé", vendor: "VENDAS ONLINE" },
+            { name: "Evandro A. de O.", city: "Cruzília", vendor: "ESQUINA DA SORTE - FRANCISCA" },
+            { name: "Matheus T. A.", city: "Itamonte", vendor: "MAQUININHA DA SORTE - EDSON PE QUENTE" },
+            { name: "Lucas E. dos R.", city: "Botelhos", vendor: "MAGALI PALMEIRAL" },
+            { name: "Jesnilson H. R.", city: "Pouso Alegre", vendor: "VENDAS ONLINE" },
+            { name: "Osmar R. V.", city: "Cruzília", vendor: "BAR DO TI GORDO" },
+            { name: "Thiago V. F.", city: "Nepomuceno", vendor: "ZE VALTER E JANAINA E ALEXANDRE - SKINA DA SORTE" },
+            { name: "Maria de F. M.", city: "Alfenas", vendor: "VERA LUCIA" },
+            { name: "Alessandra S. da C.", city: "Pouso Alegre", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Valdir C. da C.", city: "Guaxupé", vendor: "MAQUININHA DA SORTE - TOCA DO LOBINHO" },
+            { name: "Livia L. de A.", city: "São Gonçalo do Sapucaí", vendor: "FATIMA LOPES - SAO GONCALO DO SAPUCAI" },
+            { name: "Iolanda C. de L.", city: "São Lourenço", vendor: "BAR SAO JOAO" },
+            { name: "Maurilio R.", city: "Andradas", vendor: "HARILTON MENDES" }
+          ]
+        },
+        {
+          key: "23-08",
+          label: "23/08",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: true,
+          giraMinasValue: "R$1.000 / R$1.500 / R$2.000 (escada)",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Sinval G. da S.", city: "Nova Resende", vendor: "PADARIA JOAO OSORIO" }] },
+            { order: "2º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Fabio S. de J.", city: "São Gonçalo do Sapucaí", vendor: "VENDAS ONLINE" }] },
+            { order: "3º Prêmio", value: "R$ 5.000,00 (dividido)", winners: [
+              { name: "Kleyton J. de O.", city: "Ilicínea", vendor: "MERCADO TAVARINHO" },
+              { name: "Ivo P.", city: "Alpinópolis", vendor: "BAR DO TIZE" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 5.000,00", winners: [{ name: "Euclides A. de P.", city: "Juruaia", vendor: "WELINGTON GORDINHO DA SORTE" }] },
+            { order: "5º Prêmio", value: "R$ 200.000,00", winners: [{ name: "Manoel M. C.", city: "Monte Sião", vendor: "VENDAS ONLINE" }] }
+          ],
+          bateuNaTrave: [
+            { name: "Marcelo V.", city: "Monte Santo de Minas" },
+            { name: "Marcia de O.", city: "Poços de Caldas" },
+            { name: "Cristyan S. de S.", city: "Boa Esperança" },
+            { name: "Nathan F. P. da S.", city: "Paraguaçu" },
+            { name: "Natalia A. O.", city: "Botelhos" },
+            { name: "Marcos A. F. da S.", city: "Paraguaçu" },
+            { name: "Vanderlei M. dos S.", city: "Cambuí" },
+            { name: "Benedito F. dos S.", city: "Pouso Alegre" },
+            { name: "Claudinei da S.", city: "Andradas" },
+            { name: "Ciro de A. V.", city: "Pouso Alegre" },
+            { name: "Lucimar A. B. G.", city: "Pouso Alegre" },
+            { name: "Assis M. da S.", city: "Carmo do Rio Claro" },
+            { name: "Vania M. B.", city: "Conceição da Aparecida" },
+            { name: "Antonio F. N.", city: "Carmo da Cachoeira" },
+            { name: "Maria das D. R. da S.", city: "Pouso Alegre" },
+            { name: "Oswaldo do C. S.", city: "Santa Rita do Sapucaí" },
+            { name: "Paulo R. E.", city: "Varginha" },
+            { name: "Luiz A. de O. P.", city: "Alfenas" },
+            { name: "Joao R. de O.", city: "Campos Gerais" },
+            { name: "Rosana Ap. de M.", city: "Itamogi" },
+            { name: "Thalita M. A. N.", city: "Poços de Caldas" },
+            { name: "Maria do C. dos S.", city: "Jesuânia" }
+          ],
+          giraMinas: [
+            { name: "Leonardo G. S. X.", city: "Pouso Alegre", value: "R$1.000", vendor: "MERCEARIA PAO DE MEL" },
+            { name: "Tiago R. de S.", city: "Alfenas", value: "R$1.000", vendor: "CIDA ONCOLOGIA" },
+            { name: "Deiwid J. A. de O.", city: "Pouso Alegre", value: "R$1.000", vendor: "MARCOS BILL" },
+            { name: "Benedito Ap. de O. N.", city: "Munhoz", value: "R$1.000", vendor: "TECHNICA ASSISTENCIA" },
+            { name: "Joaquim A. de A. F.", city: "Campestre", value: "R$1.000", vendor: "CIDA ONCOLOGIA" },
+            { name: "Lindomar D.", city: "Muzambinho", value: "R$1.000", vendor: "LAERCIO SANTINI" },
+            { name: "Francisco A. de O.", city: "Lavras", value: "R$1.000", vendor: "EDSON PE QUENTE" },
+            { name: "Conceicao Ap. P. das D.", city: "Carmo da Cachoeira", value: "R$1.000", vendor: "LINK TIAGO DA SORTE" },
+            { name: "Gabriel dos R. G. B.", city: "Cambuquira", value: "R$1.000", vendor: "HENQUIQUE" },
+            { name: "Maria dos A. C.", city: "Campo Belo", value: "R$1.000", vendor: "MAGNO" },
+            { name: "Marcos L. da S.", city: "Poços de Caldas", value: "R$1.000", vendor: "RITA DE CASSIA PONTO DA MODA" },
+            { name: "Ana L. da C. C. E.", city: "Pouso Alegre", value: "R$1.000", vendor: "ANGELA DO PASTEL NATACHA" },
+            { name: "Joao P. dos S.", city: "Estiva", value: "R$1.000", vendor: "LUIZ GONZAGA JR - PA" },
+            { name: "Viviane V. V.", city: "Passos", value: "R$1.000", vendor: "LANCHONETE AROUCA" },
+            { name: "Renilda R. de O.", city: "Alfenas", value: "R$1.000", vendor: "CLAUDINEI PROF SORTE" },
+            { name: "Marcos V. G.", city: "Campo Belo", value: "R$1.500", vendor: "VENDAS ONLINE" },
+            { name: "Paulo S. L.", city: "Varginha", value: "R$1.500", vendor: "CONVENIENCIA FOX" },
+            { name: "Luiz V. F. J.", city: "Varginha", value: "R$1.500", vendor: "VENDAS ONLINE" },
+            { name: "Amilton C.", city: "São Sebastião do Paraíso", value: "R$1.500", vendor: "RENILDA AMBULANTE" },
+            { name: "Luiz F. M. de M.", city: "Andradas", value: "R$1.500", vendor: "LINK EQ DA SORTE - PA" },
+            { name: "Maria T. da S.", city: "Pouso Alegre", value: "R$1.500", vendor: "1001 UTILIDADES JORGE" },
+            { name: "Marcelo dos R. G.", city: "Guaxupé", value: "R$1.500", vendor: "VENDAS ONLINE" },
+            { name: "Francisco C. da S.", city: "Poços de Caldas", value: "R$1.500", vendor: "RITA DE CASSIA PONTO DA MODA" },
+            { name: "Alanderson H. S.", city: "Campo Belo", value: "R$1.500", vendor: "VENDAS ONLINE" },
+            { name: "Crislaine L. R. de S.", city: "Varginha", value: "R$1.500", vendor: "VENDAS ONLINE" },
+            { name: "Marco A. G.", city: "Poços de Caldas", value: "R$2.000", vendor: "PADARIA ELDORADO" },
+            { name: "Monica de F. A.", city: "Silvianópolis", value: "R$2.000", vendor: "VENDAS ONLINE" },
+            { name: "Jose R.", city: "Cabo Verde", value: "R$2.000", vendor: "LOJA ALTO ASTRAL" },
+            { name: "Sebastiao D. D.", city: "Heliodora", value: "R$2.000", vendor: "MAQUININHA DA SORTE - SALAO ALEXANDRINA" },
+            { name: "Jose A. de S.", city: "Boa Esperança", value: "R$2.000", vendor: "VENDAS ONLINE" },
+            { name: "Aristides da C. C.", city: "Andradas", value: "R$2.000", vendor: "BANCA DO KLEBER" },
+            { name: "Jorge O. S.", city: "Pouso Alegre", value: "R$2.000", vendor: "MINI MERCADO LEAO JUDA" },
+            { name: "Wendell A. P. da S.", city: "Varginha", value: "R$2.000", vendor: "ANDREIA APARECIDA" },
+            { name: "Jadson A. da S. S.", city: "Cachoeira de Minas", value: "R$2.000", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Silvestre G. N.", city: "Bom Repouso", value: "R$2.000", vendor: "ARI IMPORTS" }
+          ]
+        },
+        {
+          key: "30-08",
+          label: "30/08",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: true,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 6.000,00 (dividido em 5)", winners: [
+              { name: "Carlos F. de S. S.", city: "Alfenas", vendor: "SEBASTIAO A. G." },
+              { name: "Rafael M. de O. M.", city: "Pouso Alegre", vendor: "LINK EQUIPE DA SORTE - PA" },
+              { name: "Weber L. da S.", city: "Cambuquira", vendor: "HENQUIQUE" },
+              { name: "João P. C. de M.", city: "Pouso Alegre", vendor: "MARCOS BILL" },
+              { name: "Miguel G. R.", city: "Lavras", vendor: "LUIZ" }
+            ]},
+            { order: "2º Prêmio", value: "R$ 7.000,00", winners: [{ name: "Elza D. dos S.", city: "Lambari", vendor: "BAR DO LEO" }] },
+            { order: "3º Prêmio", value: "R$ 8.000,00 (dividido)", winners: [
+              { name: "Elder D. de S. F.", city: "Campos Gerais", vendor: "MEX DA SORTE" },
+              { name: "Sergio F. M.", city: "Três Pontas", vendor: "GAROTO DA SORTE - TIAGO" }
+            ]},
+            { order: "4º Prêmio", value: "R$ 9.000,00 (dividido)", winners: [
+              { name: "Luci P. da S.", city: "Guaxupé", vendor: "IVAIR MATEUS OS MENINOS DA SORTE" },
+              { name: "Michele da S.", city: "São Sebastião do Paraíso", vendor: "MANOEL BORGES" }
+            ]},
+            { order: "5º Prêmio", value: "R$ 210.000,00", winners: [{ name: "Camila A. B.", city: "Cambuí", vendor: "LINK EQUIPE DA SORTE - PA" }] }
+          ],
+          bateuNaTrave: [
+            { name: "Paulo C. J.", city: "Poços de Caldas" },
+            { name: "Paulo C. D. Z.", city: "Muzambinho" },
+            { name: "Elimar A. S.", city: "Campo Belo" },
+            { name: "Fabiano Ap. dos S.", city: "Candeias" },
+            { name: "Selmo R. da S.", city: "Lavras" },
+            { name: "Mauro T.", city: "Pouso Alegre" },
+            { name: "Clauberto D.", city: "Elói Mendes" },
+            { name: "Dina de A. C.", city: "Campo Belo" },
+            { name: "Dioclecio P.", city: "Cruzília" },
+            { name: "Leandro da S. R.", city: "Botelhos" },
+            { name: "Marlei de J.", city: "Campo Belo" },
+            { name: "Milton F. J.", city: "Muzambinho" },
+            { name: "Thiago G. F.", city: "Pouso Alegre" },
+            { name: "Lidiane N. M.", city: "Borda da Mata" },
+            { name: "Crislaine G. S.", city: "Pouso Alegre" },
+            { name: "Giseli R. A.", city: "São Sebastião do Paraíso" },
+            { name: "Edson I. V.", city: "Muzambinho" },
+            { name: "Daniel M. M.", city: "Paraguaçu" },
+            { name: "Clayton A. A.", city: "Ilicínea" },
+            { name: "Daniela Ap. C.", city: "São Sebastião do Paraíso" },
+            { name: "Benedito E.", city: "Pouso Alegre" },
+            { name: "Maria de F. da S.", city: "Cambuí" },
+            { name: "Mirian B. G.", city: "Andradas" },
+            { name: "Marcel Ap. da S.", city: "Pouso Alegre" },
+            { name: "Maria C. de A. F.", city: "Cássia" },
+            { name: "Jose M. P. dos S.", city: "Borda da Mata" },
+            { name: "Joao A. S. C.", city: "Ilicínea" },
+            { name: "Maria Ap. dos S.", city: "Olímpio Noronha" }
+          ],
+          giraMinas: [
+            { name: "Maria C. R. F.", city: "Alfenas", vendor: "BANCA DE REVISTA SANTA CASA" },
+            { name: "Eva M. R. da S.", city: "Guaxupé", vendor: "SERGINHO AFIACOES" },
+            { name: "Efrem C. dos S.", city: "Lavras", vendor: "VENDAS ONLINE" },
+            { name: "Lucas P. dos S.", city: "Cambuquira", vendor: "VENDAS ONLINE" },
+            { name: "Jandira V. de L. B.", city: "Jacutinga", vendor: "THIAGAO DA SORTE" },
+            { name: "Marcia R. F. P.", city: "Lambari", vendor: "VENDAS ONLINE" },
+            { name: "Osvaldo D. da S.", city: "Muzambinho", vendor: "LAERCIO SANTINI" },
+            { name: "Hailton C. F.", city: "Conceição da Aparecida", vendor: "CRISTINA E FABIO CIGANO" },
+            { name: "Danilo D. da S.", city: "Itajubá", vendor: "VENDAS ONLINE" },
+            { name: "Rogerio P. M.", city: "Conceição dos Ouros", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Renato T.", city: "Campo Belo", vendor: "TIAO CUNHA" },
+            { name: "Gabriel A.", city: "Campo Belo", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Luiz H. S. S.", city: "Varginha", vendor: "TIBICA" },
+            { name: "Donizetti da C. N.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" },
+            { name: "Carlos R. F.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" },
+            { name: "Jesus dos R.", city: "Campo Belo", vendor: "VENDAS ONLINE" },
+            { name: "Magali Ap. M. D.", city: "Poços de Caldas", vendor: "MAGALI" },
+            { name: "Jose R. B.", city: "Piranguinho", vendor: "NALDO UAI" },
+            { name: "Wander L. de C.", city: "Nepomuceno", vendor: "ZE WALTER E JANAINA E ALEXANDRE" },
+            { name: "Antonio de S.", city: "Varginha", vendor: "CANTINHO DA MODA" },
+            { name: "Jose L. G.", city: "Campanha", vendor: "CUSTODIO SILVA" },
+            { name: "Luan F. M. V.", city: "Jacutinga", vendor: "VENDAS ONLINE" },
+            { name: "Francisco de O. N.", city: "Três Corações", vendor: "HELOISA MORENA DA SORTE" },
+            { name: "Mateus H. P.", city: "Paraguaçu", vendor: "GAROTO DA SORTE MATEUS" },
+            { name: "Joao B. da S.", city: "Piranguinho", vendor: "ALO.COM" },
+            { name: "Gederson D. P.", city: "Alpinópolis", vendor: "ALAOR JOSE DE OLIVEIRA" },
+            { name: "Pedro A. G.", city: "Alfenas", vendor: "SM PINHEIROS ANTONIO SANTOS" },
+            { name: "Adriano C. L.", city: "Pouso Alegre", vendor: "LUIZ GONZAGA SOARES" },
+            { name: "Leonardo H. C.", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "Kethlem C. R.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" }
+          ]
+        }
+      ]
+    },
+    {
+      key: "2026-09",
+      label: "Setembro",
+      editions: [
+        {
+          key: "06-09",
+          label: "06/09",
+          titlePrice: "R$ 20,00",
+          hasBateuTrave: true,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Claudinea de S. M. S.", city: "Alfenas", vendor: "VENDAS ONLINE" }] },
+            { order: "2º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Joao S. V.", city: "São Sebastião do Paraíso", vendor: "MAQUININHA DA SORTE - JUSMARA BANCO ITAU" }] },
+            { order: "3º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Ramon L. F.", city: "Monte Sião", vendor: "THIAGAO DA SORTE ORIGINAL" }] },
+            { order: "4º Prêmio", value: "R$ 10.000,00", winners: [{ name: "Regiane Ap. G.", city: "Ribeirão Vermelho", vendor: "MAQUININHA DA SORTE - BAR DA BETH" }] },
+            { order: "5º Prêmio", value: "R$ 400.000,00", winners: [{ name: "Vanessa P. C. P.", city: "Três Pontas", vendor: "VENDAS ONLINE" }] }
+          ],
+          bateuNaTrave: [
+            { name: "Luiz F. A. T.", city: "Três Corações" },
+            { name: "Valdeci da S. A.", city: "Tocos do Moji" },
+            { name: "Edson I. V.", city: "Muzambinho" },
+            { name: "Lourdes O. J. I.", city: "Muzambinho" },
+            { name: "Felipe dos R. V. B.", city: "Poços de Caldas" },
+            { name: "Sueli R. da S.", city: "Alfenas" },
+            { name: "Guilherme H. M.", city: "Pouso Alegre" }
+          ],
+          giraMinas: [
+            { name: "Juliana H. F. G. P.", city: "Poços de Caldas", vendor: "ESPETINHO DO FRANK - CABO VERDE" },
+            { name: "Mateus H. P.", city: "Paraguaçu", vendor: "GAROTO DA SORTE MATEUS" },
+            { name: "Andresa C. A.", city: "Alfenas", vendor: "VENDAS ONLINE" },
+            { name: "Joaquim A. B.", city: "Alpinópolis", vendor: "EDUARDO UAI" },
+            { name: "Alessandra B. G.", city: "Três Corações", vendor: "BAR SANTO GOLE" },
+            { name: "Josiane de C. S. C.", city: "Botelhos", vendor: "MAQUININHA DA SORTE - MAGALI AP" },
+            { name: "Vinicius N. de S.", city: "Campo Belo", vendor: "ALEXANDRE FERREIRA" },
+            { name: "Luzia A.", city: "Campo Belo", vendor: "VENDAS ONLINE" },
+            { name: "Leticia de L. S.", city: "Varginha", vendor: "VENDAS ONLINE" },
+            { name: "Romeu Z. dos R.", city: "Santa Rita do Sapucaí", vendor: "BIANA ESQUINA DA SORTE" },
+            { name: "Isabel R. V.", city: "São Lourenço", vendor: "ROYAL TABACARIA 2 - LAVINIA" },
+            { name: "Maria da C. T.", city: "Lavras", vendor: "MAQUININHA DA SORTE - ZE DE LAVRAS" },
+            { name: "Aparecida J. N. de P.", city: "Carmo do Rio Claro", vendor: "BAR DO TIELO" },
+            { name: "Regina L. do C. M.", city: "Três Corações", vendor: "LILIA NOEL" },
+            { name: "Allyson R. R.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" },
+            { name: "Meri T.", city: "Extrema", vendor: "VENDAS ONLINE" },
+            { name: "Elaine de F. J.", city: "Boa Esperança", vendor: "JUNINHO" },
+            { name: "Autair J. de M.", city: "Poços de Caldas", vendor: "RITA DE CASSIA - PONTO DA MODA" },
+            { name: "Danilo M. O. F.", city: "Passos", vendor: "VENDAS ONLINE" },
+            { name: "Josmar A. da S.", city: "Bueno Brandão", vendor: "UAI PLAST" },
+            { name: "Ana J. M.", city: "Varginha", vendor: "JAQUE CHAMA DA SORTE" },
+            { name: "Ewerton V. da S. N.", city: "São Lourenço", vendor: "NELSON LOTERIAS" },
+            { name: "Joao B.", city: "Pouso Alegre", vendor: "PASTELARIA SAO JOSE" },
+            { name: "Joao B. G.", city: "Poços de Caldas", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Dalva M. C.", city: "Monte Santo de Minas", vendor: "JUSMARA BANCO ITAU - SAO SEBASTIAO DO PARAISO" },
+            { name: "Kleber D. dos S.", city: "Andradas", vendor: "BANCA DO KLEBER" },
+            { name: "Elisabeth A. F.", city: "Carmo do Rio Claro", vendor: "ROGERIO DO TINO" },
+            { name: "Cleiton R. de M.", city: "Passos", vendor: "BANCA DO ROSARIO" },
+            { name: "Rafael M. dos S.", city: "Elói Mendes", vendor: "VENDAS ONLINE" },
+            { name: "Francisco D. C.", city: "Pouso Alegre", vendor: "EQUIPE DA SORTE - PA" }
+          ]
+        },
+        {
+          key: "13-09",
+          label: "13/09",
+          titlePrice: "R$ 15,00",
+          hasBateuTrave: true,
+          giraMinasValue: "R$ 1.000,00",
+          prizes: [
+            { order: "1º Prêmio", value: "R$ 6.000,00", winners: [{ name: "Edvaldo L. B. J.", city: "Três Pontas", vendor: "VENDAS ONLINE" }] },
+            { order: "2º Prêmio", value: "R$ 7.000,00", winners: [{ name: "Luiz C. de O. L.", city: "Pouso Alegre", vendor: "LINK EQUIPE DA SORTE - PA" }] },
+            { order: "3º Prêmio", value: "R$ 8.000,00", winners: [{ name: "Egmer M. O.", city: "Passos", vendor: "BAR DO ZEAS" }] },
+            { order: "4º Prêmio", value: "R$ 9.000,00", winners: [{ name: "Maxwel L. M.", city: "Poços de Caldas", vendor: "VENDAS ONLINE" }] },
+            { order: "5º Prêmio", value: "R$ 220.000,00", winners: [{ name: "Luzia M. P.", city: "Ouro Fino", vendor: "VENDAS ONLINE" }] }
+          ],
+          bateuNaTrave: [
+            { name: "Ilda A. F. G.", city: "Muzambinho" },
+            { name: "Tiago R.", city: "Varginha" },
+            { name: "Bianca P. C.", city: "Poços de Caldas" },
+            { name: "Maria do C.", city: "Paraguaçu" },
+            { name: "Ação Entre Amigos Grupo F", city: "Pouso Alegre" },
+            { name: "Zé C. S.", city: "Pouso Alegre" },
+            { name: "Joao M. de S.", city: "São Lourenço" }
+          ],
+          giraMinas: [
+            { name: "Rodinei F. S.", city: "Elói Mendes", vendor: "BAR E MERCEARIA JOAO DO AMADO - NEPOMUCENO" },
+            { name: "Isabella de O. L. O.", city: "Pouso Alegre", vendor: "MINI MERCADO SAO VICENTE" },
+            { name: "Marco A. de P.", city: "Heliodora", vendor: "BAR LEKINHO" },
+            { name: "Wilton J. M. V.", city: "São Sebastião do Paraíso", vendor: "VENDAS ONLINE" },
+            { name: "Francisco de C. O.", city: "Varginha", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Jairo B. R.", city: "Santa Rita do Sapucaí", vendor: "EQUIPE DA SORTE - PA" },
+            { name: "Rita de C. S. G.", city: "Santa Rita do Sapucaí", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Maria I. C.", city: "São Sebastião do Paraíso", vendor: "JUSMARA BANCO ITAU" },
+            { name: "Jose F. F.", city: "Pouso Alegre", vendor: "JOSE DA SORTE" },
+            { name: "Egidio M. de A.", city: "São Sebastião do Paraíso", vendor: "MERCEARIA M G" },
+            { name: "Ruvaldo M.", city: "Monte Sião", vendor: "THIAGAO DA SORTE ORIGINAL - INCONFIDENTES" },
+            { name: "Henrique E.", city: "São Sebastião do Paraíso", vendor: "DORA AVENTUREIRA BOI BRANCO" },
+            { name: "Luciana C. G. H.", city: "Varginha", vendor: "LINK EQUIPE DA SORTE - PA" },
+            { name: "Thiago P. de C.", city: "Baependi", vendor: "BANCA ROYAL TABACARIA - SAO LOURENCO" },
+            { name: "Jose A.", city: "Santa Rita do Sapucaí", vendor: "HART" },
+            { name: "Maria A. P. C.", city: "Campos Gerais", vendor: "PANIFICADORA AVENIDA" },
+            { name: "Ilma S. S.", city: "Passos", vendor: "MARIA INES BUENO" },
+            { name: "Jose D. de C.", city: "Andradas", vendor: "BAR DA SANDRA" },
+            { name: "Jose C. F.", city: "Santa Rita do Sapucaí", vendor: "BAR SERTANEJO" },
+            { name: "Rogerio de O. P.", city: "Nepomuceno", vendor: "ZE VALTER JANAINA E ALEXANDRE" }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+/* ============================================================
+   RENDER LOGIC
+   ============================================================ */
+const SUMMARY_KEY = "__summary__";
+let currentView = "cover"; // "cover" | "month"
+let activeMonth = REPORT_DATA.months[0].key;
+let activeEdition = REPORT_DATA.months[0].editions[0].key;
+
+function combineEditions(editions){
+  const combined = { prizes: [], bateuNaTrave: [], giraMinas: [], hasBateuTrave: editions.some(e => e.hasBateuTrave) };
+  editions.forEach(ed => {
+    combined.prizes.push(...ed.prizes);
+    combined.bateuNaTrave.push(...ed.bateuNaTrave);
+    combined.giraMinas.push(...ed.giraMinas);
+  });
+  return combined;
+}
+
+function classifyVendor(v){
+  if(!v) return 'Não informado';
+  const upper = v.toUpperCase();
+  if(upper.includes('VENDAS ONLINE') || upper.includes('VENDA ONLINE') || upper.includes('VENDAS ON LINE') || upper.includes('VENDA ON LINE')) return 'Venda Online';
+  if(upper.includes('MAQUININHA')) return 'Maquininha POS';
+  return 'Revendedor';
+}
+
+function buildChannelStats(edition){
+  const all = [];
+  edition.prizes.forEach(p => p.winners.forEach(w => all.push(w)));
+  edition.giraMinas.forEach(w => all.push(w));
+  const counts = { 'Venda Online': 0, 'Maquininha POS': 0, 'Revendedor': 0, 'Não informado': 0 };
+  const revendedorCounts = {};
+  all.forEach(w => {
+    const cat = classifyVendor(w.vendor);
+    counts[cat] = (counts[cat] || 0) + 1;
+    if(cat === 'Revendedor' && w.vendor){
+      revendedorCounts[w.vendor] = (revendedorCounts[w.vendor] || 0) + 1;
+    }
+  });
+  const allRevendedoresSorted = Object.entries(revendedorCounts)
+    .sort((a,b) => b[1] - a[1])
+    .map(([name, count]) => ({ name, count }));
+  const topRevendedores = allRevendedoresSorted.slice(0, 10);
+  const uniqueRevendedores = Object.keys(revendedorCounts).length;
+  const hasVendorData = counts['Não informado'] < all.length;
+  return { counts, topRevendedores, allRevendedoresSorted, total: all.length, uniqueRevendedores, hasVendorData };
+}
+
+function buildCityRanking(edition){
+  const cities = {};
+  const bump = (city, field) => {
+    if(!cities[city]) cities[city] = { premios:0, bateu:0, gira:0 };
+    cities[city][field]++;
+  };
+  edition.prizes.forEach(p => p.winners.forEach(w => bump(w.city, 'premios')));
+  edition.bateuNaTrave.forEach(w => bump(w.city, 'bateu'));
+  edition.giraMinas.forEach(w => bump(w.city, 'gira'));
+
+  const rows = Object.entries(cities).map(([city, c]) => ({
+    city,
+    premios: c.premios,
+    bateu: c.bateu,
+    gira: c.gira,
+    total: c.premios + c.bateu + c.gira
+  }));
+  rows.sort((a,b) => b.total - a.total);
+  return rows;
+}
+
+function renderMonthNav(){
+  const nav = document.getElementById('monthNav');
+  nav.innerHTML = '';
+
+  const summaryBtn = document.createElement('button');
+  summaryBtn.textContent = 'Resumo Anual';
+  summaryBtn.classList.add('year-summary-btn');
+  if(currentView === 'cover') summaryBtn.classList.add('active');
+  summaryBtn.onclick = () => { currentView = 'cover'; render(); };
+  nav.appendChild(summaryBtn);
+
+  const monthOrder = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  monthOrder.forEach(label => {
+    const found = REPORT_DATA.months.find(m => m.label === label);
+    const btn = document.createElement('button');
+    btn.textContent = label;
+    if(!found){ btn.disabled = true; }
+    else{
+      if(currentView === 'month' && found.key === activeMonth) btn.classList.add('active');
+      btn.onclick = () => { currentView = 'month'; activeMonth = found.key; activeEdition = found.editions[0].key; render(); };
+    }
+    nav.appendChild(btn);
+  });
+}
+
+function renderEditionNav(month){
+  const nav = document.getElementById('editionNav');
+  nav.innerHTML = '';
+  month.editions.forEach(ed => {
+    const btn = document.createElement('button');
+    btn.textContent = ed.label;
+    if(ed.key === activeEdition) btn.classList.add('active');
+    btn.onclick = () => { activeEdition = ed.key; render(); };
+    nav.appendChild(btn);
+  });
+  const summaryBtn = document.createElement('button');
+  summaryBtn.textContent = 'Resumo do mês';
+  summaryBtn.classList.add('summary-btn');
+  if(activeEdition === SUMMARY_KEY) summaryBtn.classList.add('active');
+  summaryBtn.onclick = () => { activeEdition = SUMMARY_KEY; render(); };
+  nav.appendChild(summaryBtn);
+}
+
+function renderContent(edition){
+  const rows = buildCityRanking(edition);
+  const totalContemplados = rows.reduce((s,r) => s + r.total, 0);
+  const totalCidades = rows.length;
+  const leader = rows[0];
+
+  const container = document.getElementById('content');
+
+  const legendBateu = edition.hasBateuTrave
+    ? `<div class="pill bordo"><span class="dot-label">Bateu na Trave</span><span class="desc">19 dezenas</span></div>`
+    : '';
+
+  const channelStats = buildChannelStats(edition);
+  const channelTotal = channelStats.total || 1;
+
+  container.innerHTML = `
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="label">Total de contemplados</div>
+        <div class="value">${totalContemplados}</div>
+        <div class="sub">prêmios${edition.hasBateuTrave ? ' + bateu na trave' : ''} + gira minas</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Cidades contempladas</div>
+        <div class="value">${totalCidades}</div>
+        <div class="sub">cidades diferentes</div>
+      </div>
+      <div class="stat-card leader">
+        <div class="label">Cidade líder</div>
+        <div class="value">${leader ? leader.city : '—'}</div>
+        <div class="sub">${leader ? leader.total + ' contemplados' : ''}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Total de revendedores</div>
+        <div class="value">${channelStats.hasVendorData ? channelStats.uniqueRevendedores : '—'}</div>
+        <div class="sub">${channelStats.hasVendorData ? 'revendedores diferentes' : 'dado pendente'}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Maquininha POS</div>
+        <div class="value">${channelStats.hasVendorData ? (channelStats.counts['Maquininha POS'] || 0) : '—'}</div>
+        <div class="sub">${channelStats.hasVendorData ? (((channelStats.counts['Maquininha POS']||0) / channelTotal) * 100).toFixed(0) + '% do total' : 'dado pendente'}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Venda Online</div>
+        <div class="value">${channelStats.hasVendorData ? (channelStats.counts['Venda Online'] || 0) : '—'}</div>
+        <div class="sub">${channelStats.hasVendorData ? (((channelStats.counts['Venda Online']||0) / channelTotal) * 100).toFixed(0) + '% do total' : 'dado pendente'}</div>
+      </div>
+    </div>
+    ${!channelStats.hasVendorData ? `<div class="data-pending-note">⚠ Dados de canal de venda (revendedor/POS/online) ainda não foram conferidos para esta edição.</div>` : ''}
+
+    <div class="legend">
+      <div class="pill azul"><span class="dot-label">Prêmio</span><span class="desc">1º ao 5º prêmio</span></div>
+      ${legendBateu}
+      <div class="pill verde"><span class="dot-label">Gira Minas</span><span class="desc">${edition.giraMinasValue} cada</span></div>
+      <div class="pill" style="border-color: var(--border);"><span class="desc">Título da edição: ${edition.titlePrice}</span></div>
+    </div>
+
+    <div class="table-wrap" style="margin-bottom: 16px;">
+      <div class="table-title">RANKING DE CONTEMPLADOS POR CIDADE (LISTA COMPLETA)</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:34px;">#</th>
+            <th>Cidade</th>
+            <th class="num">Prêmios</th>
+            ${edition.hasBateuTrave ? '<th class="num">Bateu Trave</th>' : ''}
+            <th class="num">Gira Minas</th>
+            <th class="num">Total</th>
+            <th>Participação</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map((r, i) => {
+            const pct = totalContemplados ? ((r.total / totalContemplados) * 100) : 0;
+            return `
+            <tr>
+              <td class="rank">${i+1}</td>
+              <td class="city">${r.city}${i < 3 ? `<span class="badge-rank">${i+1}º</span>` : ''}</td>
+              <td class="num">${r.premios ? `<span class="chip azul">${r.premios}</span>` : '<span class="chip dash">—</span>'}</td>
+              ${edition.hasBateuTrave ? `<td class="num">${r.bateu ? `<span class="chip bordo">${r.bateu}</span>` : '<span class="chip dash">—</span>'}</td>` : ''}
+              <td class="num">${r.gira ? `<span class="chip verde">${r.gira}</span>` : '<span class="chip dash">—</span>'}</td>
+              <td class="total-col">${r.total}</td>
+              <td>
+                <div class="participation">
+                  <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+                  <div class="pct">${pct.toFixed(0)}%</div>
+                </div>
+              </td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    ${channelStats.allRevendedoresSorted.length ? `
+    <div class="table-wrap">
+      <div class="table-title">REVENDEDORES DESTA EDIÇÃO (LISTA COMPLETA)</div>
+      <div class="top-revendedores">
+        ${channelStats.allRevendedoresSorted.map((r,i) => `
+          <div class="tr-row">
+            <span class="tr-rank">${i+1}º</span>
+            <span class="tr-name">${r.name}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>` : ''}
+  `;
+}
+
+function renderMonthSummaryContent(month){
+  const combined = combineEditions(month.editions);
+  const allRows = buildCityRanking(combined);
+  const totalContemplados = allRows.reduce((s,r) => s + r.total, 0);
+  const totalCidades = allRows.length;
+  const leader = allRows[0];
+  const rows = allRows.slice(0, 10);
+  const editionLabels = month.editions.map(e => e.label).join(', ');
+
+  const container = document.getElementById('content');
+
+  const legendBateu = combined.hasBateuTrave
+    ? `<div class="pill bordo"><span class="dot-label">Bateu na Trave</span><span class="desc">19 dezenas</span></div>`
+    : '';
+
+  const channelStats = buildChannelStats(combined);
+  const channelTotal = channelStats.total || 1;
+
+  container.innerHTML = `
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="label">Total de contemplados no mês</div>
+        <div class="value">${totalContemplados}</div>
+        <div class="sub">prêmios${combined.hasBateuTrave ? ' + bateu na trave' : ''} + gira minas</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Cidades contempladas</div>
+        <div class="value">${totalCidades}</div>
+        <div class="sub">cidades diferentes</div>
+      </div>
+      <div class="stat-card leader">
+        <div class="label">Cidade líder do mês</div>
+        <div class="value">${leader ? leader.city : '—'}</div>
+        <div class="sub">${leader ? leader.total + ' contemplados' : ''}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Revendedor</div>
+        <div class="value">${channelStats.counts['Revendedor'] || 0}</div>
+        <div class="sub">${(((channelStats.counts['Revendedor']||0) / channelTotal) * 100).toFixed(0)}% do total</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Maquininha POS</div>
+        <div class="value">${channelStats.counts['Maquininha POS'] || 0}</div>
+        <div class="sub">${(((channelStats.counts['Maquininha POS']||0) / channelTotal) * 100).toFixed(0)}% do total</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Venda Online</div>
+        <div class="value">${channelStats.counts['Venda Online'] || 0}</div>
+        <div class="sub">${(((channelStats.counts['Venda Online']||0) / channelTotal) * 100).toFixed(0)}% do total</div>
+      </div>
+    </div>
+    ${!channelStats.hasVendorData ? `<div class="data-pending-note">⚠ Dados de canal de venda ainda não foram conferidos para nenhuma edição deste mês.</div>` : (channelStats.counts['Não informado'] > 0 ? `<div class="data-pending-note">⚠ Cobertura parcial: dados de canal de venda conferidos para ${(((channelTotal - channelStats.counts['Não informado']) / channelTotal) * 100).toFixed(0)}% dos contemplados do mês (algumas edições ainda pendentes).</div>` : '')}
+
+    <div class="legend">
+      <div class="pill azul"><span class="dot-label">Prêmio</span><span class="desc">1º ao 5º prêmio</span></div>
+      ${legendBateu}
+      <div class="pill verde"><span class="dot-label">Gira Minas</span><span class="desc">valor variável por edição</span></div>
+      <div class="pill" style="border-color: var(--border);"><span class="desc">Edições: ${editionLabels}</span></div>
+    </div>
+
+    <div class="table-wrap" style="margin-bottom: 16px;">
+      <div class="table-title">TOP 10 CIDADES MAIS PREMIADAS DO MÊS</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:34px;">#</th>
+            <th>Cidade</th>
+            <th class="num">Prêmios</th>
+            ${combined.hasBateuTrave ? '<th class="num">Bateu Trave</th>' : ''}
+            <th class="num">Gira Minas</th>
+            <th class="num">Total</th>
+            <th>Participação</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map((r, i) => {
+            const pct = totalContemplados ? ((r.total / totalContemplados) * 100) : 0;
+            return `
+            <tr>
+              <td class="rank">${i+1}</td>
+              <td class="city">${r.city}${i < 3 ? `<span class="badge-rank">${i+1}º</span>` : ''}</td>
+              <td class="num">${r.premios ? `<span class="chip azul">${r.premios}</span>` : '<span class="chip dash">—</span>'}</td>
+              ${combined.hasBateuTrave ? `<td class="num">${r.bateu ? `<span class="chip bordo">${r.bateu}</span>` : '<span class="chip dash">—</span>'}</td>` : ''}
+              <td class="num">${r.gira ? `<span class="chip verde">${r.gira}</span>` : '<span class="chip dash">—</span>'}</td>
+              <td class="total-col">${r.total}</td>
+              <td>
+                <div class="participation">
+                  <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+                  <div class="pct">${pct.toFixed(0)}%</div>
+                </div>
+              </td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    ${channelStats.topRevendedores.length ? `
+    <div class="table-wrap">
+      <div class="table-title">TOP REVENDEDORES DO MÊS</div>
+      <div class="top-revendedores">
+        ${channelStats.topRevendedores.map((r,i) => `
+          <div class="tr-row">
+            <span class="tr-rank">${i+1}º</span>
+            <span class="tr-name">${r.name}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>` : ''}
+  `;
+}
+
+function renderCover(){
+  const allEditions = [];
+  REPORT_DATA.months.forEach(m => allEditions.push(...m.editions));
+  const combined = combineEditions(allEditions);
+  const allRows = buildCityRanking(combined);
+  const totalContemplados = allRows.reduce((s,r) => s + r.total, 0);
+  const totalCidades = allRows.length;
+  const leader = allRows[0];
+  const rows = allRows.slice(0, 10);
+
+  const channelStats = buildChannelStats(combined);
+  const channelTotal = channelStats.total || 1;
+
+  const container = document.getElementById('content');
+  container.innerHTML = `
+    <div class="cover-section-title">RESUMO GERAL — 2026</div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="label">Total de contemplados no ano</div>
+        <div class="value">${totalContemplados}</div>
+        <div class="sub">prêmios + gira minas, todas as edições</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Cidades contempladas</div>
+        <div class="value">${totalCidades}</div>
+        <div class="sub">cidades diferentes no ano</div>
+      </div>
+      <div class="stat-card leader">
+        <div class="label">Cidade líder do ano</div>
+        <div class="value">${leader ? leader.city : '—'}</div>
+        <div class="sub">${leader ? leader.total + ' contemplados' : ''}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Revendedor</div>
+        <div class="value">${channelStats.counts['Revendedor'] || 0}</div>
+        <div class="sub">${(((channelStats.counts['Revendedor']||0) / channelTotal) * 100).toFixed(0)}% do total</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Maquininha POS</div>
+        <div class="value">${channelStats.counts['Maquininha POS'] || 0}</div>
+        <div class="sub">${(((channelStats.counts['Maquininha POS']||0) / channelTotal) * 100).toFixed(0)}% do total</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Venda Online</div>
+        <div class="value">${channelStats.counts['Venda Online'] || 0}</div>
+        <div class="sub">${(((channelStats.counts['Venda Online']||0) / channelTotal) * 100).toFixed(0)}% do total</div>
+      </div>
+    </div>
+    ${!channelStats.hasVendorData ? `<div class="data-pending-note">⚠ Dados de canal de venda ainda não foram conferidos.</div>` : (channelStats.counts['Não informado'] > 0 ? `<div class="data-pending-note">⚠ Cobertura parcial: dados de canal de venda conferidos para ${(((channelTotal - channelStats.counts['Não informado']) / channelTotal) * 100).toFixed(0)}% dos contemplados do ano (várias edições ainda pendentes).</div>` : '')}
+
+    <div class="table-wrap" style="margin-bottom: 16px;">
+      <div class="table-title">TOP 10 CIDADES MAIS PREMIADAS DO ANO</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:34px;">#</th>
+            <th>Cidade</th>
+            <th class="num">Prêmios</th>
+            <th class="num">Gira Minas</th>
+            <th class="num">Total</th>
+            <th>Participação</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map((r, i) => {
+            const pct = totalContemplados ? ((r.total / totalContemplados) * 100) : 0;
+            return `
+            <tr>
+              <td class="rank">${i+1}</td>
+              <td class="city">${r.city}${i < 3 ? `<span class="badge-rank">${i+1}º</span>` : ''}</td>
+              <td class="num">${r.premios ? `<span class="chip azul">${r.premios}</span>` : '<span class="chip dash">—</span>'}</td>
+              <td class="num">${r.gira ? `<span class="chip verde">${r.gira}</span>` : '<span class="chip dash">—</span>'}</td>
+              <td class="total-col">${r.total}</td>
+              <td>
+                <div class="participation">
+                  <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+                  <div class="pct">${pct.toFixed(0)}%</div>
+                </div>
+              </td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    ${channelStats.topRevendedores.length ? `
+    <div class="table-wrap">
+      <div class="table-title">TOP REVENDEDORES DO ANO</div>
+      <div class="top-revendedores">
+        ${channelStats.topRevendedores.map((r,i) => `
+          <div class="tr-row">
+            <span class="tr-rank">${i+1}º</span>
+            <span class="tr-name">${r.name}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>` : ''}
+  `;
+}
+
+function render(){
+  renderMonthNav();
+  document.getElementById('editionNav').style.display = currentView === 'month' ? 'flex' : 'none';
+
+  if(currentView === 'cover'){
+    renderCover();
+    return;
+  }
+  const month = REPORT_DATA.months.find(m => m.key === activeMonth);
+  renderEditionNav(month);
+  if(activeEdition === SUMMARY_KEY){
+    renderMonthSummaryContent(month);
+  } else {
+    const edition = month.editions.find(e => e.key === activeEdition);
+    renderContent(edition);
+  }
+}
+
+document.getElementById('lastUpdate').textContent = (() => {
+  const last = REPORT_DATA.months[REPORT_DATA.months.length - 1];
+  const ed = last.editions[last.editions.length - 1];
+  return ed.label + '/' + last.label.slice(0,3);
+})();
+
+render();
+</script>
+</body>
+</html>
