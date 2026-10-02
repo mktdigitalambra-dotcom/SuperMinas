@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Super Minas — Report Semanal · Edição 455</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --orange:#ff7c07;
+    --gold:#fdc300;
+    --black:#1a1a1a;
+    --gray:#6b6b6b;
+    --bg:#f7f7f8;
+    --card:#ffffff;
+    --border:#ececec;
+    --zebra:#fbfbfb;
+    --muted-fill:#e4e4e6;
+    --banner-bg:#fff7e8;
+    --banner-border:#ffe0a3;
+    --banner-text:#4a3c1a;
+    --shadow:0 2px 10px rgba(0,0,0,0.04);
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --black:#f2f2f2; --gray:#a6a6a6; --bg:#141414; --card:#1e1e1e;
+      --border:#2e2e2e; --zebra:#232323; --muted-fill:#3a3a3a;
+      --banner-bg:#2a2112; --banner-border:#4d3a12; --banner-text:#ecdcb8;
+      --shadow:none;
+    }
+  }
+  :root[data-theme="dark"]{
+    --black:#f2f2f2; --gray:#a6a6a6; --bg:#141414; --card:#1e1e1e;
+    --border:#2e2e2e; --zebra:#232323; --muted-fill:#3a3a3a;
+    --banner-bg:#2a2112; --banner-border:#4d3a12; --banner-text:#ecdcb8;
+    --shadow:none;
+  }
+  html{ scroll-padding-top:env(safe-area-inset-top,0px); }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  body{
+    font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+    background:var(--bg);
+    color:var(--black);
+    padding:28px;
+    max-width:1280px;
+    margin:0 auto;
+  }
+
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    background:var(--card); border-radius:14px; padding:20px 28px;
+    margin-bottom:24px; border-top:5px solid var(--orange);
+    box-shadow:var(--shadow); flex-wrap:wrap; gap:14px;
+  }
+  .brand{ display:flex; align-items:center; gap:16px; }
+  header .logo{ height:72px; width:auto; flex-shrink:0; }
+  .brand-mark{
+    width:56px; height:56px; border-radius:12px; background:var(--orange);
+    color:#fff; font-weight:800; font-size:18px; letter-spacing:.5px;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  header h1{ font-size:22px; letter-spacing:.3px; }
+  header .subtitle{ font-size:13px; color:var(--gray); margin-top:4px; }
+  .pills{ display:flex; gap:10px; flex-wrap:wrap; }
+  .edition-pill{
+    background:var(--gold); color:#1a1a1a; font-weight:700; font-size:14px;
+    padding:9px 18px; border-radius:20px; white-space:nowrap;
+  }
+
+  .context-banner{
+    background:var(--banner-bg); border:1px solid var(--banner-border);
+    border-left:5px solid var(--orange); border-radius:12px;
+    padding:14px 20px; margin-bottom:26px; font-size:13px;
+    color:var(--banner-text); line-height:1.5;
+  }
+  .context-banner b{ color:var(--orange); }
+
+  .section-title{
+    font-size:16px; font-weight:700; margin:6px 0 14px 4px;
+    display:flex; align-items:center; gap:8px;
+    text-transform:uppercase; letter-spacing:.3px;
+  }
+  .section-title::before{
+    content:""; width:6px; height:18px; background:var(--gold);
+    border-radius:3px; display:inline-block;
+  }
+  .section-title .card-num{ color:var(--gray); font-weight:600; }
+  .section-desc{ font-size:12.5px; color:var(--gray); margin:-6px 0 14px 4px; line-height:1.5; }
+
+  .kpi-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:16px; }
+  .kpi-card{
+    background:var(--card); border-radius:14px; padding:20px 22px;
+    box-shadow:var(--shadow); border:1px solid var(--border);
+  }
+  .kpi-card.total{ border-top:4px solid var(--black); }
+  .kpi-card.fisico{ border-top:4px solid var(--gold); }
+  .kpi-card.online{ border-top:4px solid var(--orange); }
+  .kpi-card.share{ background:var(--orange); border-color:var(--orange); }
+  .kpi-card .label{ font-size:12.5px; color:var(--gray); font-weight:500; margin-bottom:10px; }
+  .kpi-card .value{ font-size:28px; font-weight:800; font-variant-numeric:tabular-nums; }
+  .kpi-card .foot{ font-size:12px; color:var(--gray); margin-top:6px; }
+  .kpi-card.share .label, .kpi-card.share .foot{ color:rgba(255,255,255,.88); }
+  .kpi-card.share .value{ color:#fff; }
+
+  .card{
+    background:var(--card); border-radius:14px; padding:22px;
+    box-shadow:var(--shadow); border:1px solid var(--border); margin-bottom:24px;
+  }
+  .card h3{ font-size:14px; margin-bottom:4px; }
+  .card .hint{ font-size:12.5px; color:var(--gray); margin-bottom:16px; }
+
+  .mix-bar{ display:flex; height:46px; border-radius:10px; overflow:hidden; margin-bottom:12px; }
+  .mix-bar div{
+    display:flex; align-items:center; padding:0 12px; font-size:13px;
+    font-weight:700; white-space:nowrap; overflow:hidden; min-width:0;
+  }
+  .seg-fisico{ background:var(--gold); color:#1a1a1a; }
+  .seg-online{ background:var(--orange); color:#fff; }
+  .seg-outros{ background:var(--muted-fill); color:var(--gray); justify-content:center; }
+  .mix-legend{ display:flex; gap:20px; flex-wrap:wrap; font-size:12.5px; color:var(--gray); }
+  .mix-legend .dot{ display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:-1px; }
+
+  .table-wrap{ overflow-x:auto; }
+  .table-wrap.scroll-y{ max-height:420px; overflow-y:auto; border-radius:8px; }
+  .table-wrap.scroll-y thead th{ position:sticky; top:0; z-index:2; background:var(--orange); }
+  .table-wrap.scroll-y tr.tt td{ position:sticky; bottom:0; z-index:1; }
+  .table-wrap.scroll-y::-webkit-scrollbar{ width:8px; height:8px; }
+  .table-wrap.scroll-y::-webkit-scrollbar-thumb{ background:var(--gold); border-radius:4px; }
+  .table-wrap.scroll-y{ scrollbar-color:var(--gold) transparent; scrollbar-width:thin; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; min-width:640px; }
+  table.valores thead tr{ background:var(--orange); }
+  table.valores th{
+    text-align:left; padding:12px 16px; color:#fff; font-weight:700;
+    font-size:12.5px; text-transform:uppercase; letter-spacing:.3px;
+  }
+  table.valores th:not(:first-child), table.valores td:not(:first-child){ text-align:right; }
+  table.valores td{ padding:11px 16px; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; }
+  table.valores tbody tr:nth-child(even) td{ background:var(--zebra); }
+  table.valores tr.group td{ font-weight:800; }
+  table.valores tr.sub td:first-child{ padding-left:34px; color:var(--gray); }
+  table.valores tr.excl td{ color:var(--gray); font-style:italic; }
+  .table-wrap.scroll-y tr.group td{ background:var(--zebra); }
+  table.valores tr.pending td{ color:var(--gray); }
+  table.valores tr.tt td{ font-weight:800; border-top:2px solid var(--black); border-bottom:none; background:var(--card); }
+
+  .note{
+    font-size:12px; color:var(--gray); background:var(--zebra); border-radius:10px;
+    padding:10px 14px; border:1px dashed var(--border); margin-top:16px; line-height:1.5;
+  }
+
+  .roadmap{ display:grid; grid-template-columns:1fr; gap:12px; margin-bottom:24px; }
+  .slot{
+    border:1px dashed var(--border); border-radius:14px; padding:16px;
+    font-size:13px; color:var(--gray); background:transparent; min-height:84px;
+  }
+  .slot b{ display:block; color:var(--black); margin-bottom:4px; font-size:13px; }
+  .slot.final{ border-left:5px solid var(--gold); border-style:dashed dashed dashed solid; }
+
+  footer{ font-size:12px; color:var(--gray); text-align:center; padding:8px 0 4px; }
+
+  @media (max-width:900px){
+    body{ padding:16px; }
+    .kpi-row{ grid-template-columns:repeat(2,1fr); }
+    .roadmap{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:480px){
+    .kpi-row{ grid-template-columns:1fr; }
+    .roadmap{ grid-template-columns:1fr; }
+    header{ padding:18px 20px; }
+    .seg-outros{ font-size:0 !important; }
+  }
+
+  /* ===== Ajuste tipográfico: leitura mais calma ===== */
+  body{
+    font-family:'Inter','Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,Arial,sans-serif;
+    font-size:14px; line-height:1.5; color:var(--black);
+    -webkit-font-smoothing:antialiased; font-feature-settings:"tnum" 1, "cv11" 1;
+  }
+  header{ padding:18px 24px; }
+  header .logo{ height:60px; }
+  header h1{ font-size:19px; font-weight:600; letter-spacing:-0.1px; }
+  header .subtitle{ font-size:12.5px; margin-top:2px; }
+  .edition-pill{ font-size:12.5px; font-weight:600; padding:6px 14px; }
+
+  .section-title{
+    font-size:14.5px; font-weight:600; text-transform:none; letter-spacing:0;
+    margin:10px 0 12px 2px;
+  }
+  .section-title::before{ width:4px; height:16px; }
+  .kpi-row + .section-title, .card + .section-title{ margin-top:30px; }
+  .section-title .card-num{ font-weight:400; }
+  .section-desc{ font-size:12.5px; margin:-4px 0 14px 2px; }
+
+  .kpi-card{ padding:18px 20px; }
+  .kpi-card .label{ font-size:12px; margin-bottom:6px; }
+  .kpi-card .value{ font-size:24px; font-weight:700; letter-spacing:-0.3px; }
+  .kpi-card .foot{ font-size:11.5px; margin-top:4px; }
+
+  .card{ padding:20px; }
+  .card h3{ font-size:13.5px; font-weight:600; }
+  .card .hint{ font-size:12px; }
+
+  table{ font-size:13px; }
+  table.valores th{
+    font-size:11.5px; font-weight:600; text-transform:none; letter-spacing:0.1px;
+    padding:10px 14px;
+  }
+  table.valores td{ padding:9px 14px; }
+  table.valores tr.group td{ font-weight:600; }
+  table.valores tr.sub td:first-child{ padding-left:28px; }
+  table.valores tr.tt td{ font-weight:600; border-top:1px solid var(--black); }
+
+  .note{ font-size:11.5px; }
+  .slot, .slot b{ font-size:12.5px; }
+  .slot b{ font-weight:600; }
+  footer{ font-size:11.5px; }
+
+  .leituras{
+    background:var(--card); border-radius:14px; padding:20px 24px;
+    box-shadow:var(--shadow); border:1px solid var(--border);
+    border-left:5px solid var(--gold); margin-bottom:24px;
+  }
+  .leituras h3{ font-size:13.5px; font-weight:600; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+  .leituras h3::before{ content:"💡"; }
+  .leituras ul{ margin-left:18px; display:flex; flex-direction:column; gap:10px; }
+  .leituras li{ font-size:13.5px; line-height:1.6; color:var(--black); max-width:80ch; }
+  .leituras li b{ color:var(--orange); font-weight:600; }
+  .peca-links{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .peca-links a{
+    display:inline-flex; align-items:center; font-size:12px; font-weight:600;
+    color:var(--orange); border:1px solid var(--orange); border-radius:8px;
+    padding:5px 12px; text-decoration:none;
+  }
+  .peca-links a:hover{ background:var(--orange); color:#fff; }
+  .peca-links a:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+  .card + .section-title{ margin-top:30px; }
+
+  /* ===== Compactação ===== */
+  .kpi-row{ gap:12px; margin-bottom:12px; }
+  .kpi-card{ padding:12px 16px; border-radius:12px; }
+  .kpi-card.total, .kpi-card.fisico, .kpi-card.online{ border-top-width:3px; }
+  .kpi-card .label{ font-size:11.5px; margin-bottom:2px; }
+  .kpi-card .value{ font-size:21px; line-height:1.25; }
+  .kpi-card .foot{ font-size:11px; margin-top:2px; }
+
+  .card{ padding:14px 16px; margin-bottom:18px; border-radius:12px; }
+  table{ font-size:12.5px; }
+  table.valores th{ padding:7px 12px; font-size:11px; }
+  table.valores td{ padding:6px 12px; line-height:1.35; }
+  table.valores tr.sub td:first-child{ padding-left:24px; }
+  .table-wrap.scroll-y{ max-height:340px; }
+  .note{ padding:7px 12px; margin-top:10px; font-size:11px; }
+  .card h3{ margin-bottom:2px; }
+  .card .hint{ margin-bottom:10px; }
+  .leituras{ padding:16px 20px; }
+  .kpi-row + .section-title, .card + .section-title{ margin-top:22px; }
+  .section-desc{ margin-bottom:10px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">SM</div>
+    <div>
+      <h1>Super Minas — Report Semanal</h1>
+      <div class="subtitle">Relatório executivo por edição · físico e online</div>
+    </div>
+  </div>
+  <div class="pills">
+    <div class="edition-pill">Edição 455 · R$ 15,00</div>
+    <div class="edition-pill">Veiculação: 20/09 a 26/09/2026</div>
+    <div class="edition-pill">Sorteio: 27/09/2026</div>
+  </div>
+</header>
+
+<!-- CARD 1 -->
+<h2 class="section-title">Vendas gerais <span class="card-num">· Card 1</span></h2>
+<p class="section-desc">Total de títulos vendidos na edição, separados entre canal físico e canais online.</p>
+
+<div class="kpi-row">
+  <div class="kpi-card total"><div class="label">Total de vendas</div><div class="value">71.359</div><div class="foot">títulos na edição</div></div>
+  <div class="kpi-card fisico"><div class="label">Total físico</div><div class="value">48.595</div><div class="foot">68,1% do total</div></div>
+  <div class="kpi-card online"><div class="label">Total online</div><div class="value">18.022</div><div class="foot">App, Compra Rápida, Rev. Virtual e Site</div></div>
+  <div class="kpi-card share"><div class="label">% Online no total</div><div class="value">25,3%</div><div class="foot">18.022 de 71.359</div></div>
+</div>
+
+<!-- CARD 2 -->
+<h2 class="section-title">Vendas canal online <span class="card-num">· Card 2</span></h2>
+<p class="section-desc">Distribuição das vendas online por origem. Os percentuais são calculados sobre o total online da edição (18.022), e não sobre o total geral.</p>
+
+<div class="card">
+  <div class="table-wrap">
+    <table class="valores">
+      <thead><tr><th>Origem</th><th>Vendas</th><th>% do online</th></tr></thead>
+      <tbody>
+        <tr><td>Site</td><td>12.893</td><td>71,5%</td></tr>
+        <tr><td>Revendedor Virtual</td><td>4.749</td><td>26,4%</td></tr>
+        <tr><td>App</td><td>251</td><td>1,4%</td></tr>
+        <tr><td>Compra Rápida</td><td>129</td><td>0,7%</td></tr>
+        <tr class="tt"><td>Total online</td><td>18.022</td><td>100%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- CARD 3 -->
+<h2 class="section-title">Vendas origem mídia, CRM e online geral <span class="card-num">· Card 3</span></h2>
+<p class="section-desc">% calculado sobre o total de vendas online da edição (18.022). Receita = vendas × ticket de R$ 15,00. ROAS = receita ÷ investimento.</p>
+
+<div class="card">
+  <div class="table-wrap">
+    <table class="valores">
+      <thead><tr><th>Origem</th><th>Vendas</th><th>% do online</th><th>Investimento</th><th>Receita</th><th>ROAS</th></tr></thead>
+      <tbody>
+        <tr class="group"><td>Mídia</td><td>3.562</td><td>19,8%</td><td>R$ 17.534,00</td><td>R$ 53.430,00</td><td>3,0</td></tr>
+        <tr class="group pending"><td>CRM</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr class="tt"><td>Online geral</td><td>18.022</td><td>100%</td><td>R$ 17.534,00</td><td>R$ 270.330,00</td><td>15,4</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">Vendas de mídia somam Meta e Google. Investimento sem imposto: Meta, Google, Publya e Rich Media. CRM aguardando fonte de dados; o investimento do Online geral considera, por enquanto, apenas a mídia.</div>
+</div>
+
+<!-- CARD 4 -->
+<h2 class="section-title">Sessões por origem <span class="card-num">· Card 4</span></h2>
+<p class="section-desc">Google Analytics 4, site Super Minas, de 20/09 a 26/09/2026. Origem pelo agrupamento padrão de canais da sessão.</p>
+
+<div class="card">
+  <div class="table-wrap scroll-y">
+    <table class="valores">
+      <thead><tr><th>Origem</th><th>Sessões</th><th>Usuários</th><th>Novos usuários</th><th>Add to cart</th><th>Finalização</th><th>Compras</th></tr></thead>
+      <tbody>
+        <tr><td>Direto</td><td>69.263</td><td>43.718</td><td>3.621</td><td>6.909</td><td>4.850</td><td>1.419</td></tr>
+        <tr><td>Não atribuído</td><td>15.407</td><td>47.676</td><td>992</td><td>11.654</td><td>9.138</td><td>16.847</td></tr>
+        <tr><td>Busca orgânica</td><td>10.187</td><td>6.595</td><td>1.606</td><td>860</td><td>494</td><td>203</td></tr>
+        <tr><td>Cross-network (PMax)</td><td>7.140</td><td>4.867</td><td>978</td><td>2.042</td><td>1.392</td><td>453</td></tr>
+        <tr><td>Social pago</td><td>6.976</td><td>5.364</td><td>3.098</td><td>1.267</td><td>679</td><td>230</td></tr>
+        <tr><td>Push mobile</td><td>4.620</td><td>2.572</td><td>28</td><td>2.339</td><td>1.766</td><td>427</td></tr>
+        <tr><td>Busca paga</td><td>3.596</td><td>2.468</td><td>586</td><td>1.153</td><td>692</td><td>252</td></tr>
+        <tr><td>Paid Other</td><td>1.070</td><td>1.053</td><td>1.021</td><td>21</td><td>10</td><td>3</td></tr>
+        <tr><td>Social orgânico</td><td>588</td><td>478</td><td>135</td><td>432</td><td>228</td><td>101</td></tr>
+        <tr><td>Referência</td><td>160</td><td>116</td><td>30</td><td>82</td><td>48</td><td>16</td></tr>
+        <tr><td>Display</td><td>42</td><td>15</td><td>0</td><td>5</td><td>2</td><td>0</td></tr>
+        <tr><td>Vídeo orgânico</td><td>27</td><td>16</td><td>0</td><td>15</td><td>11</td><td>2</td></tr>
+        <tr><td>E-mail</td><td>15</td><td>9</td><td>0</td><td>4</td><td>4</td><td>1</td></tr>
+        <tr><td>Assistentes de IA</td><td>3</td><td>2</td><td>1</td><td>5</td><td>1</td><td>1</td></tr>
+        <tr class="tt"><td>Total</td><td>119.698</td><td>95.500</td><td>12.096</td><td>26.788</td><td>19.315</td><td>19.955</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">Usuários não são somáveis entre origens: o total vem deduplicado do GA4.</div>
+</div>
+
+<!-- CARD 5 -->
+<h2 class="section-title">Origem da sessão · mídia e CRM <span class="card-num">· Card 5</span></h2>
+<p class="section-desc">Google Analytics 4, site Super Minas, de 20/09 a 26/09/2026. Detalhado por origem / mídia da sessão.</p>
+
+<div class="card">
+  <div class="table-wrap scroll-y">
+    <table class="valores">
+      <thead><tr><th>Origem / mídia</th><th>Sessões</th><th>Usuários</th><th>Novos usuários</th><th>Add to cart</th><th>Finalização</th><th>Compras</th></tr></thead>
+      <tbody>
+        <tr class="group"><td>Mídia (pago)</td><td>18.832</td><td>13.771</td><td>5.683</td><td>4.488</td><td>2.775</td><td>938</td></tr>
+        <tr class="sub"><td>google / cpc</td><td>10.785</td><td>7.354</td><td>1.564</td><td>3.200</td><td>2.086</td><td>705</td></tr>
+        <tr class="sub"><td>facebook / cpc</td><td>6.977</td><td>5.364</td><td>3.098</td><td>1.267</td><td>679</td><td>230</td></tr>
+        <tr class="sub"><td>programatica / cpc</td><td>1.017</td><td>1.005</td><td>981</td><td>13</td><td>3</td><td>1</td></tr>
+        <tr class="sub"><td>rich-media / cpc</td><td>52</td><td>47</td><td>40</td><td>7</td><td>6</td><td>1</td></tr>
+        <tr class="sub"><td>rdstation / cpc</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+        <tr class="group"><td>CRM</td><td>4.644</td><td>2.660</td><td>28</td><td>2.343</td><td>1.770</td><td>428</td></tr>
+        <tr class="sub"><td>crm / web push</td><td>4.629</td><td>2.651</td><td>28</td><td>2.339</td><td>1.766</td><td>427</td></tr>
+        <tr class="sub"><td>crm / email</td><td>15</td><td>9</td><td>0</td><td>4</td><td>4</td><td>1</td></tr>
+        <tr class="tt"><td>Mídia + CRM</td><td>23.476</td><td>16.431</td><td>5.711</td><td>6.831</td><td>4.545</td><td>1.366</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">google / cpc reúne PMax, Busca, Display e sessões PMax sem origem identificada; facebook / cpc inclui 1 sessão marcada como fb / paid. crm / web push reúne seis marcações de UTM diferentes. Usuários nos subtotais são a soma das linhas, sem deduplicação.</div>
+</div>
+
+<div class="card">
+  <h3>Compras: ERP x GA4 x Insider</h3>
+  <p class="hint">Cada fonte mede de um jeito: o ERP conta títulos vendidos online, o GA4 conta eventos de compra no site e o Insider conta conversões atribuídas aos disparos de CRM.</p>
+  <div class="table-wrap">
+    <table class="valores">
+      <thead><tr><th>Fonte</th><th>Compras</th><th>Diferença vs ERP</th></tr></thead>
+      <tbody>
+        <tr><td>ERP (online)</td><td>18.022</td><td>—</td></tr>
+        <tr><td>GA4</td><td>19.955</td><td>+1.933 (+10,7%)</td></tr>
+        <tr class="pending"><td>Insider</td><td>—</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">Insider aguardando os dados do Super Minas: o conector disponível acessa apenas a conta do Minas Cap.</div>
+</div>
+
+<!-- LEITURA FINAL -->
+<h2 class="section-title">Leitura final</h2>
+
+<div class="leituras">
+  <h3>Mídia</h3>
+  <ul>
+    <li>O investimento da semana foi de <b>R$ 17.534</b>, 6,1% acima da semana 3 (R$ 16.532). <b>Meta Ads</b> segue como principal canal, com R$ 11.233 (64% da verba), seguido de <b>Google</b> com R$ 3.304 (+8,3%).</li>
+    <li>A mídia gerou <b>3.562 vendas</b>, queda de 13,5% sobre a semana 3 (4.120). A participação da mídia no online passou de 21,2% para <b>19,8%</b>, e o CPA subiu de R$ 4,01 para <b>R$ 4,92</b>.</li>
+    <li>Houve redistribuição entre os canais complementares: <b>Rich Media</b> subiu de R$ 450 para <b>R$ 1.743</b>, enquanto a <b>programática</b> (Publya) caiu de R$ 2.015 para R$ 1.253.</li>
+  </ul>
+</div>
+
+<footer>Super Minas · Report semanal · Edição 455 · Sorteio 27/09/2026</footer>
+
+</body>
+</html>
