@@ -289,7 +289,7 @@
 
 <div class="section-title">TABELA DE VALORES</div>
 <div class="table-toolbar">
-  <button class="export-btn" onclick="exportTableToCSV('detailTable', 'super_minas_tabela_de_valores.csv')">⬇ Exportar tudo em CSV</button>
+  <button class="export-btn" onclick="exportarValoresTodosMeses()">⬇ Exportar tudo em CSV</button>
 </div>
 <table id="detailTable">
   <thead>
@@ -318,7 +318,7 @@
 </div>
 
 <div class="table-toolbar">
-  <button class="export-btn" onclick="exportTableToCSV('midiaTable', 'super_minas_fisico_online_midia.csv')">⬇ Exportar tudo em CSV</button>
+  <button class="export-btn" onclick="exportarMidiaTodosMeses()">⬇ Exportar tudo em CSV</button>
 </div>
 <table id="midiaTable" style="margin-bottom:0;">
   <thead>
@@ -347,30 +347,54 @@ const monthsData = {"Janeiro": {"2025": [{"edicao": 366, "data": "05/01/2025", "
 const insightsData = {"Janeiro": ["Tanto em 2025 quanto em 2026 tivemos 4 edições – 1 de R$ 20,00 e 3 de R$ 10,00.", "<b>Crescimento de 3pp</b> na representatividade online e <b>aumento de 17%</b> na receita."], "Fevereiro": ["Edição de R$ 5,00 entra em fevereiro por conta do carnaval, o que traz maior volume de vendas mas pouca mudança na receita — <b>aumento de 1%</b>.", "<b>Aumento de 1pp</b> nas vendas online, com receita passando de R$ 1,1MM para R$ 1,3MM — 37.285 mais títulos, média de 9.322 por edição."], "Março": ["<b>Aumento de 19%</b> no faturamento total (mais de R$ 1MM), com substituição de cartelas de R$ 10,00 por R$ 15,00.", "<b>4pp de aumento</b> nas vendas online, equivalente a +R$ 490k de faturamento."], "Abril": ["2026: edição quinzenal de R$ 20,00 e duas edições no valor de R$ 15,00. 2025: 2 edições de R$ 10,00, 1 de R$ 20,00 e 1 de R$ 5,00.", "<b>Queda de 167k títulos</b> no TT, equivalente a R$ 530.875 na receita — reflexo direto de feriados, edição quinzenal e a edição de R$15,00 como última do mês.", "No online, <b>aumento de 2pp</b> na representatividade geral, com queda mais branda na receita (-R$ 36,8k)."], "Maio": ["2025: 4 semanas — 3 edições de R$ 10,00 e 1 edição de R$ 20,00.", "2026: 5 semanas — 4 edições de R$ 15,00 e 1 edição de R$ 20,00.", "<b>Aumento de R$ 1,2MM</b> no faturamento em relação ao ano anterior, com <b>aumento de 3pp</b> na venda online.", "<b>Queda de 6%</b> no volume geral de vendas — diferença de 25,9k títulos no TT, 30k no físico e 4,4k no online, reflexo da edição de R$ 15,00."], "Junho": ["2025: 5 semanas — 4 edições de R$ 10,00 e 1 edição de R$ 20,00.", "2026: 4 semanas — 3 edições de R$ 15,00 e 1 edição de R$ 20,00.", "A estratégia de um ano para o outro difere no valor, mas é possível verificar queda significativa no volume geral (43%), físico (45%) e online (38%).", "A diferença de semanas teve alto impacto no faturamento, já que a média por edição, se comparada a 2025, fica próxima (R$ 1,26MM)."], "Julho": ["2025: 2 edições de R$ 10,00, 1 edição de R$ 20,00 e 1 edição de R$ 5,00.", "2026: 3 edições de R$ 15,00 e 1 edição de R$ 20,00.", "A estratégia de um ano para o outro difere no valor, mas é possível verificar queda significativa no volume geral (34%), físico (36%) e online (28%) — já dividindo a edição de R$5 por 2, equivalente a -156,3k títulos geral, -125,6k no físico e -30,7k no online, fechando com queda de R$ 963,6k em relação a junho/25."], "Agosto": ["<b>Volume caiu 26,1%</b> (573.345 → 423.526 títulos), puxado tanto pelo físico (-27,5%) quanto pelo online (-22,1%).", "<b>Composição de valores do título:</b> em 2025 foram 1 edição de R$ 20,00 e 4 edições de R$ 10,00; em 2026 foram 1 edição de R$ 20,00 e 4 edições de R$ 15,00.", "<b>Online ganhou participação no mix</b>: passou de 25,1% para 26,4% do total, mostrando queda relativa menor que o físico.", "<b>Ticket médio subiu 27,5%</b>, mas o movimento é explicado pelo reajuste de preço, não por aumento de consumo — atenção para não confundir receita estável com saúde de vendas."], "Setembro": ["<b>Volume caiu 25,6%</b> (411.409 → 305.995 títulos), com queda no físico (-28,4%) e no online (-16,4%).", "<b>Composição de valores do título:</b> em 2025 foram 1 edição de R$ 20,00 e 3 de R$ 10,00; em 2026, 1 edição de R$ 20,00 e 3 de R$ 15,00. A receita total ficou praticamente estável (+0,1%).", "<b>Online ganhou participação no mix:</b> de 23,5% para 26,3% do TT (+2,9pp), com receita online passando de R$ 1,20MM para R$ 1,33MM (+10,9%).", "<b>Edição de R$ 20,00 (06/09 x 07/09/2025, mesma semana e mesmo valor):</b> TT -3,8%, físico -5,8% e online +1,9%. Já as edições de R$ 15,00, comparadas às de R$ 10,00 de 2025, tiveram queda de 31,7% no TT (físico -34,6% e online -22,2%).", "Nas edições de R$ 15,00 de 2026, o volume recuou semana a semana: 74.486 (13/09) → 73.349 (20/09) → 71.359 (27/09) títulos."]};
 const monthAbbrev = {"Janeiro": "JAN", "Fevereiro": "FEV", "Março": "MAR", "Abril": "ABR", "Maio": "MAI", "Junho": "JUN", "Julho": "JUL", "Agosto": "AGO", "Setembro": "SET"};
 
-function exportTableToCSV(tableId, filename){
-  const table = document.getElementById(tableId);
-  if(!table) return;
-  const rows = table.querySelectorAll('tr');
-  const csvLines = [];
-  rows.forEach(row=>{
-    const cells = row.querySelectorAll('th, td');
-    const line = Array.from(cells).map(cell=>{
-      let text = cell.innerText.replace(/\s+/g, ' ').trim();
-      text = text.replace(/"/g, '""');
-      return `"${text}"`;
-    }).join(';');
-    csvLines.push(line);
-  });
-  const csvContent = '\uFEFF' + csvLines.join('\r\n');
-  const blob = new Blob([csvContent], {type:'text/csv;charset=utf-8;'});
+function baixarCSV(linhas, nomeArquivo){
+  // Excel em português: separador ponto e vírgula, UTF-8 com BOM
+  const csv = '\uFEFF' + linhas.map(l => l.map(c => {
+    const t = String(c === null || c === undefined ? '' : c);
+    return /[;"\n\r]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
+  }).join(';')).join('\r\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = filename;
+  link.download = nomeArquivo;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
+}
+
+function numCSV(n, casas){ return n.toFixed(casas).replace('.', ','); }
+
+// Tabela de Valores: todos os meses de uma vez
+function exportarValoresTodosMeses(){
+  const linhas = [['Mês','Edições 2025','Edições 2026','Métrica','2025','2026','Variação (%)','% do TT 2025','% do TT 2026']];
+  Object.keys(monthsData).forEach(mes=>{
+    const a = monthsData[mes]['2025'], b = monthsData[mes]['2026'];
+    const tt25 = sum(a,'tt'), tt26 = sum(b,'tt');
+    const fis25 = sum(a,'fisico'), fis26 = sum(b,'fisico');
+    const on25 = sum(a,'online'), on26 = sum(b,'online');
+    const rec25 = sum(a,'receita'), rec26 = sum(b,'receita');
+    const tk25 = rec25/tt25, tk26 = rec26/tt26;
+    const v = (x,y)=> numCSV((y-x)/x*100, 1);
+    linhas.push([mes, a.length, b.length, 'TT (títulos)', tt25, tt26, v(tt25,tt26), '', '']);
+    linhas.push([mes, a.length, b.length, 'Físico', fis25, fis26, v(fis25,fis26), numCSV(fis25/tt25*100,1), numCSV(fis26/tt26*100,1)]);
+    linhas.push([mes, a.length, b.length, 'Online', on25, on26, v(on25,on26), numCSV(on25/tt25*100,1), numCSV(on26/tt26*100,1)]);
+    linhas.push([mes, a.length, b.length, 'Receita TT (R$)', rec25, rec26, v(rec25,rec26), '', '']);
+    linhas.push([mes, a.length, b.length, 'Ticket médio realizado (R$)', numCSV(tk25,2), numCSV(tk26,2), v(tk25,tk26), '', '']);
+  });
+  baixarCSV(linhas, 'super_minas_tabela_de_valores_todos_os_meses.csv');
+}
+
+// Físico, Online e Mídia por edição: todos os meses de uma vez
+function exportarMidiaTodosMeses(){
+  const linhas = [['Mês','Edição','Data','Valor (R$)','Físico','Online','TT','Mídia','% Mídia/Online']];
+  Object.keys(midiaMonthData).forEach(mes=>{
+    midiaMonthData[mes].forEach(d=>{
+      linhas.push([mes, d.edicao, d.data, d.valor, d.fisico, d.online, d.tt, d.midia, numCSV(d.midia/d.online*100,1)]);
+    });
+  });
+  baixarCSV(linhas, 'super_minas_fisico_online_midia_todos_os_meses.csv');
 }
 
 function sum(arr, key){ return arr.reduce((a,b)=>a+b[key],0); }
