@@ -104,6 +104,8 @@
   .kpi-card .foot b{ font-weight:600; }
   .up{ color:var(--good); } .down{ color:var(--bad); } .flat{ color:var(--gray); }
 
+  .kpi-row.three{ grid-template-columns:repeat(3,1fr); }
+  @media (max-width:900px){ .kpi-row.three{ grid-template-columns:1fr; } }
   .kpi-card.ins{ border-top-color:var(--vit); }
   .kpi-card.ins.a{ border-top-color:var(--aon); }
   .kpi-card.ins .value{ color:var(--vit-text); }
@@ -121,9 +123,9 @@
   .mix-legend .dot{ display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:-1px; }
 
   /* charts */
-  .cgrid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:12px; }
+  .cgrid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:12px; }
   .cgrid.two{ grid-template-columns:repeat(2,1fr); }
-  .cgrid .card{ margin-bottom:0; }
+  .cgrid .card{ margin-bottom:0; min-width:0; }
   .cgrid .card h3{ display:flex; justify-content:space-between; gap:8px; align-items:baseline; }
   .cgrid .card h3 small{ font-size:11.5px; font-weight:600; color:var(--gray); }
   .cv{ position:relative; height:140px; margin-top:6px; }
@@ -218,21 +220,10 @@
 
 <h2 class="section-title">Mais com menos</h2>
 <p class="section-desc">Quanto cada campanha entregou para cada real investido.</p>
-<div class="card">
-  <h3>Participação de cada campanha no total do teste</h3>
-  <div class="hint">Com 38,7% da verba, a Vitalícia entregou uma fatia maior de vendas e de receita.</div>
-  <div class="mix">
-    <div class="row">Investimento<div class="mix-bar"><div class="seg-vit" style="width:38.7%">38,7%</div><div class="seg-aon" style="width:61.3%">61,3%</div></div></div>
-    <div class="row">Vendas<div class="mix-bar"><div class="seg-vit" style="width:39.6%">39,6%</div><div class="seg-aon" style="width:60.4%">60,4%</div></div></div>
-    <div class="row">Receita<div class="mix-bar"><div class="seg-vit" style="width:39.5%">39,5%</div><div class="seg-aon" style="width:60.5%">60,5%</div></div></div>
-  </div>
-  <div class="mix-legend"><span><span class="dot" style="background:var(--vit)"></span>Vitalícia</span><span><span class="dot" style="background:var(--aon)"></span>AON</span></div>
-</div>
-<div class="kpi-row">
+<div class="kpi-row three">
   <div class="kpi-card ins"><div class="label">Vendas a cada R$ 100</div><div class="value">36,9 x 35,5</div><div class="foot">Vitalícia rende 3,9% mais vendas por real investido.</div></div>
   <div class="kpi-card ins"><div class="label">Vitalícia com a verba da AON</div><div class="value">~3.584 vendas</div><div class="foot">Mantido o CPA: +135 vendas e +R$ 2 mil de receita vs AON.</div></div>
   <div class="kpi-card ins"><div class="label">CPA no sábado (dia de pico)</div><div class="value">R$ 0,88 x 1,64</div><div class="foot">−46% na Vitalícia, com metade do peso de verba (20% x 42%).</div></div>
-  <div class="kpi-card ins"><div class="label">Evolução das vendas</div><div class="value">+41%</div><div class="foot">Vitalícia foi de 610 para 863 vendas/semana com verba estável. AON ficou em ~1.150.</div></div>
 </div>
 
 <h2 class="section-title">Comparativo AON x Vitalícia</h2>
@@ -270,27 +261,13 @@
     </table>
   </div>
 </div>
-<div class="card">
-  <h3>Ponto de atenção: atribuição</h3>
-  <div class="hint">Cerca de 75% das compras atribuídas pelo Meta vêm de visualização. Considerando só clique ou o GA4, a AON fica à frente. Vale acompanhar as três leituras na próxima rodada.</div>
-  <div class="table-wrap">
-    <table class="valores">
-      <thead><tr><th>Fonte</th><th>CPA AON</th><th>CPA Vitalícia</th><th>ROAS AON</th><th>ROAS Vitalícia</th><th>Melhor CPA</th></tr></thead>
-      <tbody>
-        <tr><td>Meta padrão (clique + visualização)</td><td class="aon">R$ 2,82</td><td class="vit">R$ 2,71</td><td class="aon">5,81</td><td class="vit">6,02</td><td><span class="win vit">Vitalícia (−3,8%)</span></td></tr>
-        <tr><td>Meta só clique (7 dias)</td><td class="aon">R$ 11,19</td><td class="vit">R$ 12,39</td><td class="aon">1,47</td><td class="vit">1,33</td><td><span class="win aon">AON (−9,7%)</span></td></tr>
-        <tr><td>GA4 (sessões com UTM da campanha)</td><td class="aon">R$ 27,75</td><td class="vit">R$ 44,67</td><td class="aon">0,57</td><td class="vit">0,35</td><td><span class="win aon">AON (−38%)</span></td></tr>
-      </tbody>
-    </table>
-  </div>
-</div>
 
 <h2 class="section-title">Leitura final</h2>
 <div class="leituras">
   <h3>Conclusão</h3>
   <ul>
     <li>A <b>Vitalícia foi a estratégia mais eficiente</b>: com <b>37% menos verba</b>, entregou CPA 3,8% menor e ROAS 3,6% maior que a AON.</li>
-    <li>A queda de vendas (−34,5%) foi <b>menor que a queda de verba</b> (−37%). Cada real investido na Vitalícia rendeu mais.</li>
+    <li>O volume menor de vendas da Vitalícia (−34,5%) <b>acompanha a verba menor</b> (−37%): não houve queda de desempenho, e cada real investido rendeu mais.</li>
     <li>A tendência favorece a Vitalícia: <b>CPA caiu 27%</b> ao longo do teste e as vendas cresceram 41% com verba estável. A conta é nova (08/09) e ainda está ganhando aprendizado.</li>
     <li>A <b>AON segue como motor de volume</b>: 53% mais vendas, mais que o dobro de sessões e conversão no site maior (5,5% x 4,6%).</li>
     <li>O teste não teve verba equilibrada: a AON recebeu 59% mais investimento e mais peso nos sábados. Nenhuma das duas justifica interrupção.</li>
@@ -303,7 +280,7 @@
     <ul>
       <li>Subir verba de forma gradual (+20 a 30%), priorizando o sábado (CPA R$ 0,88).</li>
       <li>Melhorar a página de destino: conversão GA4 de 4,6% x 5,5% da AON.</li>
-      <li>Reavaliar em 2 semanas, com verba equivalente e CPA por clique como desempate.</li>
+      <li>Reavaliar em 2 semanas, com verba equivalente entre as duas campanhas.</li>
     </ul>
   </div>
   <div class="rec aon">
@@ -332,7 +309,7 @@ const D = {
      p:[4,21,41,34,56,86,368,82,37,25,39,53,73,476,73,34,34,37,57,90,538],
      r:[60,345,625,575,950,1365,5820,1305,615,405,585,900,1230,7845,1155,600,585,600,1005,1485,8775]}
 };
-const T = { A:{spend:9712.62,p:3449,r:56400,s:6344,gp:350}, V:{spend:6119.56,p:2258,r:36830,s:2951,gp:137} };
+const T = { A:{spend:9712.62,p:3449,r:56400,s:6344,gp:350,es:2934}, V:{spend:6119.56,p:2258,r:36830,s:2951,gp:137,es:1187} };
 const brl=(v,d=2)=>"R$ "+v.toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d});
 const num=(v,d=0)=>v.toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d});
 const pct=v=>(v>0?"+":"−")+num(Math.abs(v)*100,1)+"%";
@@ -345,9 +322,10 @@ const K = [
   {k:"ROAS",a:T.A.r/T.A.spend,v:T.V.r/T.V.spend,f:v=>num(v,2),better:"high"},
   {k:"Sessões (GA4)",a:T.A.s,v:T.V.s,f:v=>num(v),better:"high"},
   {k:"Taxa de conversão (GA4)",a:T.A.gp/T.A.s,v:T.V.gp/T.V.s,f:v=>num(v*100,1)+"%",better:"high"},
-  {k:"Custo por sessão",a:T.A.spend/T.A.s,v:T.V.spend/T.V.s,f:v=>brl(v),better:"low"}
+  {k:"Custo por visita",a:T.A.spend/T.A.s,v:T.V.spend/T.V.s,f:v=>brl(v),better:"low"},
+  {k:"Engajamento com o site",pctAxis:true,a:T.A.es/T.A.s,v:T.V.es/T.V.s,f:v=>num(v*100,1)+"%",better:"high"}
 ];
-document.getElementById("kpis").innerHTML = K.map(m=>{
+document.getElementById("kpis").innerHTML = K.slice(0,8).map(m=>{
   const bA = m.better==="high"? m.a>m.v : m.better==="low"? m.a<m.v : false;
   const bV = m.better==="high"? m.v>m.a : m.better==="low"? m.v<m.a : false;
   const diff=m.v/m.a-1;
@@ -366,14 +344,16 @@ let charts=[], evCharts=[];
 
 function buildCompare(){
   const c=C();
-  const items=[K[0],K[1],K[3],K[4],K[2],K[5]];
+  const items=[K[0],K[1],K[3],K[4],K[2],K[5],K[7],K[8]];
   const obs=[
     "Vitalícia operou com 37% menos verba durante todo o teste.",
-    "Vendas caíram 34,5%, menos que a redução de verba.",
+    "A diferença de volume acompanha a verba: com 37% menos investimento, a Vitalícia vendeu 34,5% menos, proporcionalmente mais por real.",
     "Cada venda da Vitalícia custou R$ 0,11 a menos.",
     "R$ 6,02 de receita por real investido, contra R$ 5,81 da AON.",
     "Ticket médio igual (R$ 16,3): a diferença vem da eficiência, não do preço.",
-    "AON gera mais que o dobro de sessões; Vitalícia converte mais pelo Meta."
+    "AON gera mais que o dobro de sessões (+115%) com 59% mais verba.",
+    "Visita da AON custa R$ 0,54 a menos: R$ 1,53 x R$ 2,07 (Vitalícia +35,4%).",
+    "% de sessões engajadas no GA4: 46,2% na AON x 40,2% na Vitalícia. Tempo médio no site de 2min44s x 2min09s."
   ];
   document.getElementById("cmp").innerHTML=items.map((m,i)=>`<div class="card"><h3>${m.k}<small>Vitalícia ${pct(m.v/m.a-1)}</small></h3><div class="cv"><canvas id="cmp${i}"></canvas></div><div class="obs">${obs[i]}</div></div>`).join("");
   items.forEach((m,i)=>{
@@ -382,7 +362,7 @@ function buildCompare(){
       data:{labels:["AON","Vitalícia"],datasets:[{data:[m.a,m.v],backgroundColor:[c.a,c.v],borderRadius:6,barThickness:28}]},
       options:{indexAxis:"y",maintainAspectRatio:false,animation:{duration:400},
         plugins:{legend:{display:false},tooltip:{callbacks:{label:x=>m.f(x.raw)}}},
-        scales:{x:{beginAtZero:true,grid:{color:c.l},ticks:{color:c.g,maxTicksLimit:4}},y:{grid:{display:false},ticks:{color:c.g,font:{weight:600}}}}},
+        scales:{x:{beginAtZero:true,grid:{color:c.l},ticks:{color:c.g,maxTicksLimit:4,callback:v=>m.pctAxis?num(v*100,0)+"%":v.toLocaleString("pt-BR")}},y:{grid:{display:false},ticks:{color:c.g,font:{weight:600}}}}},
       plugins:[{id:"lbl",afterDatasetsDraw(ch){const ctx=ch.ctx;ctx.save();ctx.font="600 12px Inter, sans-serif";ctx.textBaseline="middle";
         ch.getDatasetMeta(0).data.forEach((b,j)=>{const t=m.f(j?m.v:m.a);const w=ctx.measureText(t).width;const inside=b.x-b.base>w+16;
           ctx.fillStyle=inside?(j?"#fff":"#1a1a1a"):c.k;ctx.fillText(t,inside?b.x-w-8:b.x+6,b.y);});ctx.restore();}}]
