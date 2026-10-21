@@ -102,6 +102,11 @@
   td.trend-up{color:var(--green-bright);} td.trend-down{color:var(--burgundy-bright);}
   .btn-danger-text{background:none;border:none;color:var(--slate);font-size:11px;text-decoration:underline;cursor:pointer;padding:2px;}
   .btn-danger-text:hover{color:var(--burgundy-bright);}
+
+  .track-list{margin:0;padding:0;list-style:none;font-size:12.5px;color:var(--ivory-dim);}
+  .track-list li{display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+  .track-list li:last-child{border-bottom:none;}
+  .track-list b{font-family:'IBM Plex Mono',monospace;color:var(--ivory);font-weight:600;white-space:nowrap;}
   .foot-note{font-size:11px;color:var(--slate);margin-top:22px;text-align:center;}
   .reset-link{color:var(--slate);cursor:pointer;text-decoration:underline;}
   .reset-link:hover{color:var(--burgundy-bright);}
@@ -184,6 +189,12 @@
     <p class="cutoff-note">Data de corte dos volumes: 31/08/2026</p>
   </div>
 
+  <div class="panel">
+    <p class="section-title">Números para acompanhar</p>
+    <ul class="track-list"><li><span>Cadastros em 2026 sem compra</span><b>3.572</b></li><li><span>Compravam na edição de R$10 e deixaram de comprar pós virada para a de R$15 (ed. 05/04)</span><b>15.122</b></li><li><span>Já compraram alguma vez mas não compraram em 2026</span><b>208.814</b></li></ul>
+    <p class="cutoff-note">Posição em 12/10/2026</p>
+  </div>
+
   <div class="panel" id="krPanel"></div>
 
   <div class="panel">
@@ -199,31 +210,135 @@
     <div id="timelineHolder"></div>
   </div>
 
-  <p class="foot-note">Dados de Super Minas salvos apenas neste navegador. <span class="reset-link" id="resetBtn">Limpar dados de Super Minas</span></p>
+  <p class="foot-note">Valores de Super Minas atualizados em 12/10/2026. Alterações feitas aqui ficam salvas só neste navegador. <span class="reset-link" id="resetBtn">Restaurar valores publicados</span></p>
 </div>
 
 <script>
 const W_LOW=1, W_MED=2, W_HIGH=3;
 const activeBrand = "super-minas";
 const KR_DATA = {
-  "super-minas": { label:"Super Minas", pillars:[
-    {name:"Ativação", krs:[
-      {id:"sm-a1", title:"Régua de estímulo ao cadastro (4% → 5%)", type:"numeric", direction:"up", baseline:4, target:5, unit:"%", deadline:"dez/26", defaultWeight:1, note:"Ativação de clientes que acessam o site mas não realizam cadastro. Maior atrito: impacto dos usuários — sem dados de e-mail ou telefone, difícil impactar a base além do pop-up no site."},
-      {id:"sm-a2", title:"Teste de novo canal (alcance e tráfego)", type:"deliverable", deadline:"set/26", defaultWeight:3, note:"Teste em canais como programática, UOL, Globo, TikTok, entre outros, com foco em ampliar alcance e levar mais usuários pro site."},
-      {id:"sm-a3", title:"Ativação de vendas via WhatsApp (Pliqz)", type:"deliverable", deadline:"dez/26", defaultWeight:3, conditional:true, note:"Converter clientes com cadastro sem compra via bot da Pliqz — venda pelo WhatsApp automática, apenas via PIX."},
-      {id:"sm-a4", title:"Teste de régua de onboarding com foco em conversão", type:"deliverable", deadline:"out/26", defaultWeight:2, note:"Testar régua que impacta novos cadastros nos últimos 3 dias com foco em compra."},
-      {id:"sm-a5", title:"Teste de régua — cadastros últimos 30 dias sem compra + saldo", type:"deliverable", deadline:"nov/26", defaultWeight:2, note:"Avaliar conversão de clientes com cadastro mas sem compra, aplicando saldo para essa base."},
-      {id:"sm-a6", title:"Aumentar 10pp base de compradores 2026 (113,7k → 125k)", type:"numeric", direction:"up", baseline:113651, target:125016, unit:" clientes", deadline:"dez/26", defaultWeight:1, note:"Foco em aumentar volume a partir de ações voltadas a trazer novos clientes."},
-    ]},
-    {name:"Retenção", krs:[
-      {id:"sm-r1", title:"Aumentar ROAS de canais de conversão (7,6 → 9)", type:"numeric", direction:"up", baseline:7.6, target:9, unit:"x", deadline:"dez/26", defaultWeight:1, note:"Aumentar retorno de investimento nos canais com foco em conversão (Meta, Google, WhatsApp etc.)."},
-      {id:"sm-r2", title:"Teste de campanha com orçamento vitalício", type:"deliverable", deadline:"set/26", defaultWeight:3, note:"Orçamento total definido e período fixo — os canais distribuem o investimento automaticamente conforme as melhores oportunidades de conversão."},
-      {id:"sm-r3", title:"Reativar 10% dos clientes R$10 → R$15", type:"numeric", direction:"up", baseline:0, target:1800, unit:" clientes", deadline:"dez/26", defaultWeight:1, note:"Reengajar quem comprou na edição de R$10 e deixou de comprar na de R$15 — saldo, cupons, WhatsApp e pesquisas de comportamento. Base média: 18.000 clientes."},
-    ]},
-    {name:"Reativação (Churn)", krs:[
-      {id:"sm-c1", title:"Reduzir base dormente — reversão de 10pp (213,8k)", type:"numeric", direction:"up", baseline:0, target:21379, unit:" clientes reativados", deadline:"dez/26", defaultWeight:1, note:"Estimular clientes que já compraram uma vez na vida mas não compraram em 2026. Black Friday, Natal e campanhas de saldo como oportunidade."},
-    ]}
-  ]},
+  "super-minas": {
+    "label": "Super Minas",
+    "pillars": [
+      {
+        "name": "Ativação",
+        "krs": [
+          {
+            "id": "sm-a1",
+            "title": "Régua de estímulo ao cadastro (4% → 5%)",
+            "type": "numeric",
+            "direction": "up",
+            "baseline": 4,
+            "target": 5,
+            "unit": "%",
+            "deadline": "dez/26",
+            "defaultWeight": 3,
+            "note": "Ativação de clientes que acessam o site mas não realizam cadastro. Maior atrito: impacto dos usuários — sem dados de e-mail ou telefone, difícil impactar a base além do pop-up no site."
+          },
+          {
+            "id": "sm-a2",
+            "title": "Teste de novo canal (alcance e tráfego)",
+            "type": "deliverable",
+            "deadline": "set/26",
+            "defaultWeight": 1,
+            "note": "Teste em canais como programática, UOL, Globo, TikTok, entre outros, com foco em ampliar alcance e levar mais usuários pro site."
+          },
+          {
+            "id": "sm-a3",
+            "title": "Ativação de vendas via WhatsApp (Pliqz)",
+            "type": "deliverable",
+            "deadline": "dez/26",
+            "defaultWeight": 1,
+            "conditional": true,
+            "note": "Converter clientes com cadastro sem compra via bot da Pliqz — venda pelo WhatsApp automática, apenas via PIX."
+          },
+          {
+            "id": "sm-a4",
+            "title": "Teste de régua de onboarding com foco em conversão",
+            "type": "deliverable",
+            "deadline": "out/26",
+            "defaultWeight": 2,
+            "note": "Testar régua que impacta novos cadastros nos últimos 3 dias com foco em compra."
+          },
+          {
+            "id": "sm-a5",
+            "title": "Teste de régua — cadastros últimos 30 dias sem compra + saldo",
+            "type": "deliverable",
+            "deadline": "nov/26",
+            "defaultWeight": 3,
+            "note": "Avaliar conversão de clientes com cadastro mas sem compra, aplicando saldo para essa base."
+          },
+          {
+            "id": "sm-a6",
+            "title": "Aumentar 10pp base de compradores 2026 (134,1k → 147,5k)",
+            "type": "numeric",
+            "direction": "up",
+            "baseline": 134138,
+            "target": 147552,
+            "unit": " clientes",
+            "deadline": "dez/26",
+            "defaultWeight": 3,
+            "note": "Foco em aumentar volume a partir de ações voltadas a trazer novos clientes."
+          }
+        ]
+      },
+      {
+        "name": "Retenção",
+        "krs": [
+          {
+            "id": "sm-r1",
+            "title": "Aumentar ROAS de canais de conversão (7,6 → 9)",
+            "type": "numeric",
+            "direction": "up",
+            "baseline": 7.6,
+            "target": 9,
+            "unit": "x",
+            "deadline": "dez/26",
+            "defaultWeight": 3,
+            "note": "Aumentar retorno de investimento nos canais com foco em conversão (Meta, Google, WhatsApp etc.)."
+          },
+          {
+            "id": "sm-r2",
+            "title": "Teste de campanha com orçamento vitalício",
+            "type": "deliverable",
+            "deadline": "set/26",
+            "defaultWeight": 1,
+            "note": "Orçamento total definido e período fixo — os canais distribuem o investimento automaticamente conforme as melhores oportunidades de conversão.",
+            "conditional": true
+          },
+          {
+            "id": "sm-r3",
+            "title": "Reativar 10% dos clientes R$10 → R$15 (15.122 → 13.610)",
+            "type": "numeric",
+            "direction": "down",
+            "baseline": 15122,
+            "target": 13610,
+            "unit": " clientes",
+            "deadline": "dez/26",
+            "defaultWeight": 3,
+            "note": "Reengajar quem comprou na edição de R$10 e deixou de comprar na de R$15 (pós-virada, ed. 05/04) — saldo, cupons, WhatsApp e pesquisas de comportamento. Meta: reduzir esse grupo em 10%. Base em 12/10: 15.122 clientes (ERP)."
+          }
+        ]
+      },
+      {
+        "name": "Reativação (Churn)",
+        "krs": [
+          {
+            "id": "sm-c1",
+            "title": "Reduzir base dormente — reversão de 10pp (213,8k → 193,4k)",
+            "type": "numeric",
+            "direction": "down",
+            "baseline": 213790,
+            "target": 193400,
+            "unit": " clientes",
+            "deadline": "dez/26",
+            "defaultWeight": 3,
+            "note": "Estimular clientes que já compraram uma vez na vida mas não compraram em 2026. Black Friday, Natal e campanhas de saldo como oportunidade."
+          }
+        ]
+      }
+    ]
+  }
 };
 
 const MONTH_IDX = {jan:1,fev:2,mar:3,abr:4,mai:5,jun:6,jul:7,ago:8,set:9,out:10,nov:11,dez:12};
@@ -236,6 +351,7 @@ function parseDeadlineMonth(deadline){
   if(!mi) return null;
   return mi;
 }
+function fmtNum(n){ return (typeof n==='number') ? n.toLocaleString('pt-BR',{maximumFractionDigits:2}) : n; }
 function fmtPacingVal(v, unit){
   if(unit==='%' || (unit && unit.includes('%'))) return (Math.round(v*10)/10)+ (unit==='%'?'%':unit);
   if(unit==='x') return (Math.round(v*100)/100)+'x';
@@ -277,20 +393,45 @@ const els = {
   resetBtn: document.getElementById('resetBtn'),
 };
 
+const SEED_VERSION = "2026-10-12";
+const SEED = {"krState": {"sm-a1": {"value": 2.1}, "sm-a2": {"done": true}, "sm-a4": {"done": true}, "sm-a6": {"value": 140908}, "sm-r1": {"value": 6.3}, "sm-r2": {"done": true}, "sm-r3": {"value": 15122}, "sm-c1": {"value": 208814}}, "history": [{"date": "2026-10-12", "pct": 32.87480708929171}]};
+function seedState(){ return JSON.parse(JSON.stringify({seedVersion:SEED_VERSION, krState:SEED.krState, history:SEED.history})); }
 function storageKey(brand){ return `farol-okr:${brand}`; }
-function emptyState(){ return { krState:{}, history:[] }; }
+function emptyState(){ return seedState(); }
+
+async function storeGet(key){
+  try{
+    if(window.storage && typeof window.storage.get==='function'){
+      const r = await window.storage.get(key, false);
+      return (r && r.value) ? r.value : null;
+    }
+  }catch(e){}
+  try{ return localStorage.getItem(key); }catch(e){ return null; }
+}
+async function storeSet(key, val){
+  try{
+    if(window.storage && typeof window.storage.set==='function'){ await window.storage.set(key, val, false); return true; }
+  }catch(e){}
+  try{ localStorage.setItem(key, val); return true; }catch(e){ return false; }
+}
+async function storeDel(key){
+  try{ if(window.storage && typeof window.storage.delete==='function'){ await window.storage.delete(key, false); } }catch(e){}
+  try{ localStorage.removeItem(key); }catch(e){}
+}
 
 async function loadBrand(brand){
   if(cache[brand]) return cache[brand];
+  let st = null;
   try{
-    const res = await window.storage.get(storageKey(brand), false);
-    cache[brand] = (res && res.value) ? JSON.parse(res.value) : emptyState();
-  } catch(e){ cache[brand] = emptyState(); }
+    const raw = await storeGet(storageKey(brand));
+    if(raw){ const p = JSON.parse(raw); if(p && p.seedVersion===SEED_VERSION) st = p; }
+  }catch(e){}
+  cache[brand] = st || seedState();
   return cache[brand];
 }
 async function saveBrand(brand){
-  try{ await window.storage.set(storageKey(brand), JSON.stringify(cache[brand]), false); }
-  catch(e){ console.error(e); alert('Não foi possível salvar agora. Tente novamente.'); }
+  const ok = await storeSet(storageKey(brand), JSON.stringify(cache[brand]));
+  if(!ok) alert('Não foi possível salvar neste navegador. Tente novamente.');
 }
 
 function getKRState(state, krId){ return state.krState[krId] || {}; }
@@ -421,7 +562,7 @@ function renderKRPanel(brandKey, state){
       if(kr.type==='deliverable'){
         inputHtml = `<label class="kr-checkbox"><input type="checkbox" data-kr="${kr.id}" data-kind="done" ${st.done?'checked':''}/> ${st.done?'Concluído':'Pendente'}</label>`;
       } else if(kr.type==='threshold'){
-        inputHtml = `<div class="kr-input-wrap"><span class="arrow">≥${kr.target}${kr.unit}</span><input type="number" step="any" placeholder="atual" data-kr="${kr.id}" data-kind="value" value="${st.value ?? ''}"/></div>`;
+        inputHtml = `<div class="kr-input-wrap"><span class="arrow">≥${fmtNum(kr.target)}${kr.unit}</span><input type="number" step="any" placeholder="atual" data-kr="${kr.id}" data-kind="value" value="${st.value ?? ''}"/></div>`;
       } else if(kr.editableRange){
         inputHtml = `<div class="baseline-target-inline">
           <input type="number" step="any" placeholder="base" data-kr="${kr.id}" data-kind="baseline" value="${st.baseline ?? ''}"/>
@@ -430,7 +571,7 @@ function renderKRPanel(brandKey, state){
           <input type="number" step="any" placeholder="atual" data-kr="${kr.id}" data-kind="value" value="${st.value ?? ''}" style="margin-left:6px;"/>
         </div>`;
       } else {
-        inputHtml = `<div class="kr-input-wrap"><span class="arrow">${kr.baseline}→${kr.target}${kr.unit}</span><input type="number" step="any" placeholder="atual" data-kr="${kr.id}" data-kind="value" value="${st.value ?? ''}"/></div>`;
+        inputHtml = `<div class="kr-input-wrap"><span class="arrow">${fmtNum(kr.baseline)}→${fmtNum(kr.target)}${kr.unit}</span><input type="number" step="any" placeholder="atual" data-kr="${kr.id}" data-kind="value" value="${st.value ?? ''}"/></div>`;
       }
       let excludeHtml = '';
       if(kr.conditional){
@@ -608,10 +749,9 @@ async function renderAll(){
 }
 
 els.resetBtn.onclick = async ()=>{
-  const brandLabel = KR_DATA[activeBrand].label;
-  if(!confirm(`Limpar todos os dados de ${brandLabel}? Essa ação não pode ser desfeita.`)) return;
-  try{ await window.storage.delete(storageKey(activeBrand), false); } catch(e){}
-  cache[activeBrand] = emptyState();
+  if(!confirm('Descartar alterações feitas neste navegador e voltar aos valores publicados (12/10/2026)?')) return;
+  await storeDel(storageKey(activeBrand));
+  cache[activeBrand] = seedState();
   renderAll();
 };
 
