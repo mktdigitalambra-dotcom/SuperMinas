@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vitalícia vs AON — Atualizado até 25/09</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --navy:#101F2C; --navy-2:#16293A; --paper:#FFFFFF; --panel:#F2F5F3; --line:#DDE3E0;
+    --ink:#14212B; --muted:#5B6B70; --gold:#C99A4B; --gold-deep:#9C7530; --teal:#1E6E5C; --teal-deep:#144F42;
+    font-family:'IBM Plex Sans',sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){ --paper:#0F1A22; --panel:#152430; --line:#26363F; --ink:#EDF2F1; --muted:#9AAAB0; }
+  }
+  :root[data-theme="dark"]{ --paper:#0F1A22; --panel:#152430; --line:#26363F; --ink:#EDF2F1; --muted:#9AAAB0; }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);line-height:1.55;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+  h1,h2,h3,.num{font-family:'Space Grotesk',sans-serif;}
+  h1{font-size:2.25rem;line-height:1.15;margin:0 0 10px;font-weight:600;}
+  h2{font-size:1.5rem;margin:0 0 6px;font-weight:600;}
+  h3{font-size:1.02rem;margin:0 0 4px;font-weight:600;}
+  p{max-width:62ch;color:var(--ink);}
+  .muted{color:var(--muted);}
+
+  .hero{background:linear-gradient(160deg,var(--navy) 0%, var(--navy-2) 100%);color:#F4F6F5;padding:60px 0 44px;}
+  .hero .eyebrow{color:#B9C6CC;font-size:.92rem;margin-bottom:14px;}
+  .hero p{color:#C7D3D6;max-width:58ch;}
+  .hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.12);margin-top:36px;border-radius:10px;overflow:hidden;}
+  .hero-stat{background:rgba(255,255,255,.03);padding:20px 16px;}
+  .hero-stat .num{font-size:1.5rem;font-weight:600;color:#fff;}
+  .hero-stat .lbl{font-size:.8rem;color:#AEBBC0;margin-top:4px;}
+  .hero-stat .tag{display:inline-block;font-size:.7rem;padding:2px 8px;border-radius:20px;margin-bottom:8px;}
+  .tag-gold{background:rgba(201,154,75,.18);color:#E3C583;}
+  .tag-teal{background:rgba(30,110,92,.25);color:#7FCBB6;}
+  .tag-neutral{background:rgba(255,255,255,.12);color:#E7ECEC;}
+
+  section{padding:50px 0;border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  .lede{margin-bottom:26px;}
+
+  .cmp{width:100%;border-collapse:collapse;font-size:.95rem;}
+  .cmp th,.cmp td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);}
+  .cmp th{color:var(--muted);font-weight:500;font-size:.82rem;}
+  .cmp td.metric{color:var(--muted);}
+  .cmp td.v-val{color:var(--gold-deep);font-weight:600;font-family:'Space Grotesk',sans-serif;}
+  .cmp td.a-val{color:var(--teal-deep);font-weight:600;font-family:'Space Grotesk',sans-serif;}
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .cmp td.v-val{color:#E3C583;}
+    :root:not([data-theme="light"]) .cmp td.a-val{color:#7FCBB6;}
+  }
+  :root[data-theme="dark"] .cmp td.v-val{color:#E3C583;}
+  :root[data-theme="dark"] .cmp td.a-val{color:#7FCBB6;}
+
+  .legend-row{display:flex;gap:22px;margin-bottom:18px;flex-wrap:wrap;}
+  .legend-item{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--muted);}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .dot-gold{background:var(--gold);} .dot-teal{background:var(--teal);}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+  @media (max-width:760px){.grid-2{grid-template-columns:1fr;}}
+
+  .chart-box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 22px 10px;}
+
+  .callout{border-left:3px solid var(--gold);background:var(--panel);padding:16px 20px;border-radius:0 8px 8px 0;margin:18px 0;}
+  .callout.teal{border-left-color:var(--teal);}
+  .callout p{margin:0;max-width:none;font-size:.96rem;}
+
+  .adset-table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:10px;}
+  .adset-table th{text-align:left;color:var(--muted);font-weight:500;font-size:.78rem;padding:8px 10px;border-bottom:1px solid var(--line);}
+  .adset-table td{padding:9px 10px;border-bottom:1px solid var(--line);}
+  .adset-table td.num{font-family:'Space Grotesk',sans-serif;}
+
+  .insight-list{display:flex;flex-direction:column;gap:18px;margin-top:22px;}
+  .insight{display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start;}
+  .insight .mk{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.95rem;color:#fff;}
+  .mk-gold{background:var(--gold-deep);} .mk-teal{background:var(--teal-deep);}
+  .insight h3{margin-bottom:2px;}
+  .insight p{margin:0;font-size:.94rem;color:var(--muted);max-width:none;}
+
+  .reco-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:20px;}
+  @media (max-width:760px){.reco-grid{grid-template-columns:1fr;}}
+  .reco{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;}
+  .reco h3{font-size:.95rem;margin-bottom:6px;}
+  .reco p{font-size:.88rem;color:var(--muted);margin:0;max-width:none;}
+
+  .note{font-size:.78rem;color:var(--muted);margin-top:6px;}
+  footer{padding:26px 0 50px;}
+  footer p{font-size:.82rem;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Super Minas · Capitalização · Meta Ads · Mesmo período: 13–25/09/2026</div>
+    <h1>Depois de duas semanas, o gap se estabilizou — com dias de vantagem pra cada lado.</h1>
+    <p><em>CONVERSAO_super-minas_VITALICIA</em> (conta nova) vs <em>CONVERSAO_super-minas_AON</em> (conta ativa), mesma janela de dias desde a ativação da Vitalícia — agora cobrindo quase 2 semanas completas, incluindo um segundo ciclo de sábado a sábado. Dado de 25/09 é parcial.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="tag tag-neutral">24/09 · ROAS</div>
+        <div class="num">2,91x <span style="color:#E3C583;font-size:1rem;">vs 1,49x</span></div>
+        <div class="lbl">Vitalícia quase o dobro da AON nesse dia</div>
+      </div>
+      <div class="hero-stat">
+        <div class="tag tag-neutral">22 e 23/09 · ROAS</div>
+        <div class="num">1,47x / 2,68x <span style="color:#7FCBB6;font-size:1rem;">vs 1,73x / 3,62x</span></div>
+        <div class="lbl">AON na frente nesses dois dias</div>
+      </div>
+      <div class="hero-stat">
+        <div class="tag tag-gold">13 dias · Vitalícia</div>
+        <div class="num">4,03x</div>
+        <div class="lbl">ROAS médio, R$ 3.475 investidos, 874 compras</div>
+      </div>
+      <div class="hero-stat">
+        <div class="tag tag-teal">13 dias · AON</div>
+        <div class="num">4,82x</div>
+        <div class="lbl">ROAS médio, R$ 4.860 investidos, 1.432 compras</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <div class="lede">
+      <h2>Visão geral — 13 a 25/09</h2>
+      <p class="muted">Mesmo recorte de datas para as duas, cobrindo quase duas semanas. 25/09 é dia parcial.</p>
+    </div>
+    <table class="cmp">
+      <tr><th>Métrica</th><th>Vitalícia</th><th>AON</th></tr>
+      <tr><td class="metric">Investimento</td><td class="v-val">R$ 3.475</td><td class="a-val">R$ 4.860</td></tr>
+      <tr><td class="metric">Compras</td><td class="v-val">874</td><td class="a-val">1.432</td></tr>
+      <tr><td class="metric">CPA (custo por compra)</td><td class="v-val">R$ 3,98</td><td class="a-val">R$ 3,39</td></tr>
+      <tr><td class="metric">ROAS (blended, 13 dias)</td><td class="v-val">4,03x</td><td class="a-val">4,82x</td></tr>
+    </table>
+    <div class="callout">
+      <p>Com mais dias, o gap parou de fechar de forma consistente e passou a oscilar — 22 e 23/09 favoreceram a AON, 24/09 favoreceu bastante a Vitalícia (2,91x vs 1,49x). A proporção entre as duas (Vitalícia/AON) ficou em ~84%, parecida com a leitura anterior. Parece que as duas campanhas entraram numa faixa de variação diária normal, sem tendência clara de convergência total ainda.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="lede">
+      <h2>Dia a dia: da desvantagem de 8x à virada</h2>
+      <p class="muted">ROAS diário das duas campanhas.</p>
+    </div>
+    <div class="legend-row">
+      <span class="legend-item"><span class="dot dot-gold"></span>Vitalícia</span>
+      <span class="legend-item"><span class="dot dot-teal"></span>AON</span>
+    </div>
+    <div class="chart-box"><canvas id="chartRoas"></canvas></div>
+    <table class="adset-table" style="margin-top:18px;">
+      <tr><th>Dia</th><th>ROAS Vitalícia</th><th>ROAS AON</th><th>CPA Vitalícia</th><th>CPA AON</th></tr>
+      <tr><td>13/09</td><td class="num">0,52x</td><td class="num">4,03x</td><td class="num">R$ 28,68</td><td class="num">R$ 4,00</td></tr>
+      <tr><td>14/09</td><td class="num">1,63x</td><td class="num">3,35x</td><td class="num">R$ 10,09</td><td class="num">R$ 4,82</td></tr>
+      <tr><td>15/09</td><td class="num">2,79x</td><td class="num">2,87x</td><td class="num">R$ 5,46</td><td class="num">R$ 5,94</td></tr>
+      <tr><td>16/09</td><td class="num" style="color:var(--gold-deep);">1,82x</td><td class="num">1,57x</td><td class="num" style="color:var(--gold-deep);">R$ 9,29</td><td class="num">R$ 11,58</td></tr>
+      <tr><td>17/09</td><td class="num" style="color:var(--gold-deep);">3,04x</td><td class="num">2,84x</td><td class="num">R$ 5,59</td><td class="num">R$ 5,58</td></tr>
+      <tr><td>18/09</td><td class="num" style="color:var(--gold-deep);">3,69x</td><td class="num">2,91x</td><td class="num" style="color:var(--gold-deep);">R$ 4,30</td><td class="num">R$ 5,34</td></tr>
+      <tr><td>19/09 <span class="note">(sábado, pico)</span></td><td class="num" style="color:var(--gold-deep);">13,66x</td><td class="num">8,50x</td><td class="num" style="color:var(--gold-deep);">R$ 1,16</td><td class="num">R$ 1,91</td></tr>
+      <tr><td>20/09 <span class="note">(domingo)</span></td><td class="num">3,51x</td><td class="num">4,03x</td><td class="num">R$ 4,54</td><td class="num" style="color:var(--teal-deep);">R$ 4,31</td></tr>
+      <tr><td>21/09</td><td class="num">2,90x</td><td class="num">2,81x</td><td class="num">R$ 5,74</td><td class="num" style="color:var(--teal-deep);">R$ 5,34</td></tr>
+      <tr><td>22/09</td><td class="num">1,47x</td><td class="num" style="color:var(--teal-deep);">1,73x</td><td class="num">R$ 11,02</td><td class="num" style="color:var(--teal-deep);">R$ 12,80</td></tr>
+      <tr><td>23/09</td><td class="num">2,68x</td><td class="num" style="color:var(--teal-deep);">3,62x</td><td class="num" style="color:var(--gold-deep);">R$ 5,59</td><td class="num">R$ 4,50</td></tr>
+      <tr><td>24/09</td><td class="num" style="color:var(--gold-deep);">2,91x</td><td class="num">1,49x</td><td class="num" style="color:var(--gold-deep);">R$ 5,84</td><td class="num">R$ 10,78</td></tr>
+      <tr><td>25/09 <span class="note">(parcial)</span></td><td class="num" style="color:var(--gold-deep);">3,99x</td><td class="num">3,10x</td><td class="num" style="color:var(--gold-deep);">R$ 4,03</td><td class="num">R$ 5,25</td></tr>
+    </table>
+    <div class="callout teal">
+      <p>Nos primeiros 6 dias o padrão era de convergência quase linear. A partir do segundo ciclo de venda (20 a 25/09), passou a alternar: <strong>AON na frente em 20, 21, 22 e 23/09; Vitalícia na frente em 24 e 25/09.</strong> Isso é saudável — sugere que as duas campanhas já operam na mesma faixa de variação diária, e não que uma está sistematicamente atrás da outra.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="lede">
+      <h2>Público — o padrão mais estável de todo o comparativo</h2>
+      <p class="muted">% do investimento por faixa de idade, 13–25/09.</p>
+    </div>
+    <div class="legend-row">
+      <span class="legend-item"><span class="dot dot-gold"></span>Vitalícia</span>
+      <span class="legend-item"><span class="dot dot-teal"></span>AON</span>
+    </div>
+    <div class="chart-box"><canvas id="chartAge"></canvas></div>
+    <div class="callout teal">
+      <p>Depois de quase 2 semanas e dois ciclos de venda, a composição por idade continua praticamente idêntica: <strong>35–44 anos lidera em ambas (~34%)</strong>, seguido por 25–34 (~24–26%) e 45–54 (~21–22%). É a única dimensão do comparativo que não mudou em nenhuma leitura.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="lede">
+      <h2>Plataformas — mix estabilizado</h2>
+      <p class="muted">% do investimento por plataforma, 13–25/09.</p>
+    </div>
+    <table class="cmp">
+      <tr><th>Plataforma</th><th>Vitalícia</th><th>AON</th></tr>
+      <tr><td class="metric">Facebook</td><td class="v-val">46,6%</td><td class="a-val">43,7%</td></tr>
+      <tr><td class="metric">Instagram</td><td class="v-val">50,1%</td><td class="a-val">50,5%</td></tr>
+      <tr><td class="metric">Audience Network</td><td class="v-val">3,0%</td><td class="a-val">5,7%</td></tr>
+    </table>
+    <div class="callout">
+      <p>Instagram segue como maior fatia em ambas por margem quase igual (50% vs 51%). Facebook também está próximo (47% vs 44%). Audience Network é a única diferença persistente, mas pequena (5,7% AON vs 3,0% Vitalícia) — estável desde a última leitura.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="lede">
+      <h2>Conjuntos de anúncio — 13 a 25/09</h2>
+      <p class="muted">Na Vitalícia, interesse e alcance amplo já convergiram para o mesmo nível.</p>
+    </div>
+    <div class="grid-2">
+      <div>
+        <h3>Vitalícia</h3>
+        <table class="adset-table">
+          <tr><th>Conjunto</th><th>Gasto</th><th>ROAS</th><th>CPA</th></tr>
+          <tr><td>interesses_top-20-cidades</td><td class="num">R$ 1.965</td><td class="num">3,96x</td><td class="num">R$ 3,99</td></tr>
+          <tr><td>adv_amplo</td><td class="num">R$ 1.511</td><td class="num" style="color:var(--gold-deep);">4,11x</td><td class="num">R$ 3,95</td></tr>
+        </table>
+      </div>
+      <div>
+        <h3>AON</h3>
+        <table class="adset-table">
+          <tr><th>Conjunto</th><th>Gasto</th><th>ROAS</th><th>CPA</th></tr>
+          <tr><td>interesses_top-20-cidades</td><td class="num">R$ 2.817</td><td class="num">4,46x</td><td class="num">R$ 3,62</td></tr>
+          <tr><td>adv_amplo</td><td class="num">R$ 1.959</td><td class="num" style="color:var(--teal-deep);">5,40x</td><td class="num">R$ 3,06</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="callout teal">
+      <p>Na Vitalícia, os dois conjuntos praticamente empataram (ROAS 3,96x vs 4,11x, CPA quase idêntico). Na AON, alcance amplo segue mais forte (5,40x vs 4,46x) — vantagem que se sustentou nas últimas leituras. Não há motivo pra reestruturar: os dois conjuntos da Vitalícia estão saudáveis, e o padrão da AON pode servir de referência se quiser dar mais peso ao alcance amplo à medida que a Vitalícia ganha mais histórico.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Insights</h2>
+    <div class="insight-list">
+      <div class="insight">
+        <div class="mk mk-gold">1</div>
+        <div>
+          <h3>O gap parou de fechar de forma linear — e isso é normal</h3>
+          <p>Depois do salto do pico de sábado (19/09), o segundo ciclo (20–25/09) alternou: AON na frente em 4 dos 6 dias, Vitalícia na frente em 2. É oscilação de campanha madura, não sinal de estagnação.</p>
+        </div>
+      </div>
+      <div class="insight">
+        <div class="mk mk-gold">2</div>
+        <div>
+          <h3>24/09 foi o segundo melhor dia relativo da Vitalícia</h3>
+          <p>ROAS 2,91x vs 1,49x da AON — quase o dobro. Junto com o pico de 19/09, já são dois dias de vantagem clara da campanha nova em menos de duas semanas.</p>
+        </div>
+      </div>
+      <div class="insight">
+        <div class="mk mk-teal">3</div>
+        <div>
+          <h3>Interesse e alcance amplo já convergiram na Vitalícia</h3>
+          <p>ROAS praticamente empatado (3,96x vs 4,11x) e CPA quase idêntico. Na AON o alcance amplo segue mais forte — pode ser um caminho de otimização pra Vitalícia conforme acumula mais histórico.</p>
+        </div>
+      </div>
+      <div class="insight">
+        <div class="mk mk-teal">4</div>
+        <div>
+          <h3>Público continua sendo a variável mais estável</h3>
+          <p>Depois de 13 dias e dois ciclos de venda, a distribuição por idade não mudou: 35–44 dominante em ambas (~34%). É o único indicador do comparativo que não teve nenhuma oscilação relevante.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Recomendações</h2>
+    <div class="reco-grid">
+      <div class="reco">
+        <h3>Tratar a Vitalícia como campanha madura, não mais em teste</h3>
+        <p>Com 13 dias e dois ciclos de venda, o comportamento já é de oscilação normal, não de aprendizado. Dá pra incorporá-la no planejamento semanal como as demais.</p>
+      </div>
+      <div class="reco">
+        <h3>Testar mais peso em adv_amplo</h3>
+        <p>Na AON o alcance amplo segue com vantagem consistente. Vale testar deslocar um pouco mais de orçamento pra esse conjunto na Vitalícia e observar se o ganho se repete.</p>
+      </div>
+      <div class="reco">
+        <h3>Próximo checkpoint: fechamento da edição atual</h3>
+        <p>Comparar o resultado consolidado da edição inteira (não só dias soltos) assim que ela fechar — vai dar uma leitura mais robusta que a comparação dia a dia.</p>
+      </div>
+      <div class="reco">
+        <h3>Audience Network — diferença pequena e estável</h3>
+        <p>5,7% AON vs 3,0% Vitalícia, sem mudança relevante nas últimas leituras — não precisa de ação.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>Fonte: Meta Ads via Windsor.ai · Contas: CA - Super Minas_Vitalicia_08-09-26 (1701862924254982) e CA - Super Minas_Nova_14-07-26 (1741635943520839) · Período comparado: 13–25/09/2026 (25/09 parcial) · Atualizado em 25/09/2026.</p>
+  </div>
+</footer>
+
+<script>
+const goldC = '#C99A4B';
+const tealC = '#1E6E5C';
+Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
+Chart.defaults.color = '#5B6B70';
+Chart.defaults.borderColor = 'rgba(0,0,0,0.06)';
+
+const days = ['13/09', '14/09', '15/09', '16/09', '17/09', '18/09', '19/09 (sáb)', '20/09 (dom)', '21/09', '22/09', '23/09', '24/09', '25/09*'];
+
+new Chart(document.getElementById('chartRoas').getContext('2d'), {
+  type: 'line',
+  data: {
+    labels: days,
+    datasets: [
+      { label: 'Vitalícia', data: [0.52, 1.63, 2.79, 1.82, 3.04, 3.69, 13.66, 3.51, 2.90, 1.47, 2.68, 2.91, 3.99], borderColor: goldC, backgroundColor: 'rgba(201,154,75,0.15)', fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: goldC, borderWidth: 2.5 },
+      { label: 'AON', data: [4.03, 3.35, 2.87, 1.57, 2.84, 2.91, 8.50, 4.03, 2.81, 1.73, 3.62, 1.49, 3.10], borderColor: tealC, backgroundColor: 'rgba(30,110,92,0.10)', fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: tealC, borderWidth: 2.5 }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, usePointStyle: true } } },
+    scales: { y: { title: { display: true, text: 'ROAS (x)' }, grid: { color: 'rgba(0,0,0,0.05)' } } }
+  }
+});
+
+new Chart(document.getElementById('chartAge').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['18–24', '25–34', '35–44', '45–54', '55–64', '65+'],
+    datasets: [
+      { label: 'Vitalícia', data: [3.1, 25.5, 34.4, 21.3, 10.3, 4.8], backgroundColor: goldC, borderRadius: 4, maxBarThickness: 30 },
+      { label: 'AON', data: [2.7, 24.3, 34.0, 22.0, 11.3, 5.3], backgroundColor: tealC, borderRadius: 4, maxBarThickness: 30 }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: { y: { title: { display: true, text: '% do investimento' }, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } }
+  }
+});
+</script>
+
+</body>
+</html>
