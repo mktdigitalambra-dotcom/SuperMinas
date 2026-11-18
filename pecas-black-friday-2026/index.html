@@ -25,7 +25,7 @@ body{font-family:Poppins,"Segoe UI",Arial,sans-serif;background:var(--bg);color:
 .tabs{display:flex;gap:8px;margin-top:32px}
 .tab{font:600 14px Poppins,sans-serif;padding:9px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.3);color:#fff;background:transparent}
 .tab.on{background:#fff;color:var(--navy);border-color:#fff}
-a.tab{text-decoration:none;cursor:pointer}a.tab:hover:not(.on){background:rgba(255,255,255,.12)}
+button.tab{cursor:pointer}button.tab:hover:not(.on){background:rgba(255,255,255,.12)}
 .tab.soon{opacity:.55}
 main{padding:8px 24px 64px}
 .group{margin-top:44px}
@@ -86,7 +86,7 @@ dialog img{max-width:94vw;max-height:90vh;border-radius:8px;display:block}
   <div class="brand"><b>AMBRA</b> Mídia paga · Grupo Caps</div>
   <h1>Black Friday Super Minas</h1>
   <p>Exemplos das peças programadas no Google Ads e em programática para a edição de Black Friday 2026.</p>
-  <div class="tabs" role="tablist"><a class="tab" role="tab" href="#google" data-t="google">Google Ads</a><a class="tab" role="tab" href="#programatica" data-t="programatica">Programática</a><span class="tab soon">Meta Ads — em breve</span></div>
+  <div class="tabs" role="tablist"><button type="button" class="tab" role="tab" data-t="google">Google Ads</button><button type="button" class="tab" role="tab" data-t="programatica">Programática</button><span class="tab soon">Meta Ads — em breve</span></div>
 </div></section>
 <main><div class="wrap">
 <div class="panel" id="p-google">
@@ -170,10 +170,10 @@ const d=document.getElementById('zoom'),zi=d.querySelector('img');
 document.querySelectorAll('.shot img, .ad img').forEach(i=>i.addEventListener('click',()=>{zi.src=i.src;zi.alt=i.alt;d.showModal()}));
 d.addEventListener('click',()=>d.close());
 
-const tabs=document.querySelectorAll('a.tab[data-t]');
-function show(){let t=location.hash.slice(1);if(!document.getElementById('p-'+t))t='google';
-document.querySelectorAll('.panel').forEach(p=>p.hidden=p.id!=='p-'+t);
-tabs.forEach(a=>{const on=a.dataset.t===t;a.classList.toggle('on',on);a.setAttribute('aria-selected',on)});}
-addEventListener('hashchange',()=>{show();scrollTo({top:0})});show();
+const tabs=document.querySelectorAll('button.tab[data-t]');
+function show(t){document.querySelectorAll('.panel').forEach(p=>p.hidden=p.id!=='p-'+t);
+tabs.forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
+window.scrollTo(0,0);}
+tabs.forEach(b=>b.addEventListener('click',()=>show(b.dataset.t)));show('google');
 </script>
 </body></html>
