@@ -439,6 +439,8 @@ ul.resumo li::before{content:"";position:absolute;left:0;top:7px;width:7px;heigh
 .et-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
 @media (max-width:900px){.et-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
 .et-grid .c3 b{font-size:40px;}
+.ss-box{margin:12px 0 4px;padding:10px 14px;border-radius:12px;background:#FDECEC;border:1px solid #F5B5B5;font-size:12px;color:#5A1A1A;line-height:1.45;}
+.ss-box b{display:block;color:#C81D1D;font-size:12.5px;margin-bottom:2px;}
 .mm{margin:14px 0 4px;padding:12px 16px;border:1px solid var(--border);border-radius:12px;background:#fff;}
 .mm-c{margin:12px 0 0;padding:10px 0 12px;border:0;border-bottom:1px solid rgba(0,0,0,.07);border-radius:0;}
 .mm-h{display:flex;justify-content:space-between;align-items:baseline;}
@@ -710,7 +712,7 @@ table.tq tr.tot td{background:#f1f1ec!important;border-top:2px solid rgba(0,0,0,
   <section class="card sec" id="secKpi">
     <div class="sh"><div><h2>Resultados</h2><p id="kpi2Ctx"></p></div></div>
     <div class="objs" id="objStrip"></div>
-    <div class="kgrp ent"><div class="kgrp-h">Entrega<small>o que a mídia entregou</small></div><div id="kEntrega"></div></div>
+    <div class="kgrp ent"><div class="kgrp-h">Entrega<small>o que a mídia entregou · dados das plataformas</small></div><div id="kEntrega"></div></div>
     <div id="kPerf"></div>
     <div class="dest" id="destaques"></div>
   </section>
@@ -735,7 +737,7 @@ table.tq tr.tot td{background:#f1f1ec!important;border-top:2px solid rgba(0,0,0,
         <div class="lcard"><div class="ct">Cliques diários <small>todas as mídias com dado diário</small></div><div class="cw" style="height:150px"><canvas id="gl_cli"></canvas></div></div>
         <div class="lcard"><div class="ct">Conversão em vendas <small>compras atribuídas pelas plataformas</small></div><div class="cw" style="height:150px"><canvas id="gl_venda"></canvas></div></div>
       </div>
-      <p class="hint">Inclui todas as mídias com dado diário.</p>
+      <p class="hint">Inclui todas as mídias com dado diário. Linha vermelha tracejada em 24/11: Meta sem saldo — a conta principal ficou sem entrega no dia e o investimento, as impressões, o alcance e os cliques caíram.</p>
     </div>
     <div id="phaseDaily">
     <div class="chips tabs" id="dayTabs"></div>
@@ -745,9 +747,9 @@ table.tq tr.tot td{background:#f1f1ec!important;border-top:2px solid rgba(0,0,0,
       <p class="hint" id="dailyHint"></p>
     </div>
     <div id="vendasBox">
-      <div class="ct">Investimento, vendas e CPA por dia <small id="vendasCtx"></small></div>
-      <div class="cw" id="wVendas" style="height:290px"><canvas id="cVendas" role="img" aria-label="Investimento, vendas e CPA por dia"></canvas><div class="ph-empty"><b>Aguardando dados</b>Sem compras registradas na Black Friday</div></div>
-      <p class="hint">Barras: investimento (R$, eixo esquerdo). Linha preta: compras atribuídas pelas plataformas (eixo direito). Linha dourada tracejada: CPA (R$, valor no rótulo).</p>
+      <div class="ct">Investimento, compras e CPA por dia <small id="vendasCtx"></small></div>
+      <div class="cw" id="wVendas" style="height:290px"><canvas id="cVendas" role="img" aria-label="Investimento, compras e CPA por dia"></canvas><div class="ph-empty"><b>Aguardando dados</b>Sem compras registradas na Black Friday</div></div>
+      <p class="hint">Barras: investimento (R$, eixo esquerdo). Linha preta: compras atribuídas pelas plataformas (eixo direito). Linha dourada tracejada: CPA (R$, valor no rótulo). Linha vermelha em 24/11: Meta sem saldo (conta principal sem entrega no dia).</p>
     </div>
     <div id="cplBox" class="lcard" style="display:none;margin-bottom:16px"><div class="ct">CPL diário <small>investimento ÷ cadastros na LP (GA4, mídia paga) · dias com pelo menos 5 cadastros</small></div><div class="cw" style="height:170px"><canvas id="cCpl"></canvas></div></div>
     <div id="platDayBox" style="display:none">
@@ -794,11 +796,6 @@ table.tq tr.tot td{background:#f1f1ec!important;border-top:2px solid rgba(0,0,0,
     </div>
   </section>
 
-
-  <section class="card sec" id="secLP">
-    <div class="sh"><div><h2>Performance do site</h2><p>Sessões, usuários e funil de compra no site das sessões de mídia paga, com a fonte de cada número</p></div></div>
-    <div id="lpBody" class="lpgrid"></div>
-  </section>
 
   <section class="card sec" id="secCri">
     <div class="sh"><div><h2>Criativos com melhor performance</h2><p>Três destaques por fase, escolhidos pelo objetivo da campanha (preferência: 2 estáticos e 1 vídeo)</p></div></div>
@@ -948,11 +945,12 @@ const DATA = {
         alcance: { meta: 888198 },   // 22–25/11: soma do alcance das campanhas no período (Windsor); pode haver sobreposição
         // meta da mídia — "Super Minas - Projeções BF.xlsx" (SharePoint Marketing): mídia desejada 15.840; mínima 14.400
         metaMidia: { desejada: 15840, minima: 14400 },
+        // dia sem saldo no Meta (conta principal): sem entrega o dia inteiro
+        semSaldo: { data: '2026-11-24', plataforma: 'meta', texto: 'Meta sem saldo' },
         campanhas: [],
         midia: [
-          // Meta (contas CA - Super Minas_Nova e Vitalícia), Google e Programática · 22–25/11/2026 (25/11 parcial).
-          // Meta: campanhas BLACK; em 24/11 a conta principal não teve investimento e as compras do dia são atribuições de dias anteriores.
-          // Google: todas as campanhas da conta na semana da Black. Programática: prints diários do portal Publya.
+          // Windsor.ai (APIs do Meta e do Google), conferido em 25/11: Meta = campanhas BLACK (contas CA - Super Minas_Nova e Vitalícia); Google = todas as campanhas da semana. 25/11 parcial.
+          // 24/11: conta principal do Meta sem saldo (sem investimento); as compras do dia são atribuições de dias anteriores e só a campanha _VT (Vitalícia) rodou.
           { data: '2026-11-22', plataforma: 'meta', campanha: 'ALCANCE_super_minas_BLACK-2026', investimento: 705.22, impressoes: 358591, cliques: 552, lpv: 91, conversoes: 17, receita: 165 },
           { data: '2026-11-22', plataforma: 'meta', campanha: 'TRAFEGO_super_minas_BLACK-2026', investimento: 511.05, impressoes: 67900, cliques: 1843, lpv: 940, conversoes: 12, receita: 100 },
           { data: '2026-11-22', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026', investimento: 933.7, impressoes: 104043, cliques: 1824, lpv: 683, conversoes: 233, receita: 2515 },
@@ -963,47 +961,47 @@ const DATA = {
           { data: '2026-11-24', plataforma: 'meta', campanha: 'ALCANCE_super_minas_BLACK-2026', investimento: 0, impressoes: 0, cliques: 0, lpv: 0, conversoes: 16, receita: 125 },
           { data: '2026-11-24', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026', investimento: 0, impressoes: 0, cliques: 0, lpv: 1, conversoes: 57, receita: 670 },
           { data: '2026-11-24', plataforma: 'meta', campanha: 'REMARKETING_Super_Minas_BLACK-2026', investimento: 0, impressoes: 0, cliques: 0, lpv: 1, conversoes: 29, receita: 265 },
-          { data: '2026-11-24', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026_VT', investimento: 83.19, impressoes: 13464, cliques: 249, lpv: 113, conversoes: 64, receita: 630 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'ALCANCE_super_minas_BLACK-2026', investimento: 28.9, impressoes: 15016, cliques: 24, lpv: 6, conversoes: 1, receita: 10 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'TRAFEGO_super_minas_BLACK-2026', investimento: 260.42, impressoes: 13717, cliques: 654, lpv: 410, conversoes: 2, receita: 25 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026', investimento: 323.23, impressoes: 36370, cliques: 534, lpv: 229, conversoes: 107, receita: 1055 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'REMARKETING_Super_Minas_BLACK-2026', investimento: 180.87, impressoes: 19291, cliques: 320, lpv: 98, conversoes: 58, receita: 625 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026_VT', investimento: 60.45, impressoes: 8542, cliques: 144, lpv: 49, conversoes: 35, receita: 345 },
+          { data: '2026-11-24', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026_VT', investimento: 83.19, impressoes: 13466, cliques: 250, lpv: 113, conversoes: 64, receita: 630 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'ALCANCE_super_minas_BLACK-2026', investimento: 41.14, impressoes: 21165, cliques: 31, lpv: 8, conversoes: 4, receita: 45 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'TRAFEGO_super_minas_BLACK-2026', investimento: 303.81, impressoes: 15711, cliques: 776, lpv: 487, conversoes: 2, receita: 25 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026', investimento: 385.69, impressoes: 43500, cliques: 626, lpv: 262, conversoes: 131, receita: 1260 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'REMARKETING_Super_Minas_BLACK-2026', investimento: 213.18, impressoes: 23296, cliques: 384, lpv: 111, conversoes: 68, receita: 740 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026_VT', investimento: 77.02, impressoes: 11449, cliques: 176, lpv: 60, conversoes: 50, receita: 495 },
           { data: '2026-11-22', plataforma: 'google', campanha: 'SEARCH_super-minas_AON', objetivo: 'conversao', investimento: 80.2916, impressoes: 1019, cliques: 424, conversoes: 7.267, receita: 105.8384 },
-          { data: '2026-11-22', plataforma: 'google', campanha: 'PMAX_super-minas_AON', objetivo: 'conversao', investimento: 225.083, impressoes: 37714, cliques: 1900, conversoes: 120.5825, receita: 1570.1382 },
+          { data: '2026-11-22', plataforma: 'google', campanha: 'PMAX_super-minas_AON', objetivo: 'conversao', investimento: 225.083, impressoes: 37714, cliques: 1900, conversoes: 119.2711, receita: 1562.6367 },
           { data: '2026-11-22', plataforma: 'google', campanha: 'DEMAND-GEN_super-minas_AON', objetivo: 'trafego', investimento: 58.0419, impressoes: 5177, cliques: 74, conversoes: 12.8037, receita: 141.1343 },
           { data: '2026-11-22', plataforma: 'google', campanha: 'YOU_Black-Friday', objetivo: 'video', investimento: 13.8417, impressoes: 59, cliques: 0, videoViews: 47 },
           { data: '2026-11-23', plataforma: 'google', campanha: 'SEARCH_super-minas_AON', objetivo: 'conversao', investimento: 98.4702, impressoes: 1254, cliques: 549, conversoes: 20.9038, receita: 229.3174 },
-          { data: '2026-11-23', plataforma: 'google', campanha: 'PMAX_super-minas_AON', objetivo: 'conversao', investimento: 221.9706, impressoes: 34277, cliques: 468, conversoes: 81.7502, receita: 823.9488 },
+          { data: '2026-11-23', plataforma: 'google', campanha: 'PMAX_super-minas_AON', objetivo: 'conversao', investimento: 221.9706, impressoes: 34277, cliques: 468, conversoes: 84.0547, receita: 864.5207 },
           { data: '2026-11-23', plataforma: 'google', campanha: 'DEMAND-GEN_super-minas_AON', objetivo: 'trafego', investimento: 57.7627, impressoes: 6293, cliques: 69, conversoes: 6.8277, receita: 108.5559 },
           { data: '2026-11-23', plataforma: 'google', campanha: 'YOU_Black-Friday', objetivo: 'video', investimento: 13.7915, impressoes: 108, cliques: 0, videoViews: 84 },
           { data: '2026-11-24', plataforma: 'google', campanha: 'SEARCH_super-minas_AON', objetivo: 'conversao', investimento: 151.687, impressoes: 1321, cliques: 472, conversoes: 46.3462, receita: 462.3538 },
-          { data: '2026-11-24', plataforma: 'google', campanha: 'PMAX_super-minas_AON', objetivo: 'conversao', investimento: 204.8129, impressoes: 33577, cliques: 287, conversoes: 38.1435, receita: 369.2691 },
-          { data: '2026-11-24', plataforma: 'google', campanha: 'DEMAND-GEN_super-minas_AON', objetivo: 'trafego', investimento: 144.3022, impressoes: 15272, cliques: 115, conversoes: 10.1424, receita: 98.2523 },
+          { data: '2026-11-24', plataforma: 'google', campanha: 'PMAX_super-minas_AON', objetivo: 'conversao', investimento: 204.8129, impressoes: 33577, cliques: 287, conversoes: 40.6779, receita: 413.166 },
+          { data: '2026-11-24', plataforma: 'google', campanha: 'DEMAND-GEN_super-minas_AON', objetivo: 'trafego', investimento: 144.3022, impressoes: 15271, cliques: 115, conversoes: 9.8846, receita: 94.3851 },
           { data: '2026-11-24', plataforma: 'google', campanha: 'YOU_Black-Friday', objetivo: 'video', investimento: 13.5317, impressoes: 418, cliques: 0, videoViews: 344 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'SEARCH_super-minas_AON', objetivo: 'conversao', investimento: 103.1818, impressoes: 494, cliques: 214, conversoes: 24.5307, receita: 207.6056 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'PMAX_super-minas_AON', objetivo: 'conversao', investimento: 137.4892, impressoes: 19058, cliques: 287, conversoes: 12.9528, receita: 143.5081 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'DEMAND-GEN_super-minas_AON', objetivo: 'trafego', investimento: 55.0207, impressoes: 5207, cliques: 45, conversoes: 0.9211, receita: 18.4211 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'YOU_Black-Friday', objetivo: 'video', investimento: 6.3832, impressoes: 454, cliques: 0, videoViews: 300 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'SEARCH_super-minas_AON', objetivo: 'conversao', investimento: 103.1818, impressoes: 494, cliques: 214, conversoes: 23.5307, receita: 202.6056 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'PMAX_super-minas_AON', objetivo: 'conversao', investimento: 150.9819, impressoes: 21123, cliques: 350, conversoes: 17.9528, receita: 197.9681 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'DEMAND-GEN_super-minas_AON', objetivo: 'trafego', investimento: 61.0933, impressoes: 5830, cliques: 47, conversoes: 0.9211, receita: 18.4211 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'YOU_Black-Friday', objetivo: 'video', investimento: 7.5002, impressoes: 584, cliques: 0, videoViews: 343 },
           { data: '2026-11-22', plataforma: 'programatica', campanha: 'Super Minas - Set a Nov/2026 · Black', objetivo: 'trafego', investimento: 249.27, impressoes: 17460, cliques: 266 },
           { data: '2026-11-23', plataforma: 'programatica', campanha: 'Super Minas - Set a Nov/2026 · Black', objetivo: 'trafego', investimento: 249.8, impressoes: 18134, cliques: 237 },
           { data: '2026-11-24', plataforma: 'programatica', campanha: 'Super Minas - Set a Nov/2026 · Black', objetivo: 'trafego', investimento: 250.5, impressoes: 17931, cliques: 264 },
           { data: '2026-11-25', plataforma: 'programatica', campanha: 'Super Minas - Set a Nov/2026 · Black', objetivo: 'trafego', investimento: 92.6, impressoes: 5813, cliques: 88 }
         ],
         ga4: [
-          // GA4 do site (propriedade 260405056): sessões de mídia paga por origem, 22–25/11 (25/11 parcial).
-          { data: '2026-11-22', plataforma: 'meta', sessoes: 1735 },
-          { data: '2026-11-22', plataforma: 'google', sessoes: 6718 },
-          { data: '2026-11-22', plataforma: 'programatica', sessoes: 224 },
-          { data: '2026-11-23', plataforma: 'meta', sessoes: 1474 },
-          { data: '2026-11-23', plataforma: 'google', sessoes: 2251 },
-          { data: '2026-11-23', plataforma: 'programatica', sessoes: 63 },
-          { data: '2026-11-24', plataforma: 'meta', sessoes: 213 },
-          { data: '2026-11-24', plataforma: 'google', sessoes: 1690 },
-          { data: '2026-11-24', plataforma: 'programatica', sessoes: 77 },
-          { data: '2026-11-25', plataforma: 'meta', sessoes: 226 },
-          { data: '2026-11-25', plataforma: 'google', sessoes: 433 },
-          { data: '2026-11-25', plataforma: 'programatica', sessoes: 22 }
+          // GA4 do site (260405056): sessões de mídia paga por origem, 22–25/11 (25/11 parcial).
+          { data: '2026-11-22', prop: 'site', plataforma: 'meta', sessoes: 1735 },
+          { data: '2026-11-22', prop: 'site', plataforma: 'google', sessoes: 6718 },
+          { data: '2026-11-22', prop: 'site', plataforma: 'programatica', sessoes: 224 },
+          { data: '2026-11-23', prop: 'site', plataforma: 'meta', sessoes: 1474 },
+          { data: '2026-11-23', prop: 'site', plataforma: 'google', sessoes: 2251 },
+          { data: '2026-11-23', prop: 'site', plataforma: 'programatica', sessoes: 63 },
+          { data: '2026-11-24', prop: 'site', plataforma: 'meta', sessoes: 213 },
+          { data: '2026-11-24', prop: 'site', plataforma: 'google', sessoes: 1690 },
+          { data: '2026-11-24', prop: 'site', plataforma: 'programatica', sessoes: 77 },
+          { data: '2026-11-25', prop: 'site', plataforma: 'meta', sessoes: 226 },
+          { data: '2026-11-25', prop: 'site', plataforma: 'google', sessoes: 433 },
+          { data: '2026-11-25', prop: 'site', plataforma: 'programatica', sessoes: 22 }
         ],
         erp: [],
         insights: { positivos: [], eficiencia: [], atencao: [], otimizacoes: [], aprendizados: [] }
@@ -1196,7 +1194,9 @@ function agg(rows) {
     ['ctr', 'cpc', 'cpl', 'cpa'].forEach(k => { if (ok(r[k])) (REP[k] = REP[k] || []).push(r[k]); });
   });
   const q = (n, m = 1) => P[n] && P[n][1] > 0 ? P[n][0] / P[n][1] * m : null;
-  Object.assign(a, { ctr: q('ctr', 100), cpc: q('cpc'), cpm: q('cpm', 1000), cpa: q('cpa'), roas: q('roas'), cpl: q('cpl'), cpv: q('cpv'), clpv: q('clpv'), tx: q('tx', 100), txcad: q('txcad', 100) });
+  Object.assign(a, { ctr: q('ctr', 100), cpc: q('cpc'), cpm: q('cpm', 1000),
+    cpa: ok(a.conv) && a.conv > 0 && ok(a.inv) ? a.inv / a.conv : null,
+    roas: ok(a.rec) && ok(a.inv) && a.inv > 0 ? a.rec / a.inv : null, cpl: q('cpl'), cpv: q('cpv'), clpv: q('clpv'), tx: q('tx', 100), txcad: q('txcad', 100) });
   // só usa o valor do arquivo quando não há base para calcular e há uma única linha informando
   a.rep = new Set();
   Object.entries(REP).forEach(([k, vs]) => { if (!ok(a[k]) && vs.length === 1) { a[k] = vs[0]; a.rep.add(k); } });
@@ -2212,12 +2212,15 @@ function renderQuadros() {
   // Quadro 2 · Black
   const rB = rowsOf('midia', ['black']), sB = rowsOf('ga4', ['black']);
   const sesB = p => sumField(sB.filter(r => normPlat(r.plataforma) === p), 'sessoes');
-  const lineB = (label, rs, ses, cls = '') => { const a = agg(rs); return `<tr class="${cls}"><td>${label}</td><td>${F.brl(a.inv)}</td><td>${F.int(ses)}</td><td>${F.int(a.conv)}</td><td>${F.brl2(a.cpa)}</td><td>${F.brl(a.rec)}</td><td>${F.x(a.roas)}</td></tr>`; };
+  const LPq = temLP('black');
+  const sesPP = (p, prop) => sumField(sB.filter(r => normPlat(r.plataforma) === p && r.prop === prop), 'sessoes');
+  const sesCols = (lp, site) => (LPq ? `<td>${F.int(lp)}</td>` : '') + `<td>${F.int(site)}</td>`;
+  const lineB = (label, rs, lp, site, cls = '') => { const a = agg(rs); return `<tr class="${cls}"><td>${label}</td><td>${F.brl(a.inv)}</td>${sesCols(lp, site)}<td>${F.int(a.conv)}</td><td>${F.int(ok(a.rec) ? Math.round(a.rec / TITULO) : null)}</td><td>${F.brl2(a.cpa)}</td><td>${F.brl(a.rec)}</td><td>${F.x(a.roas)}</td></tr>`; };
   const pb = parts('black');
-  $('#quadroBlk').innerHTML = `<thead><tr><th>Plataforma</th><th>Investimento</th><th>Sessões LP + site</th><th>Compras</th><th>CPA</th><th>Receita</th><th>ROAS</th></tr></thead><tbody>` +
-    pb.map(p => pend(p, 'black') ? (ok(sesB(p)) ? `<tr><td>${platLabel(p)}</td><td colspan="1" class="l" style="color:#8A5A00">aguardando relatório</td><td>${F.int(sesB(p))}</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>` : `<tr><td>${platLabel(p)}</td><td colspan="6" class="l" style="color:#8A5A00">Aguardando relatório desta plataforma</td></tr>`)
-      : lineB(platLabel(p), rB.filter(r => r.plataforma === p), sesB(p))).join('') +
-    lineB('Total mídia paga', rB, sessPagas(sB), 'tot') + '</tbody>';
+  $('#quadroBlk').innerHTML = `<thead><tr><th>Plataforma</th><th>Investimento</th>${LPq ? '<th>Sessões na LP</th>' : ''}<th>Sessões no site</th><th>Compras</th><th>Títulos</th><th>CPA</th><th>Receita</th><th>ROAS</th></tr></thead><tbody>` +
+    pb.map(p => pend(p, 'black') ? (ok(sesB(p)) ? `<tr><td>${platLabel(p)}</td><td class="l" style="color:#8A5A00">aguardando relatório</td>${sesCols(sesPP(p, 'lp'), sesPP(p, 'site'))}<td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>` : `<tr><td>${platLabel(p)}</td><td colspan="${LPq ? 8 : 7}" class="l" style="color:#8A5A00">Aguardando relatório desta plataforma</td></tr>`)
+      : lineB(platLabel(p), rB.filter(r => r.plataforma === p), sesPP(p, 'lp'), sesPP(p, 'site'))).join('') +
+    lineB('Total mídia paga', rB, sessPagas(sB.filter(r => r.prop === 'lp')), sessPagas(sB.filter(r => r.prop === 'site')), 'tot') + '</tbody>';
 }
 function renderVisitas() {
   kill('gl_vis');
@@ -2407,6 +2410,7 @@ function renderPhaseGrid() {
 
 /* ---------- 5. Performance da Landing Page ---------- */
 function renderLP() {
+  if (!document.getElementById('lpBody')) return;
   const fases = fasesReais();
   const src = s => `<span class="srcb ${s === 'GA4' ? 'ga' : 'px'}">${s}</span>`;
   $('#lpBody').innerHTML = fases.map(f => {
@@ -2558,7 +2562,8 @@ function etapasDe(f) {
     return [
       { k: 'trafego', n: 'Tráfego', d: 'Quanto a mídia levou de pessoas para a LP e o site. Esta mídia não tem venda atribuída na Black.', m: [
         ['Cliques', F.intC(a.cli), 'pl', '', 1], ['Custo por visita', F.brl2(ok(a.inv) && sesP ? a.inv / sesP : null), 'mx', 'investimento ÷ sessões', 1],
-        ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões'], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique'], ['Sessões LP + site', F.intC(sesP), 'ga', 'mídia paga']] },
+        ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões'], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique'],
+        ...(temLP(f) ? [['Sessões na LP', F.intC(sesProp(f, 'lp')), 'ga', 'mídia paga'], ['Sessões no site', F.intC(sesProp(f, 'site')), 'ga', 'mídia paga']] : [['Sessões no site', F.intC(sesProp(f, 'site')), 'ga', 'mídia paga']])] },
       { k: 'alcance', n: 'Alcance', d: 'Quantas pessoas a mídia atingiu, com que frequência e a que custo.', m: [
         ['Impressões', F.intC(a.imp), 'pl', '', 1], ['Alcance', F.intC(al.v), 'pl', ok(al.v) ? 'pessoas' : 'a plataforma não informa alcance', 1],
         ['Frequência', F.dec(al.freq), 'pl', 'impressões ÷ alcance'], ['CPM', F.brl2(a.cpm), 'pl', 'custo por mil impressões', 1]] },
@@ -2569,18 +2574,20 @@ function etapasDe(f) {
   const rm = agg(rows.filter(r => r.plataforma === 'meta' && r.objetivo === 'remarketing'));
   const esqC = ['todas', 'meta'].includes(state.plataforma) && !temFiltro() ? cli().fases[f].esquentaCompras : null;
   return [
-    { k: 'conversao', n: 'Conversão', d: 'Foco principal da Black: vendas. Total atribuído pelas plataformas (Meta + Google) e, abaixo, de onde vieram, incluindo o remarketing.', m: [
-      ['Vendas', F.intC(a.conv), 'pl', state.plataforma === 'todas' ? [...new Set(rowsOf('midia', ['black']).filter(r => r.conversoes > 0).map(r => PLATAFORMAS[r.plataforma].nome.replace(' Ads', '')))].join(' + ') : PLATAFORMAS[state.plataforma].nome, 1], ['CPA', F.brl2(a.cpa), 'pl', 'investimento ÷ vendas', 1],
-      ['Receita da mídia', F.brlC(a.rec), 'pl', 'compras atribuídas aos anúncios', 1], ['ROAS', F.x(a.roas), 'pl', 'receita da mídia ÷ investimento', 1],
-      ['SEP', 'De onde vieram as vendas'],
+    { k: 'conversao', n: 'Conversão', d: 'Foco principal da Black: vendas. Compras atribuídas pelas plataformas (Meta + Google) e, abaixo, de onde vieram, incluindo o remarketing.', m: [
+      ['Compras', F.intC(a.conv), 'pl', state.plataforma === 'todas' ? [...new Set(rowsOf('midia', ['black']).filter(r => r.conversoes > 0).map(r => PLATAFORMAS[r.plataforma].nome.replace(' Ads', '')))].join(' + ') : PLATAFORMAS[state.plataforma].nome, 1], ['CPA', F.brl2(a.cpa), 'pl', 'investimento ÷ compras', 1],
+      ['Receita da mídia', F.brlC(a.rec), 'pl', 'valor das compras atribuídas aos anúncios', 1], ['ROAS', F.x(a.roas), 'pl', 'receita da mídia ÷ investimento', 1],
+      ['Títulos vendidos', F.intC(ok(a.rec) ? Math.round(a.rec / TITULO) : null), 'pl', 'receita da mídia ÷ R$ 5', 1],
+      ['SEP', 'De onde vieram as compras'],
       ...[['Meta · Conversão', r => r.plataforma === 'meta' && r.objetivo === 'conversao'],
-        ['Meta · Remarketing', r => r.plataforma === 'meta' && r.objetivo === 'remarketing', 'público: visitantes da LP do Esquenta + site · taxa de conversão ' + F.pct(rm.tx)],
+        ['Meta · Remarketing', r => r.plataforma === 'meta' && r.objetivo === 'remarketing', 'público: visitantes do site · taxa de conversão ' + F.pct(rm.tx)],
         ['Meta · Alcance + Tráfego', r => r.plataforma === 'meta' && (r.objetivo === 'alcance' || r.objetivo === 'trafego')],
         ['Google · PMAX + Search', r => r.plataforma === 'google' && r.objetivo === 'conversao'], ['Google · Demand Gen', r => r.plataforma === 'google' && r.objetivo === 'trafego']]
-        .map(([n, fn, extra]) => { const x = agg(rows.filter(fn)); return ok(x.conv) && x.conv > 0 ? [n, F.intC(x.conv), 'pl', /Alcance|Demand/.test(n) ? 'vendas · campanha medida por alcance e tráfego, não por CPA' : 'vendas · CPA ' + F.brl2(x.cpa) + (extra ? ' · ' + extra : '')] : null; }).filter(Boolean),
-      ...(ok(esqC) ? [['Meta · campanhas do Esquenta', F.intC(esqC), 'pl', 'vendas na Black atribuídas às campanhas do Esquenta (já desligadas) · não entram no total acima']] : [])] },
+        .map(([n, fn, extra]) => { const x = agg(rows.filter(fn)); return ok(x.conv) && x.conv > 0 ? [n, F.intC(x.conv), 'pl', /Alcance|Demand/.test(n) ? 'compras · campanha medida por alcance e tráfego, não por CPA' : 'compras · CPA ' + F.brl2(x.cpa) + (extra ? ' · ' + extra : '')] : null; }).filter(Boolean),
+      ...(ok(esqC) ? [['Meta · campanhas do Esquenta', F.intC(esqC), 'pl', 'compras na Black atribuídas às campanhas do Esquenta (já desligadas) · não entram no total acima']] : [])] },
     { k: 'trafego', n: 'Tráfego', d: 'Quanto os anúncios levaram de pessoas para a LP e o site.', m: [
-      ['Sessões LP + site', F.intC(ses), 'ga', 'mídia paga', 1], ['Cliques', F.intC(a.cli), 'pl', 'nos anúncios', 1],
+      ...(temLP(f) ? [['Sessões na LP', F.intC(sesProp(f, 'lp')), 'ga', 'mídia paga', 1], ['Sessões no site', F.intC(sesProp(f, 'site')), 'ga', 'mídia paga', 1]]
+        : [['Sessões no site', F.intC(sesProp(f, 'site')), 'ga', 'mídia paga', 1]]), ['Cliques', F.intC(a.cli), 'pl', 'nos anúncios', 1],
       ['Custo por visita', F.brl2(ok(a.inv) && ses ? a.inv / ses : null), 'mx', 'investimento ÷ sessões', 1],
       ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões'], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique'],
       L.funil ? ['Conversão no site', F.pct(todas && L.sessoes ? L.funil.compraSessoes / L.sessoes * 100 : null), 'ga', 'sessões com compra ÷ sessões (mídia paga)']
@@ -2589,20 +2596,22 @@ function etapasDe(f) {
   ].filter(Boolean);
 }
 const FTN = { pl: 'Plataformas', ga: 'GA4', px: 'Meta pixel', bi: 'BI', mx: 'Plataformas + GA4' };
-const card3 = ([l, v, ft, s, hl]) => l === 'SEP' ? `<div class="c3-sep">${v}</div>` : `<div class="c3 ${hl ? 'hl' : ''}"><span title="${esc(glossFor(l))}">${l}</span><b class="${v === '—' ? 'empty-v' : ''}">${v}</b><small><i class="f3 f3-${ft}">${FTN[ft]}</i>${s ? ' · ' + s : ''}</small></div>`;
+let _ftOculta = false;
+const cards3 = list => { const L = list.filter(Boolean), fs = new Set(L.filter(x => x[0] !== 'SEP').map(x => x[2])); _ftOculta = fs.size <= 1; const out = L.map(card3).join(''); _ftOculta = false; return out; };
+const card3 = ([l, v, ft, s, hl]) => l === 'SEP' ? `<div class="c3-sep">${v}</div>` : `<div class="c3 ${hl ? 'hl' : ''}"><span title="${esc(glossFor(l))}">${l}</span><b class="${v === '—' ? 'empty-v' : ''}">${v}</b><small>${_ftOculta ? (s || '') : `<i class="f3 f3-${ft}">${FTN[ft]}</i>${s ? ' · ' + s : ''}`}</small></div>`;
 
 /* ---------- meta da mídia (Black) ---------- */
 function metaMidiaHtml(compacto) {
   const z = cli().fases.black, M = z.metaMidia; if (!M || !['todas'].includes(state.plataforma) || temFiltro()) return '';
-  // atingimento = vendas de mídia (compras atribuídas por Meta + Google) ÷ meta de mídia (desejada e mínima)
-  const a = agg(rowsOf('midia', ['black'])), v = Math.round(a.conv || 0), pc = v / M.desejada * 100;
+  // atingimento = títulos vendidos pela mídia (receita atribuída pelas plataformas ÷ R$ 5) ÷ meta de mídia; não usa vendas totais
+  const a = agg(rowsOf('midia', ['black'])), v = Math.round((a.rec || 0) / TITULO), pc = v / M.desejada * 100;
   const dias = (x, y) => Math.round((new Date(y) - new Date(x)) / 864e5) + 1;
   const ult = [...new Set(rowsOf('midia', ['black']).map(r => r.data).filter(Boolean))].sort().pop();
   const ritmo = ult ? Math.min(1, dias(z.inicio, ult) / dias(z.inicio, z.fim)) : null;
   return `<div class="mm ${compacto ? 'mm-c' : ''}">
-    <div class="mm-h"><span>Meta da mídia · vendas</span><b>${nf(pc, 2)}%</b></div>
+    <div class="mm-h"><span>Meta da mídia · títulos vendidos</span><b>${nf(pc, 2)}%</b></div>
     <div class="mm-bar"><i style="width:${Math.min(pc, 100)}%"></i>${ritmo != null && ritmo < 1 ? `<em style="left:${ritmo * 100}%"></em>` : ''}</div>
-    <small>Vendas de mídia: ${F.int(v)} · meta desejada: ${F.int(M.desejada)} (${nf(pc, 2)}%) · meta mínima: ${F.int(M.minima)} (${nf(v / M.minima * 100, 2)}%)${ritmo != null && ritmo < 1 ? ` · linha preta: ${nf(ritmo * 100, 0)}% da semana decorrida` : ''}</small>
+    <small>Títulos vendidos pela mídia: ${F.int(v)} (receita da mídia ${F.brl(a.rec)} ÷ R$ 5; ${F.int(a.conv)} compras) · meta desejada: ${F.int(M.desejada)} (${nf(pc, 2)}%) · meta mínima: ${F.int(M.minima)} (${nf(v / M.minima * 100, 2)}%)${ritmo != null && ritmo < 1 ? ` · linha preta: ${nf(ritmo * 100, 0)}% da semana decorrida` : ''}</small>
   </div>`;
 }
 
@@ -2626,17 +2635,17 @@ function renderKpis2() {
       const pickL = (k, l) => (et.find(x => x.k === k) || { m: [] }).m.find(x => x && x[0] === l);
       const usaBase = cli().fases.esquenta.cadastrosFonte !== 'pixel';
       const sec = f === 'esquenta' ? [pickL('trafego', 'Sessões na LP'), usaBase ? pickL('leads', 'Taxa de cadastro') : pickL('trafego', 'Cliques'), pickL('trafego', 'Custo por visita'), ok(baseInativa()) ? pickL('base', 'Inativos alcançados') : pickL('trafego', 'CTR')]
-        : [pickL('conversao', 'Receita da mídia'), pickL('conversao', 'ROAS'), pickL('trafego', 'Sessões LP + site'), (pickL('trafego', 'Clique para compra') || pickL('trafego', 'Conversão no site'))];
+        : [pickL('conversao', 'Receita da mídia'), pickL('conversao', 'ROAS'), pickL('conversao', 'Títulos vendidos'), temLP(f) ? pickL('trafego', 'Sessões na LP') : pickL('trafego', 'Sessões no site')];
       if (f === 'black') { const a = agg(rowsOf('midia', [f])), Bq = cli().bi || {}, biOk = state.plataforma === 'todas';
-        hero[0] = ['Vendas', F.intC(a.conv), 'pl', [...new Set(rowsOf('midia', ['black']).filter(r => r.conversoes > 0).map(r => PLATAFORMAS[r.plataforma].nome.replace(' Ads', '')))].join(' + '), 1]; hero[1] = ['CPA', F.brl2(a.cpa), 'pl', 'investimento ÷ vendas', 1];
+        hero[0] = ['Compras', F.intC(a.conv), 'pl', [...new Set(rowsOf('midia', ['black']).filter(r => r.conversoes > 0).map(r => PLATAFORMAS[r.plataforma].nome.replace(' Ads', '')))].join(' + '), 1]; hero[1] = ['CPA', F.brl2(a.cpa), 'pl', 'investimento ÷ compras', 1];
         sec[0] = ['Receita da mídia', F.brlC(a.rec), 'pl', 'compras atribuídas aos anúncios']; sec[1] = ['ROAS', F.x(a.roas), 'pl', 'receita da mídia ÷ investimento'];
 }
       return `<div class="ovc ${f === 'esquenta' ? 'esq' : 'blk'}">
         <div class="ovc-h"><span class="ph-pill ${f === 'esquenta' ? 'esq' : 'blk'}">${FASES[f].nome}</span><small>${f === 'esquenta' ? 'captação de cadastros, base e reativação' : 'vendas, receita, CPA e ROAS'}</small></div>
-        <div class="ovc-hero">${hero.filter(Boolean).map(card3).join('')}</div>
-        ${f === 'black' ? metaMidiaHtml(true) : ''}
-        <div class="ovc-sec">${sec.filter(Boolean).map(x => card3([...x.slice(0, 4), 0])).join('')}</div>
-        <div class="ovc-ent"><div class="ovc-lbl">Entrega</div>${ent(f).map(card3).join('')}</div>
+        <div class="ovc-hero">${cards3(hero)}</div>
+        ${f === 'black' ? metaMidiaHtml(true) + semSaldoHtml() : ''}
+        <div class="ovc-sec">${cards3(sec.filter(Boolean).map(x => [...x.slice(0, 4), 0]))}</div>
+        <div class="ovc-ent"><div class="ovc-lbl">Entrega · plataformas</div>${cards3(ent(f))}</div>
       </div>`; }).join('')}</div>`;
   } else {
     const f = fases[0], et = etapasDe(f);
@@ -2644,10 +2653,10 @@ function renderKpis2() {
     if (!et.some(x => x.k === state.etapa[f])) state.etapa[f] = et[0].k;
     const cur = et.find(x => x.k === state.etapa[f]);
     $('#objStrip').innerHTML = `<div class="obj3 ${f === 'esquenta' ? 'esq' : 'blk'}">${OBJ_TXT[f]}</div>`;
-    $('#kEntrega').innerHTML = `<div class="ent3">${ent(f).map(card3).join('')}</div>`;
-    $('#kPerf').innerHTML = (f === 'black' ? metaMidiaHtml(false) : '') + `<div class="kgrp-h" style="margin-top:16px">Performance<small>escolha a etapa</small></div>
+    $('#kEntrega').innerHTML = `<div class="ent3">${cards3(ent(f))}</div>`;
+    $('#kPerf').innerHTML = (f === 'black' ? metaMidiaHtml(false) + semSaldoHtml() : '') + `<div class="kgrp-h" style="margin-top:16px">Performance<small>escolha a etapa</small></div>
       <div class="chips tabs et-tabs">${et.map(x => `<button class="chip ${x.k === cur.k ? 'on' : ''}" data-et="${x.k}">${x.n}</button>`).join('')}</div>
-      <div class="et-panel ${f === 'esquenta' ? 'esq' : 'blk'}"><p class="et-d">${cur.d}</p><div class="et-grid">${cur.m.map(card3).join('')}</div></div>`;
+      <div class="et-panel ${f === 'esquenta' ? 'esq' : 'blk'}"><p class="et-d">${cur.d}</p><div class="et-grid">${cards3(cur.m)}</div></div>`;
   }
   const D = cli().destaques || {};
   const it = G ? fases.flatMap(f => (D[f] || []).slice(0, 2).map(x => [...x, f])) : (D[fases[0]] || []).map(x => [...x, fases[0]]);
@@ -2697,6 +2706,39 @@ function renderMetaInvest() {
     </div>`;
   }).join('');
 }
+
+
+/* sessões de mídia paga por destino (GA4): prop 'lp' = landing page, 'site' = site */
+const temLP = f => (cli().fases[f].ga4 || []).some(r => r.prop === 'lp');
+const sesProp = (f, prop) => sessPagas(rowsOf('ga4', [f]).filter(r => r.prop === prop)) ?? null;
+const TITULO = 5;   // valor do título na semana da Black (R$ 5,00 nas três praças)
+
+/* ---------- Super Minas: dia sem saldo no Meta ---------- */
+function semSaldoInfo() {
+  const S = cli().fases.black.semSaldo; if (!S) return null;
+  const R = rowsOf('midia', ['black'], false).filter(r => r.plataforma === 'meta');
+  const dia = agg(R.filter(r => r.data === S.data));
+  const antes = [...new Set(R.map(r => r.data))].filter(d => d < S.data);
+  const med = k => antes.length ? antes.reduce((s, d) => s + (agg(R.filter(r => r.data === d))[k] || 0), 0) / antes.length : null;
+  const ses = d => sumField(rowsOf('ga4', ['black'], false).filter(r => r.data === d && normPlat(r.plataforma) === 'meta'), 'sessoes') || 0;
+  const sesMed = antes.length ? antes.reduce((s, d) => s + ses(d), 0) / antes.length : null;
+  return { S, dia, invMed: med('inv'), impMed: med('imp'), sesDia: ses(S.data), sesMed };
+}
+function semSaldoHtml() {
+  const x = semSaldoInfo(); if (!x || !['todas', 'meta'].includes(state.plataforma) || !inPeriod(x.S.data)) return '';
+  const q = (a, b) => ok(a) && b ? nf((a / b - 1) * 100, 0) + '%' : '—';
+  return `<div class="ss-box"><b>⚠ ${dBR(x.S.data)} · Meta sem saldo</b>
+    <span>A conta principal do Meta ficou sem saldo o dia inteiro; só a campanha da conta Vitalícia (_VT) rodou. Investimento do Meta no dia: ${F.brl(x.dia.inv)} (média de ${F.brl(x.invMed)}/dia antes, ${q(x.dia.inv, x.invMed)}); impressões: ${F.intC(x.dia.imp)} (${q(x.dia.imp, x.impMed)}); sessões do Meta no site: ${F.int(x.sesDia)} (${q(x.sesDia, x.sesMed)}). As ${F.int(x.dia.conv)} compras do Meta no dia são, na maior parte, atribuições de anúncios vistos antes.</span></div>`;
+}
+if (window.Chart) Chart.register({ id: 'semSaldo', afterDatasetsDraw(c) {
+  const x = cli().fases.black.semSaldo; if (!x || !c.scales.x || c.config.type === 'doughnut' || (c.options.indexAxis === 'y')) return;
+  const i = (c.data.labels || []).indexOf(dBR(x.data)); if (i < 0) return;
+  const px = c.scales.x.getPixelForValue(i), a = c.chartArea, ctx = c.ctx;
+  ctx.save(); ctx.strokeStyle = 'rgba(227,35,34,.85)'; ctx.setLineDash([4, 3]); ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(px, a.top); ctx.lineTo(px, a.bottom); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle = '#E32322'; ctx.font = '700 10px Inter, sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText(x.texto || 'Sem saldo', Math.min(Math.max(px, a.left + 40), a.right - 40), a.top + 10); ctx.restore();
+} });
 
 function renderAll() {
   renderNav(); renderPlatChips(); renderHero(); renderResumo(); renderKpis2();
