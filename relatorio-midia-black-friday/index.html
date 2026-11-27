@@ -859,7 +859,7 @@ table.tq tr.tot td{background:#f1f1ec!important;border-top:2px solid rgba(0,0,0,
    ===================================================================== */
 const CONFIG = {
   titulo: 'Black Friday 2026',
-  atualizadoEm: '2026-11-25'    // Esquenta fechado em 21/11; Black Friday com mídia até 25/11 (parcial) e BI até 24/11
+  atualizadoEm: '2026-11-27'    // Esquenta fechado em 21/11; Black Friday com mídia até 25/11 (parcial) e BI até 24/11
 };
 
 // Plataformas disponíveis. "imposto" é aplicado sobre o investimento quando o
@@ -923,7 +923,7 @@ const DATA = {
       }
     },
     alcanceDiarioPlat: {},
-    alcanceDiario: {'2026-11-22': 365225, '2026-11-23': 547573, '2026-11-24': 8772, '2026-11-25': 60263},   // Meta: soma do alcance das campanhas no dia
+    alcanceDiario: {'2026-11-22': 365225, '2026-11-23': 547573, '2026-11-24': 8772, '2026-11-25': 138505, '2026-11-26': 151535, '2026-11-27': 72165},   // Meta: soma do alcance das campanhas no dia
     plataformas: ['meta', 'google', 'programatica'],
     insightsGeral: { positivos: [], eficiencia: [], atencao: [], otimizacoes: [], aprendizados: [] },
     esquentaConversao: { metodo: null, leadsCompraram: null, receitaLeads: null, reativadosCompraram: null, receitaReativados: null },
@@ -937,19 +937,19 @@ const DATA = {
         inicio: '2026-11-22', fim: '2026-11-28',
         plataformas: ['meta', 'google', 'programatica'],
         ticket: null,
-        // destino: site (não há LP). GA4 do site, sessões de mídia paga (google/facebook/programatica cpc), 22–25/11 (25/11 parcial)
+        // destino: site (não há LP). GA4 do site, sessões de mídia paga (google/facebook/programatica cpc), 22–25/11 (27/11 parcial)
         lp: { urls: ['https://site.superminascap.com/'], site: true, sessoes: 15205, usuarios: 9854, usuariosUnicos: 10963,
           funil: { produto: 2131, carrinho: 1130, checkout: 843, compraSessoes: 421, compras: 450 },
-          nota: 'GA4 do site do Super Minas (propriedade 260405056), 22–25/11 (25/11 parcial), só sessões de mídia paga (Google, Meta e Programática). Etapas do funil = sessões com o evento: view_item, add_to_cart, begin_checkout e purchase. Compras do GA4 usam último clique e não batem com as compras atribuídas pelas plataformas.' },
+          nota: 'GA4 do site do Super Minas (propriedade 260405056), 22–25/11 (27/11 parcial), só sessões de mídia paga (Google, Meta e Programática). Etapas do funil = sessões com o evento: view_item, add_to_cart, begin_checkout e purchase. Compras do GA4 usam último clique e não batem com as compras atribuídas pelas plataformas.' },
         planejado: {},
-        alcance: { meta: 888198 },   // 22–25/11: soma do alcance das campanhas no período (Windsor); pode haver sobreposição
+        alcance: { meta: 989362 },   // 22–27/11: soma do alcance das campanhas no período (Windsor); pode haver sobreposição
         // meta da mídia — "Super Minas - Projeções BF.xlsx" (SharePoint Marketing): mídia desejada 15.840; mínima 14.400
         metaMidia: { desejada: 15840, minima: 14400 },
         // dia sem saldo no Meta (conta principal): sem entrega o dia inteiro
         semSaldo: { data: '2026-11-24', plataforma: 'meta', texto: 'Meta sem saldo' },
         campanhas: [],
         midia: [
-          // Windsor.ai (APIs do Meta e do Google), conferido em 25/11: Meta = campanhas BLACK (contas CA - Super Minas_Nova e Vitalícia); Google = todas as campanhas da semana. 25/11 parcial.
+          // Windsor.ai (APIs do Meta e do Google), atualizado em 27/11: Meta = campanhas BLACK (contas CA - Super Minas_Nova e Vitalícia); Google = todas as campanhas da semana. 27/11 parcial. Programática: relatório até 25/11.
           // 24/11: conta principal do Meta sem saldo (sem investimento); as compras do dia são atribuições de dias anteriores e só a campanha _VT (Vitalícia) rodou.
           { data: '2026-11-22', plataforma: 'meta', campanha: 'ALCANCE_super_minas_BLACK-2026', investimento: 705.22, impressoes: 358591, cliques: 552, lpv: 91, conversoes: 17, receita: 165 },
           { data: '2026-11-22', plataforma: 'meta', campanha: 'TRAFEGO_super_minas_BLACK-2026', investimento: 511.05, impressoes: 67900, cliques: 1843, lpv: 940, conversoes: 12, receita: 100 },
@@ -962,11 +962,21 @@ const DATA = {
           { data: '2026-11-24', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026', investimento: 0, impressoes: 0, cliques: 0, lpv: 1, conversoes: 57, receita: 670 },
           { data: '2026-11-24', plataforma: 'meta', campanha: 'REMARKETING_Super_Minas_BLACK-2026', investimento: 0, impressoes: 0, cliques: 0, lpv: 1, conversoes: 29, receita: 265 },
           { data: '2026-11-24', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026_VT', investimento: 83.19, impressoes: 13466, cliques: 250, lpv: 113, conversoes: 64, receita: 630 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'ALCANCE_super_minas_BLACK-2026', investimento: 41.14, impressoes: 21165, cliques: 31, lpv: 8, conversoes: 4, receita: 45 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'TRAFEGO_super_minas_BLACK-2026', investimento: 303.81, impressoes: 15711, cliques: 776, lpv: 487, conversoes: 2, receita: 25 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026', investimento: 385.69, impressoes: 43500, cliques: 626, lpv: 262, conversoes: 131, receita: 1260 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'REMARKETING_Super_Minas_BLACK-2026', investimento: 213.18, impressoes: 23296, cliques: 384, lpv: 111, conversoes: 68, receita: 740 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026_VT', investimento: 77.02, impressoes: 11449, cliques: 176, lpv: 60, conversoes: 50, receita: 495 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'ALCANCE_super_minas_BLACK-2026', investimento: 106.76, impressoes: 51526, cliques: 68, lpv: 17, conversoes: 9, receita: 70 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'TRAFEGO_super_minas_BLACK-2026', investimento: 558.92, impressoes: 27036, cliques: 1488, lpv: 909, conversoes: 5, receita: 45 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026', investimento: 688.09, impressoes: 78510, cliques: 1067, lpv: 448, conversoes: 256, receita: 2435 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'REMARKETING_Super_Minas_BLACK-2026', investimento: 363.88, impressoes: 42675, cliques: 678, lpv: 204, conversoes: 150, receita: 1765 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026_VT', investimento: 186.7, impressoes: 30477, cliques: 403, lpv: 154, conversoes: 111, receita: 1100 },
+          { data: '2026-11-26', plataforma: 'meta', campanha: 'ALCANCE_super_minas_BLACK-2026', investimento: 135.81, impressoes: 59777, cliques: 91, lpv: 16, conversoes: 20, receita: 230 },
+          { data: '2026-11-26', plataforma: 'meta', campanha: 'TRAFEGO_super_minas_BLACK-2026', investimento: 488.71, impressoes: 19649, cliques: 1289, lpv: 838, conversoes: 5, receita: 40 },
+          { data: '2026-11-26', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026', investimento: 677.27, impressoes: 87118, cliques: 898, lpv: 367, conversoes: 286, receita: 2910 },
+          { data: '2026-11-26', plataforma: 'meta', campanha: 'REMARKETING_Super_Minas_BLACK-2026', investimento: 335.53, impressoes: 42432, cliques: 560, lpv: 165, conversoes: 163, receita: 1670 },
+          { data: '2026-11-26', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026_VT', investimento: 153.05, impressoes: 22348, cliques: 336, lpv: 144, conversoes: 96, receita: 915 },
+          { data: '2026-11-27', plataforma: 'meta', campanha: 'ALCANCE_super_minas_BLACK-2026', investimento: 55.12, impressoes: 22384, cliques: 29, lpv: 2, conversoes: 14, receita: 115 },
+          { data: '2026-11-27', plataforma: 'meta', campanha: 'TRAFEGO_super_minas_BLACK-2026', investimento: 225.52, impressoes: 8797, cliques: 528, lpv: 347, conversoes: 4, receita: 40 },
+          { data: '2026-11-27', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026', investimento: 415.95, impressoes: 43347, cliques: 449, lpv: 182, conversoes: 161, receita: 1820 },
+          { data: '2026-11-27', plataforma: 'meta', campanha: 'REMARKETING_Super_Minas_BLACK-2026', investimento: 212.14, impressoes: 20761, cliques: 326, lpv: 94, conversoes: 98, receita: 1005 },
+          { data: '2026-11-27', plataforma: 'meta', campanha: 'CONVERSAO_super_minas_BLACK-2026_VT', investimento: 68.9, impressoes: 7459, cliques: 148, lpv: 60, conversoes: 52, receita: 440 },
           { data: '2026-11-22', plataforma: 'google', campanha: 'SEARCH_super-minas_AON', objetivo: 'conversao', investimento: 80.2916, impressoes: 1019, cliques: 424, conversoes: 7.267, receita: 105.8384 },
           { data: '2026-11-22', plataforma: 'google', campanha: 'PMAX_super-minas_AON', objetivo: 'conversao', investimento: 225.083, impressoes: 37714, cliques: 1900, conversoes: 119.2711, receita: 1562.6367 },
           { data: '2026-11-22', plataforma: 'google', campanha: 'DEMAND-GEN_super-minas_AON', objetivo: 'trafego', investimento: 58.0419, impressoes: 5177, cliques: 74, conversoes: 12.8037, receita: 141.1343 },
@@ -979,17 +989,25 @@ const DATA = {
           { data: '2026-11-24', plataforma: 'google', campanha: 'PMAX_super-minas_AON', objetivo: 'conversao', investimento: 204.8129, impressoes: 33577, cliques: 287, conversoes: 40.6779, receita: 413.166 },
           { data: '2026-11-24', plataforma: 'google', campanha: 'DEMAND-GEN_super-minas_AON', objetivo: 'trafego', investimento: 144.3022, impressoes: 15271, cliques: 115, conversoes: 9.8846, receita: 94.3851 },
           { data: '2026-11-24', plataforma: 'google', campanha: 'YOU_Black-Friday', objetivo: 'video', investimento: 13.5317, impressoes: 418, cliques: 0, videoViews: 344 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'SEARCH_super-minas_AON', objetivo: 'conversao', investimento: 103.1818, impressoes: 494, cliques: 214, conversoes: 23.5307, receita: 202.6056 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'PMAX_super-minas_AON', objetivo: 'conversao', investimento: 150.9819, impressoes: 21123, cliques: 350, conversoes: 17.9528, receita: 197.9681 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'DEMAND-GEN_super-minas_AON', objetivo: 'trafego', investimento: 61.0933, impressoes: 5830, cliques: 47, conversoes: 0.9211, receita: 18.4211 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'YOU_Black-Friday', objetivo: 'video', investimento: 7.5002, impressoes: 584, cliques: 0, videoViews: 343 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'SEARCH_super-minas_AON', objetivo: 'conversao', investimento: 103.1818, impressoes: 494, cliques: 214, conversoes: 28.0307, receita: 257.6056 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'PMAX_super-minas_AON', objetivo: 'conversao', investimento: 249.8645, impressoes: 36104, cliques: 642, conversoes: 127.6288, receita: 1354.9975 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'DEMAND-GEN_super-minas_AON', objetivo: 'trafego', investimento: 88.0571, impressoes: 8745, cliques: 60, conversoes: 10.2494, receita: 107.504 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'YOU_Black-Friday', objetivo: 'video', investimento: 13.0792, impressoes: 948, cliques: 0, videoViews: 516 },
+          { data: '2026-11-26', plataforma: 'google', campanha: 'SEARCH_super-minas_AON', objetivo: 'conversao', investimento: 97.086, impressoes: 838, cliques: 298, conversoes: 48.5882, receita: 604.135 },
+          { data: '2026-11-26', plataforma: 'google', campanha: 'PMAX_super-minas_AON', objetivo: 'conversao', investimento: 243.1865, impressoes: 36511, cliques: 507, conversoes: 52.1875, receita: 702.2548 },
+          { data: '2026-11-26', plataforma: 'google', campanha: 'DEMAND-GEN_super-minas_AON', objetivo: 'trafego', investimento: 90.9145, impressoes: 8843, cliques: 67, conversoes: 6.0977, receita: 59.4275 },
+          { data: '2026-11-26', plataforma: 'google', campanha: 'YOU_Black-Friday', objetivo: 'video', investimento: 13.2574, impressoes: 2037, cliques: 0, videoViews: 1333 },
+          { data: '2026-11-27', plataforma: 'google', campanha: 'SEARCH_super-minas_AON', objetivo: 'conversao', investimento: 85.8306, impressoes: 544, cliques: 195, conversoes: 28.8459, receita: 261.4968 },
+          { data: '2026-11-27', plataforma: 'google', campanha: 'PMAX_super-minas_AON', objetivo: 'conversao', investimento: 104.4733, impressoes: 15960, cliques: 148, conversoes: 15.6168, receita: 202.1123 },
+          { data: '2026-11-27', plataforma: 'google', campanha: 'DEMAND-GEN_super-minas_AON', objetivo: 'trafego', investimento: 42.5525, impressoes: 3829, cliques: 37, conversoes: 0.0, receita: 0.0 },
+          { data: '2026-11-27', plataforma: 'google', campanha: 'YOU_Black-Friday', objetivo: 'video', investimento: 6.119, impressoes: 690, cliques: 0, videoViews: 497 },
           { data: '2026-11-22', plataforma: 'programatica', campanha: 'Super Minas - Set a Nov/2026 · Black', objetivo: 'trafego', investimento: 249.27, impressoes: 17460, cliques: 266 },
           { data: '2026-11-23', plataforma: 'programatica', campanha: 'Super Minas - Set a Nov/2026 · Black', objetivo: 'trafego', investimento: 249.8, impressoes: 18134, cliques: 237 },
           { data: '2026-11-24', plataforma: 'programatica', campanha: 'Super Minas - Set a Nov/2026 · Black', objetivo: 'trafego', investimento: 250.5, impressoes: 17931, cliques: 264 },
           { data: '2026-11-25', plataforma: 'programatica', campanha: 'Super Minas - Set a Nov/2026 · Black', objetivo: 'trafego', investimento: 92.6, impressoes: 5813, cliques: 88 }
         ],
         ga4: [
-          // GA4 do site (260405056): sessões de mídia paga por origem, 22–25/11 (25/11 parcial).
+          // GA4 do site (260405056): sessões de mídia paga por origem, 22–27/11 (27/11 parcial).
           { data: '2026-11-22', prop: 'site', plataforma: 'meta', sessoes: 1735 },
           { data: '2026-11-22', prop: 'site', plataforma: 'google', sessoes: 6718 },
           { data: '2026-11-22', prop: 'site', plataforma: 'programatica', sessoes: 224 },
@@ -999,9 +1017,15 @@ const DATA = {
           { data: '2026-11-24', prop: 'site', plataforma: 'meta', sessoes: 213 },
           { data: '2026-11-24', prop: 'site', plataforma: 'google', sessoes: 1690 },
           { data: '2026-11-24', prop: 'site', plataforma: 'programatica', sessoes: 77 },
-          { data: '2026-11-25', prop: 'site', plataforma: 'meta', sessoes: 226 },
-          { data: '2026-11-25', prop: 'site', plataforma: 'google', sessoes: 433 },
-          { data: '2026-11-25', prop: 'site', plataforma: 'programatica', sessoes: 22 }
+          { data: '2026-11-25', prop: 'site', plataforma: 'meta', sessoes: 1557 },
+          { data: '2026-11-25', prop: 'site', plataforma: 'google', sessoes: 1988 },
+          { data: '2026-11-25', prop: 'site', plataforma: 'programatica', sessoes: 78 },
+          { data: '2026-11-26', prop: 'site', plataforma: 'meta', sessoes: 1374 },
+          { data: '2026-11-26', prop: 'site', plataforma: 'google', sessoes: 1935 },
+          { data: '2026-11-26', prop: 'site', plataforma: 'programatica', sessoes: 61 },
+          { data: '2026-11-27', prop: 'site', plataforma: 'meta', sessoes: 228 },
+          { data: '2026-11-27', prop: 'site', plataforma: 'google', sessoes: 284 },
+          { data: '2026-11-27', prop: 'site', plataforma: 'programatica', sessoes: 10 }
         ],
         erp: [],
         insights: { positivos: [], eficiencia: [], atencao: [], otimizacoes: [], aprendizados: [] }
@@ -1023,12 +1047,12 @@ const CONTEUDO = {
   superminas: {
     conclusao: {
       resultados: [
-        'Black Friday (22–25/11, 25/11 parcial): R$ 8,5 mil em Meta, Google e Programática e 1.305 vendas atribuídas (Meta 922 + Google 383), CPA R$ 5,80.',
-        'No site, a mídia paga trouxe 15,2 mil sessões; 421 delas terminaram em compra pelo GA4 (2,8%).'
+        'Black Friday (22–27/11, 27/11 parcial): R$ 13,6 mil em Meta, Google e Programática e 2.814 compras atribuídas (Meta 2.149 + Google 665), CPA R$ 4,82 e ROAS 2,16.',
+        'No site, a mídia paga trouxe 22 mil sessões no período (GA4).'
       ],
       aprendizados: [
-        'Meta Conversão concentrou as vendas: 621 a CPA R$ 3,34.',
-        'No Google, PMAX + Search venderam 350 a CPA R$ 3,99.'
+        'Meta Conversão concentrou as compras: 1.540 a CPA R$ 2,72.',
+        'No Google, PMAX + Search venderam 619 a CPA R$ 3,01.'
       ],
       limitacoes: [
         'Em 24/11 a conta principal do Meta ficou sem investimento; as vendas do dia são atribuições de dias anteriores e uma campanha passou a rodar na conta Vitalícia.',
@@ -1044,8 +1068,8 @@ const CONTEUDO = {
       esquenta: { resumo: [], analise: {}, insights: [] },
       black: {
         resumo: [
-          'Investimento de R$ 8,5 mil em Meta, Google e Programática de 22 a 25/11, com foco em vendas no site.',
-          '1.305 vendas atribuídas pelas plataformas, CPA R$ 5,80.'
+          'Investimento de R$ 13,6 mil em Meta, Google e Programática de 22 a 27/11 (27/11 parcial; Programática até 25/11), com foco em vendas no site.',
+          '2.814 compras atribuídas pelas plataformas, CPA R$ 4,82.'
         ],
         analise: {
           meta: { papel: 'Canal principal de vendas: Alcance, Tráfego, Conversão e Remarketing.', positivos: [], atencao: [], oportunidades: [] },
@@ -2143,7 +2167,7 @@ function renderDayTabs() {
   setEmpty('wPlatDay', !!msg || !window.Chart);
   $('#platDayHint').innerHTML = msg ? '' : V === 'geral' ? 'Só investimento: os resultados de cada fase são analisados nas abas de cada fase.'
     : esq ? (cadR ? 'Cadastros pelo GA4 da LP com origem nesta mídia.' : 'Leads atribuídos pelo pixel (cadastros do GA4 não confirmados nesta praça).')
-    : vendeu ? 'Compras atribuídas pela própria plataforma. Linha dourada: CPA do dia (dias com pelo menos 5 compras).' : 'Esta mídia não tem venda atribuída na Black: o gráfico mostra investimento e cliques por dia (25/11 parcial).';
+    : vendeu ? 'Compras atribuídas pela própria plataforma. Linha dourada: CPA do dia (dias com pelo menos 5 compras).' : 'Esta mídia não tem venda atribuída na Black: o gráfico mostra investimento e cliques por dia (27/11 parcial).';
   ['sv_imp', 'sv_cli', 'sv_alc'].forEach(kill);
   $('#svGrid').style.display = 'none'; $('#wPlatDay').style.display = '';
   if (!msg && V === 'black' && semVenda(p) && window.Chart) {
@@ -2155,7 +2179,7 @@ function renderDayTabs() {
     const temAlc = dates.some(d => ok(alc[d]));
     setEmpty('wSvAlc', !temAlc);
     if (temAlc) lineChart('sv_alc', dates, dates.map(d => ok(alc[d]) ? alc[d] : null), false, cor);
-    $('#platDayHint').innerHTML = 'Mídia sem venda atribuída na Black: os resultados são de mídia (impressões, cliques e alcance). 25/11 é dia parcial.';
+    $('#platDayHint').innerHTML = 'Mídia sem venda atribuída na Black: os resultados são de mídia (impressões, cliques e alcance). 27/11 é dia parcial; UOL e Programática com relatório até 25/11.';
     return;
   }
   if (msg || !window.Chart) return;
@@ -2590,8 +2614,7 @@ function etapasDe(f) {
         : [['Sessões no site', F.intC(sesProp(f, 'site')), 'ga', 'mídia paga', 1]]), ['Cliques', F.intC(a.cli), 'pl', 'nos anúncios', 1],
       ['Custo por visita', F.brl2(ok(a.inv) && ses ? a.inv / ses : null), 'mx', 'investimento ÷ sessões', 1],
       ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões'], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique'],
-      L.funil ? ['Conversão no site', F.pct(todas && L.sessoes ? L.funil.compraSessoes / L.sessoes * 100 : null), 'ga', 'sessões com compra ÷ sessões (mídia paga)']
-        : ['Clique para compra', F.pct(todas && L.sessoes ? L.sessoesCompra / L.sessoes * 100 : null), 'ga', 'sessões da LP com clique em comprar']] },
+      ] },
     video
   ].filter(Boolean);
 }
@@ -2727,8 +2750,8 @@ function semSaldoInfo() {
 function semSaldoHtml() {
   const x = semSaldoInfo(); if (!x || !['todas', 'meta'].includes(state.plataforma) || !inPeriod(x.S.data)) return '';
   const q = (a, b) => ok(a) && b ? nf((a / b - 1) * 100, 0) + '%' : '—';
-  return `<div class="ss-box"><b>⚠ ${dBR(x.S.data)} · Meta sem saldo</b>
-    <span>A conta principal do Meta ficou sem saldo o dia inteiro; só a campanha da conta Vitalícia (_VT) rodou. Investimento do Meta no dia: ${F.brl(x.dia.inv)} (média de ${F.brl(x.invMed)}/dia antes, ${q(x.dia.inv, x.invMed)}); impressões: ${F.intC(x.dia.imp)} (${q(x.dia.imp, x.impMed)}); sessões do Meta no site: ${F.int(x.sesDia)} (${q(x.sesDia, x.sesMed)}). As ${F.int(x.dia.conv)} compras do Meta no dia são, na maior parte, atribuições de anúncios vistos antes.</span></div>`;
+  return `<div class="ss-box"><b>⚠ ${dBR(x.S.data)} · ${x.S.texto || 'Meta sem saldo'}</b>
+    <span>${x.S.desc || 'A conta principal do Meta ficou sem saldo o dia inteiro; só a campanha da conta Vitalícia (_VT) rodou.'} Investimento do Meta no dia: ${F.brl(x.dia.inv)} (média de ${F.brl(x.invMed)}/dia antes, ${q(x.dia.inv, x.invMed)}); impressões: ${F.intC(x.dia.imp)} (${q(x.dia.imp, x.impMed)}); sessões do Meta no site: ${F.int(x.sesDia)} (${q(x.sesDia, x.sesMed)}). As ${F.int(x.dia.conv)} compras do Meta no dia são, na maior parte, atribuições de anúncios vistos antes.</span></div>`;
 }
 if (window.Chart) Chart.register({ id: 'semSaldo', afterDatasetsDraw(c) {
   const x = cli().fases.black.semSaldo; if (!x || !c.scales.x || c.config.type === 'doughnut' || (c.options.indexAxis === 'y')) return;
